@@ -1,0 +1,11 @@
+{% if param %}
+  {% set RawParamName %}{{ param.typeName }}{% endset %}
+  {% set ParamName %}{{ RawParamName|replace:"?",""|replace:"!","" }}{% endset %}
+  {% if ParamName|replace:"Protocol",""|replace:"Input",""|hasSuffix:"Service" %}
+var {{ param.name }}: {{ ParamName }}Mock!
+  {% elif ParamName|hasSuffix:"Input" or ParamName|hasSuffix:"Output" or ParamName|hasSuffix:"Protocol" %}
+var {{ param.name }}: {{ ParamName }}Mock!
+  {% else %}
+var {{ param.name }}: {{ ParamName }}!
+  {% endif %}
+{% endif %}

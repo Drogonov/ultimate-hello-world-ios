@@ -1,0 +1,133 @@
+{# https://krzysztofzablocki.github.io/Sourcery #}
+{# https://github.com/SwiftGen/StencilSwiftKit #}
+{# https://stencil.fuller.li/en/latest/ #}
+
+{# ------ #}
+{# Macros #}
+{# ------ #}
+
+{% macro initProperty typeName needType indentNewLine %}{% if typeName == "URL" %}{{ 'URL' if needType }}.mock{% elif typeName == "String" %}{{ 'String' if needType }}.empty{% elif typeName == "Double" or typeName == "Int" %}{{ typeName }}(){% elif typeName == "Bool" %}true{% elif typeName|hasSuffix:"Mo" %}loadObjectFromJson({% if needType %}{{ typeName }}.self, {% endif %}filename: "{% if typeName|hasSuffix:"ResponseMo" %}{{ typeName|replace:"ResponseMo","" }}_ok{% else %}{% call replaceSuffix typeName "Mo" %}{% endif %}"){% else %}{% for type in types.all where type.name == typeName %}{% if type.kind == "enum" %}{{ type.name }}.{{ type.cases.first.name }}{% else %}{{ typeName }}{% if type.initializers.first.parameters %}{% call genMethodProperties type.initializers.first.parameters true indentNewLine %}{% else %}{% call genMethodProperties type.instanceVariables true indentNewLine %}{% endif %}{% endif %}{% empty %}{{ typeName }}(){% endfor %}{% endif %}{% endmacro %}
+
+{% macro getTestModuleName type %}{% if type.name|hasSuffix:"Interactor" %}interactor{% elif type.name|hasSuffix:"Presenter" %}presenter{% elif type.name|hasSuffix:"Builder" %}builder{% elif type.name|hasSuffix:"Factory" %}factory{% elif type.name|hasSuffix:"Service" %}service{% elif type.annotations.module %}{{ type.name|replace:type.annotations.module,""|lowerFirstLetter }}{% else %}{{ type.name|lowerFirstLetter }}{% endif %}{% endmacro %}
+
+{% macro addIndent indent %}{{ ""|indent: indent,"    ",true }}{% endmacro %}
+
+{% macro genMethodProperties parameters initInSelector indentNewLine %}({% for param in parameters %}{% if indentNewLine >= 0 %}
+    {% call addIndent indentNewLine %}{% endif %}{% if not param.definedInTypeName %}{% if param.argumentLabel %}{{ param.argumentLabel }}: {% endif %}{% else %}{{ param.name }}: {% endif %}{% if initInSelector %}{% call initProperty param.unwrappedTypeName false indentNewLine %}{% else %}{{ param.name }}{% endif %}{% if not forloop.last %},{% if not indentNewLine >= 0 %} {% endif %}{% endif %}{% endfor %}{% if indentNewLine >= 0 and parameters.count > 0 %}
+{% call addIndent indentNewLine %}{% endif %}){% endmacro %}
+
+{% macro declareProperty param %}
+{% include "Helpers/InitProperty.stencil" %}
+{% endmacro %}
+
+{% macro getNameTestMethod method methods %}{% set FirstParameter %}{{ method.parameters.first.argumentLabel|default:""|upperFirstLetter }}{% endset %}{% for repeatMethod in methods where repeatMethod.shortName == method.shortName %}{% if forloop.first and forloop.last %}test{{ method.callName|upperFirstLetter }}{{ FirstParameter if method.shortName == "set" }}{% elif forloop.last %}test{{ method.callName|upperFirstLetter }}{{ FirstParameter }}{% endif %}{% endfor %}{% endmacro %}
+
+{% macro initMockProperty typeName %}{% if typeName|hasSuffix:"DataStorage" %}{% call initProperty typeName false 0 %}{% else %}.init(){% endif %}{% endmacro %}
+
+{% macro replaceSuffix string suffix %}{% for sub in string|split:suffix %}{% if forloop.first %}{{ sub }}{% elif not forloop.last %}{{ suffix }}{{ sub }}{% endif %}{% endfor %}{% endmacro %}
+
+{# ------------ #}
+{# Start script #}
+{# ------------ #}
+
+{% for type in types.classes where type|annotated:"AutoTestsMultiple" %}
+  {% if not type.annotations.disable %}
+    {% for main in types.classes where main.name == type.name|replace:"Tests","" %}
+      {# ----------------- #}
+      {# Create properties #}
+      {# ----------------- #}
+      {% set TestModuleName %}{% call getTestModuleName main %}{% endset %}
+// sourcery:inline:{{ type.name }}.TestsPropertyTemplate
+      {% for existVar in type.variables where existVar.name == TestModuleName %}{% empty %}
+var {{ TestModuleName }}: {{ main.name }}!
+      {% endfor %}
+      {% for param in main.initializers.first.parameters %}
+        {% for existVar in type.variables where existVar.name == param.name %}{% empty %}{% call declareProperty param %}{% endfor %}
+      {% endfor %}
+      {% for var in main.variables where var.writeAccess == "internal" or var.writeAccess == "public" %}
+        {% for existVar in type.variables where existVar.name == var.name %}{# check: external properties here #}{% empty %}{% call declareProperty var %}{% endfor %}
+      {% endfor %}
+// sourcery:end
+
+      {# --------------- #}
+      {# Init properties #}
+      {# --------------- #}
+// sourcery:inline:{{ type.name }}.TestsSetupTemplate
+      {% for param in main.initializers.first.parameters %}
+        {% for existVar in type.variables where existVar.name == param.name %}{% empty %}
+{{ param.name }} = {% call initMockProperty param.unwrappedTypeName %}
+        {% endfor %}
+      {% endfor %}
+      {% for var in main.variables where var.writeAccess == "internal" or var.writeAccess == "public" %}
+        {% for existVar in type.variables where existVar.name == var.name %}{% empty %}
+{{ var.name }} = {% call initMockProperty var.unwrappedTypeName %}
+        {% endfor %}
+      {% endfor %}
+
+{{ TestModuleName }} = {{ main.name }}{% call genMethodProperties main.initializers.first.parameters false 0 %}
+      {% for var in main.variables where var.writeAccess == "internal" or var.writeAccess == "public" %}
+{{ TestModuleName }}.{{ var.name }} = {{ var.name }}
+      {% endfor %}
+// sourcery:end
+
+      {# ----------------- #}
+      {# Deinit properties #}
+      {# ----------------- #}
+      {% if not type.methods|join:""|contains:"tearDown" %}
+    // sourcery:inline:auto:{{ type.name }}.TestsOtherTemplate
+    override func tearDown() {
+        {% set AllProperties %}{{ TestModuleName }};{% for param in main.initializers.first.parameters %}{{ param.name }};{% endfor %}{% for var in main.variables where var.writeAccess == "internal" or var.writeAccess == "public" %}{{ var.name }};{% endfor %}{% endset %}
+        {% for name in AllProperties|split:";" where not name == "" %}
+        {{ name }} = nil
+        {% endfor %}
+        {% for var in type.instanceVariables %}
+          {% for name in AllProperties|split:";" where name == var.name %}{% empty %}
+        {{ var.name }} = nil
+          {% endfor %}
+        {% endfor %}
+        super.tearDown()
+    }
+    // sourcery:end
+      {% endif %}
+      {# -------------- #}
+      {# Create methods #}
+      {# -------------- #}
+      {% for skip in type.annotations.skip|split:";" where skip == "all" %}{% empty %}
+// sourcery:inline:{{ type.name }}.TestsImpTemplate
+        {% for protocol, value in main.implements %}
+          {% set DefinedMethods %}{% for method in value.rawMethods|definedInExtension %}{% call getNameTestMethod method value.methods %};{% endfor %}{% endset %}
+          {% map value.methods into NewMethods using method %}{% set TestMethod %}{% call getNameTestMethod method value.methods %}{% endset %}{% for existMethod in type.methods where existMethod.selectorName == TestMethod %}{% empty %}{% if not ((type.annotations.skip and (type.annotations.skip|contains:TestMethod or (type.annotations.skip|contains:"setters" and TestMethod|hasPrefix:"testSet"))) or TestMethod == "testSetDataStorage" or TestMethod == "testSetModuleOutput" or (TestModuleName == "builder" and TestMethod|hasPrefix:"testSet") or DefinedMethods|contains:TestMethod) %}
+    func {{ TestMethod }}() {
+        // given
+          {% for param in method.parameters where not param.isOptional %}
+        let {{ param.name }} = {% call initProperty param.unwrappedTypeName true nil %}
+          {% empty %}
+        // ...
+          {% endfor %}
+
+        // when
+        {{ 'let result = ' if not method.unwrappedReturnTypeName == "Void" }}{{ TestModuleName }}.{{ method.callName }}{% call genMethodProperties method.parameters false nil %}
+
+        // then
+        XCTAssertTrue(false)
+    }
+          {% endif %}{% endfor %}{% endmap %}
+          {% for method in NewMethods where not method == "" %}
+            {% if forloop.first %}
+
+// MARK: - {{ protocol }}
+
+extension {{ type.name }} {
+            {% endif %}
+
+{{ method }}
+            {% if forloop.last %}
+}
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+// sourcery:end
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}

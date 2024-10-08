@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Default</key>
+			<string>Deeplink Processor</string>
+			<key>Description</key>
+			<string>The name of the Processor</string>
+			<key>Identifier</key>
+			<string>productName</string>
+			<key>Name</key>
+			<string>Processor:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>text</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___DeeplinkConfigurator</string>
+			<key>Description</key>
+			<string>The configurator name</string>
+			<key>Identifier</key>
+			<string>configuratorName</string>
+			<key>Name</key>
+			<string>Configurator:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___DeeplinkHandler</string>
+			<key>Description</key>
+			<string>The handler name</string>
+			<key>Identifier</key>
+			<string>handlerName</string>
+			<key>Name</key>
+			<string>Handler:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___DeeplinkProcessor</string>
+			<key>Description</key>
+			<string>The processor name</string>
+			<key>Identifier</key>
+			<string>processorName</string>
+			<key>Name</key>
+			<string>Processor:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___DeeplinkProtocols</string>
+			<key>Description</key>
+			<string>The protocols name</string>
+			<key>Identifier</key>
+			<string>protocolsName</string>
+			<key>Name</key>
+			<string>Protocols:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___DeeplinkRouter</string>
+			<key>Description</key>
+			<string>The router name</string>
+			<key>Identifier</key>
+			<string>routerName</string>
+			<key>Name</key>
+			<string>Router:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+	</array>
+	<key>SupportsSwiftPackage</key>
+	<true/>
+	<key>Kind</key>
+	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
+	<key>Description</key>
+	<string>Deeplink Processor template</string>
+	<key>Summary</key>
+	<string>Deeplink Processor template</string>
+	<key>SortOrder</key>
+	<integer>1</integer>
+	<key>Platforms</key>
+	<array>
+		<string>com.apple.platform.iphoneos</string>
+	</array>
+</dict>
+</plist>

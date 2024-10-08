@@ -1,0 +1,8 @@
+{
+    "errorResponseMo": {
+        "errorMsg": "Неправильный код страны",
+        "errorCode": "BUSINESS_ERROR",
+        "errorSubCode": "INCORRECT_COUNTRY_CODE",
+        "errorFields": []
+    }
+}

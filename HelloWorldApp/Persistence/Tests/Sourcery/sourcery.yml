@@ -1,0 +1,9 @@
+sources:
+  - ../../../Persistence
+templates:
+  - ../../../scripts/sourcery-2/Templates
+output:
+  path: ../../Mocks/AutoMockable.generated.swift
+args:
+  autoMockableTestableImports: ["Persistence"]
+  autoMockableImports: []

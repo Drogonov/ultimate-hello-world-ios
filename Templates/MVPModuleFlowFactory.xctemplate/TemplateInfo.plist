@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Default</key>
+			<string>MVP Flow Factory</string>
+			<key>Description</key>
+			<string>The name of the target</string>
+			<key>Identifier</key>
+			<string>productName</string>
+			<key>Name</key>
+			<string>target:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>text</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___FlowModuleFactory</string>
+			<key>Description</key>
+			<string>The factory name</string>
+			<key>Identifier</key>
+			<string>factoryName</string>
+			<key>Name</key>
+			<string>Factory:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+	</array>
+	<key>SupportsSwiftPackage</key>
+	<true/>
+	<key>Kind</key>
+	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
+	<key>Description</key>
+	<string>MVP Module tests template</string>
+	<key>Summary</key>
+	<string>MVP Module tests template</string>
+	<key>SortOrder</key>
+	<integer>1</integer>
+	<key>Platforms</key>
+	<array>
+		<string>com.apple.platform.iphoneos</string>
+	</array>
+</dict>
+</plist>

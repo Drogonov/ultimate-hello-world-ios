@@ -1,0 +1,50 @@
+/*
+ ERROR
+ */
+
+"error_with_trace_id" = "%@\n\nКод ошибки: %@";
+
+"error_empty_data" = "Request %@ respond with empty data";
+"error_serialization" = "Failed to serialize response to JSON";
+"error_convertation" = "Failed to convert response from %@ to JSON";
+"error_convertation_nil" = "Failed to convert response from %@ to JSON in total. Get nil at the end of conversion";
+
+"internet_not_available_title" = "Проблема с подключением к интернету";
+"internet_not_available_message" = "Подключитесь к другой сети, проверьте интернет и повторите попытку";
+"internet_not_available" = "Интернет недоступен";
+
+"server_inaccessible" = "Извините, произошла ошибка выполнения запроса, попробуйте повторить действие позже";
+"server_inaccessible_title" = "Приложение временно недоступно";
+"server_inaccessible_message" = "Перезагрузите его и повторите попытку входа позже";
+
+"unknown_error" = "Функциональность временно недоступна";
+"functionality_unavailable" = "Функциональность недоступна";
+
+"forbidden_error_default_message" = "Функциональность недоступна";
+
+/*
+ COMMON
+ */
+
+"ok" = "оk";
+"attention" = "Внимание!";
+"refresh" = "Обновить";
+"clear" = "Понятно";
+"cancel" = "Отмена";
+"change" = "Изменить";
+"app_outdated" = "Ваша текущая версия приложения не поддерживается. Необходимо обновить приложение";
+
+
+/*
+ HELLOWORLD
+ */
+
+"hello_world_title" = "Hello World";
+"hello_world_text" = "Hello World";
+"hello_world_button_title" = "Hello World";
+
+/*
+ CHANGE LANGUAGE
+ */
+
+"change_language_title" = "Hello World";

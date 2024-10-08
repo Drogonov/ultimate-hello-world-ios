@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Default</key>
+			<string>Service</string>
+			<key>Description</key>
+			<string>The name of the Service</string>
+			<key>Identifier</key>
+			<string>productName</string>
+			<key>Name</key>
+			<string>Service:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>text</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>method</string>
+			<key>Description</key>
+			<string>The name of the Service methods</string>
+			<key>Identifier</key>
+			<string>methodName</string>
+			<key>Name</key>
+			<string>Method:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>text</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___NetworkService</string>
+			<key>Description</key>
+			<string>The name of the Network Service</string>
+			<key>Identifier</key>
+			<string>networkServiceName</string>
+			<key>Name</key>
+			<string>NetworkService:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___API</string>
+			<key>Description</key>
+			<string>The name of the API</string>
+			<key>Identifier</key>
+			<string>apiName</string>
+			<key>Name</key>
+			<string>API:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___RequestMo</string>
+			<key>Description</key>
+			<string>The name of the Request</string>
+			<key>Identifier</key>
+			<string>requestName</string>
+			<key>Name</key>
+			<string>Request:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___ResponseMo</string>
+			<key>Description</key>
+			<string>The name of the Response</string>
+			<key>Identifier</key>
+			<string>responseName</string>
+			<key>Name</key>
+			<string>Resposne:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+		<dict>
+			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___RequestData</string>
+			<key>Description</key>
+			<string>The name of the Request Data</string>
+			<key>Identifier</key>
+			<string>requestDataName</string>
+			<key>Name</key>
+			<string>RequestData:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+	</array>
+	<key>SupportsSwiftPackage</key>
+	<true/>
+	<key>Kind</key>
+	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
+	<key>Description</key>
+	<string>Network Service template</string>
+	<key>Summary</key>
+	<string>Network Service template</string>
+	<key>SortOrder</key>
+	<integer>1</integer>
+	<key>Platforms</key>
+	<array>
+		<string>com.apple.platform.iphoneos</string>
+	</array>
+</dict>
+</plist>

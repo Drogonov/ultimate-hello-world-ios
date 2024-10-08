@@ -1,0 +1,217 @@
+{
+  "uuid": "eca1411c-45b9-484f-86e7-c8e61c47b432",
+  "lastMigration": 32,
+  "name": "HelloWorld",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 6868,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "de0027a7-70a5-449b-959e-f8b370dbc110",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "hello",
+      "responses": [
+        {
+          "uuid": "cc095093-bed4-41c6-a893-cc79b38d0f21",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetHelloServiceMocks/getHelloService_success.json",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "7808eec9-5b82-4fe5-a557-a8face950127",
+          "body": "{\n  \"errorResponseMo\": {\n    \"errorMsg\": \"Не удалось загрузить информацию, попробуйте позднее...\",\n    \"errorCode\": \"UNKNOWN_ERROR\",\n    \"errorFields\": []\n  }\n}\n",
+          "latency": 0,
+          "statusCode": 403,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "b13d9c66-2d9c-4cb3-85a6-da18b2a3489e",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "countries",
+      "responses": [
+        {
+          "uuid": "41405bb3-4635-446f-8ba0-adf1a4335e06",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetCountriesServiceMocks/getCountriesService_success.json",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "8c75c9cf-38b3-44f4-a7af-dc8cc34ff65f",
+          "body": "{\n    \"title\": \"Change Countries\",\n    \"countries\": [\n        {\n            \"name\": \"England\",\n            \"languageName\": \"english\",\n            \"languageCode\": \"en\",\n            \"emoji\": \"🏴󠁧󠁢󠁥󠁮󠁧󠁿\",\n            \"isCurrent\": true\n        },\n        {\n            \"name\": \"Russia\",\n            \"languageName\": \"russian\",\n            \"languageCode\": \"ru\",\n            \"emoji\": \"🇷🇺\",\n            \"isCurrent\": false\n        },\n        {\n            \"name\": \"Japan\",\n            \"languageName\": \"japanies\",\n            \"languageCode\": \"jp\",\n            \"emoji\": \"🇯🇵\",\n            \"isCurrent\": false\n        }\n    ]\n}\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "1571c615-0ae4-436d-af03-f3c0ce5916f8",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "info",
+      "responses": [
+        {
+          "uuid": "fc5c69d1-ed46-4ac8-95fe-87a32fe3e2c6",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetMoreInfoServiceMocks/getMoreInfoService_success.json",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "c59577ea-6a40-4b38-bb62-ab1c9ac9d519",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "magic",
+      "responses": [
+        {
+          "uuid": "163baa08-8893-4cf0-a018-4ceb91cc807a",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetMagicServiceMocks/getMagicService_success.json",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "de0027a7-70a5-449b-959e-f8b370dbc110"
+    },
+    {
+      "type": "route",
+      "uuid": "b13d9c66-2d9c-4cb3-85a6-da18b2a3489e"
+    },
+    {
+      "type": "route",
+      "uuid": "1571c615-0ae4-436d-af03-f3c0ce5916f8"
+    },
+    {
+      "type": "route",
+      "uuid": "c59577ea-6a40-4b38-bb62-ab1c9ac9d519"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}

@@ -1,0 +1,7 @@
+{
+  "errorResponseMo": {
+    "errorMsg": "Не удалось загрузить информацию, попробуйте позднее...",
+    "errorCode": "UNKNOWN_ERROR",
+    "errorFields": []
+  }
+}
