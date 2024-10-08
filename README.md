@@ -8,7 +8,7 @@ It is simple **MVP+R** architecture app with a few SwiftUI screens and two disti
 
 **So let's implement them upfront!**
 
-![](gif/intro.gif)
+![](gifs/intro.gif)
 
 ## Key features
 
