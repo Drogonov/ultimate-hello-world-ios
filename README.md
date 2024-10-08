@@ -8,6 +8,8 @@ It is simple **MVP+R** architecture app with a few SwiftUI screens and two disti
 
 **So let's implement them upfront!**
 
+![](https://github.com/Drogonov/ultimate-hello-world-ios/gifs/intro.gif)
+
 ## Key features
 
 - **Modularity** - will help us with testing and developing features without unexpected influence on other parts of the app. Here we will use [Tuist](https://docs.tuist.io).
@@ -105,6 +107,3 @@ sh <your_root_dir>/ultimate-hello-world-ios/Templates/install-swifty-mvp-xcode-t
 ## License
 
 [ultimate-hello-world-ios](https://github.com/Drogonov/ultimate-hello-world-ios) is created by [Anton Vlezko](https://github.com/Drogonov) and released under a [MIT License](LICENSE).
-
-## TODOs
-- Add gifs to readme
