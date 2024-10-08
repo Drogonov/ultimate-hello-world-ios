@@ -1,5 +1,6 @@
 import ProjectDescription
 
+// # TODO: Add to Tuist methods to avoid unnecessary harcoding
 let project = Project(
     name: "HelloWorldApp",
     organizationName: "Smart Lads Software",
@@ -54,5 +55,6 @@ let project = Project(
             ]
         )
     ]
+// # TODO: Add target for proper tests of the app
 //    schemes: [debugScheme]
 )

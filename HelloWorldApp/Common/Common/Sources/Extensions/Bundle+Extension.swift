@@ -31,7 +31,7 @@ private class BundleEx: Bundle {
     }
 }
 
-// TODO: Rewrite bundle id to save language safe
+// # TODO: Rewrite bundle id to save language safe
 /// It is not the best way to do it try to rewrite code later.Becouse Resources target can have other names
 public extension Bundle {
     class func setLanguage(_ language: String?) {

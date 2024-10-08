@@ -18,7 +18,7 @@ public class NavigationStackProvider {
     }
 }
 
-// TODO: Implement service instead of singltone
+// # TODO: Implement service instead of singltone
 /// Service doesnt work because you cant get only one instance of it. It means that you have problem in code try to find it
 
 public protocol NavigationStackServiceProtocol {

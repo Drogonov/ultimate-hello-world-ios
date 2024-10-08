@@ -108,4 +108,3 @@ sh <your_root_dir>/ultimate-hello-world-ios/Templates/install-swifty-mvp-xcode-t
 
 ## TODOs
 - Add gifs to readme
-- Implement [TODO to Issue](https://github.com/marketplace/actions/todo-to-issue)

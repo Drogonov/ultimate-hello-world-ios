@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-// TODO: Use generated Colors instead
+// # TODO: Use generated Colors instead
 public extension UIColor {
     static let backgroundColor = UIColor.systemBackground
     static let secondaryBackground = UIColor.secondarySystemBackground
