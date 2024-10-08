@@ -1,4 +1,4 @@
-# ultimate-hello-world-ios [![License](https://img.shields.io/badge/License-MIT-red)](License) ![Platform](https://img.shields.io/badge/Platform-iOS-red) ![SwiftPM](https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat)
+# ultimate-hello-world-ios [![License](https://img.shields.io/badge/License-MIT-red)](LICENSE) ![Platform](https://img.shields.io/badge/Platform-iOS-red) ![SwiftPM](https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat)
 
 _An ultimate way to say Hello to the World in the production manner!_
 
@@ -104,7 +104,7 @@ sh <your_root_dir>/ultimate-hello-world-ios/Templates/install-swifty-mvp-xcode-t
 
 ## License
 
-[ultimate-hello-world-ios](https://github.com/Drogonov/ultimate-hello-world-ios) is created by [Anton Vlezko](https://github.com/Drogonov) and released under a [MIT License](License).
+[ultimate-hello-world-ios](https://github.com/Drogonov/ultimate-hello-world-ios) is created by [Anton Vlezko](https://github.com/Drogonov) and released under a [MIT License](LICENSE).
 
 ## TODOs
 - Add gifs to readme
