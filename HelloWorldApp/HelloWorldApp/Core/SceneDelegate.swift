@@ -29,6 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         window?.makeKeyAndVisible()
 
+        // # TODO: Add Onboarding screen to show how to manage scenes and use navigation stack
         let tabBarController = UITabBarController()
         let controllers = [
             createHelloWorldModule(),

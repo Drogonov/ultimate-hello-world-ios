@@ -53,6 +53,7 @@ class HelloWorldPresenter {
 // MARK: - HelloWorldPresenterInput
 
 extension HelloWorldPresenter: HelloWorldPresenterInput {
+    // # TODO: Update JSONs in Mockoon to imitate change of the language and update strings in the app for better UX. Also check UI one more time and make it a little bit better.
     func viewIsReady() {
         let code = languageService?.getCurrentLanguage() ?? Language.english
         let request = GetHelloRequestMo(languageCode: code.rawValue)
