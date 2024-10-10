@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension DecodingError: CustomStringConvertible {
+extension DecodingError: @retroactive CustomStringConvertible {
 
     // MARK: Properties
 

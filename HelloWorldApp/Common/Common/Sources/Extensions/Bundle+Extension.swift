@@ -19,7 +19,7 @@ import Foundation
 var _bundle: UInt8 = 0
 var _frameworkBundle: UInt8 = 0
 
-private class BundleEx: Bundle {
+private class BundleEx: Bundle, @unchecked Sendable {
     override func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
         let bundle: Bundle? = objc_getAssociatedObject(self, &_bundle) as? Bundle
 

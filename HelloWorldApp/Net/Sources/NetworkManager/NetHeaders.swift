@@ -35,7 +35,6 @@ public struct NetHeaders {
 public extension NetHeaders {
 
     static func defaultHeaders() -> Self {
-        let clientVersion = AppConfiguration.sharedInstance.clientVersion
         let dateString = AppConfiguration.sharedInstance.getDateString(from: Date())
 
         var headers = NetHeaders()

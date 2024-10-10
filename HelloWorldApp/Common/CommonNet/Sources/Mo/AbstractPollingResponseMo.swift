@@ -13,7 +13,7 @@ public protocol AbstractPollingResponseMoProtocol {
     var retryCount: Int? { get }
 }
 
-open class AbstractPollingResponseMo: AbstractResponseMo, AbstractPollingResponseMoProtocol {
+open class AbstractPollingResponseMo: AbstractResponseMo, AbstractPollingResponseMoProtocol, @unchecked Sendable {
 
     // MARK: Properties
 
