@@ -167,7 +167,7 @@ public extension String {
     ///   - style: Design text style
     ///   - color: Font color
     /// - Returns: Attributed string formatted accordingly to design
-    func style(_ style: TextStyle, color: UIColor = .primaryTextColor, alignment: NSTextAlignment = .natural) -> NSAttributedString {
+    func style(_ style: TextStyle, color: UIColor = .textPrimaryColor, alignment: NSTextAlignment = .natural) -> NSAttributedString {
         NSAttributedString(string: self, attributes: .make(style, color: color, alignment: alignment))
     }
 }

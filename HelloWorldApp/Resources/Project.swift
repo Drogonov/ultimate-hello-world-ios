@@ -11,10 +11,7 @@ let project = Project(
             bundleId: "com.drogonov.HelloWorldApp.Resources",
             infoPlist: .default,
             sources: ["Sources/**"],
-            resources: ["Resources/**"],
-            dependencies: [
-                .project(target: "Common", path: "../Common/Common"),
-            ]
+            resources: ["Resources/**"]
         )
     ]
 )

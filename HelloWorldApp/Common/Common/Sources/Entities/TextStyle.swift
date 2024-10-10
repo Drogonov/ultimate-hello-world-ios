@@ -57,8 +57,8 @@ public extension TextStyle {
             result = [
                 .font: UIFont.resolve(fontName: .robotoRegular, size: Size.k12),
                 .paragraphStyle: paragraphStyle(lineHeightMultiple: LineHeight.k112),
-                .foregroundColor: UIColor.secondaryTextColor,
-                .underlineColor: UIColor.secondaryTextColor.withAlphaComponent(0.7),
+                .foregroundColor: UIColor.textSecondaryColor,
+                .underlineColor: UIColor.textSecondaryColor.withAlphaComponent(0.7),
                 .underlineStyle: NSUnderlineStyle.single.rawValue
             ]
         }

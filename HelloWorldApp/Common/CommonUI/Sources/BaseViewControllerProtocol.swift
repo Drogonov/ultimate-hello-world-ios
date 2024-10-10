@@ -26,7 +26,7 @@ public extension BaseViewControllerProtocol where Self: UIViewController {
 
     func configureNavigationBar() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationController?.navigationBar.tintColor = UIColor.primaryTextColor
+        self.navigationController?.navigationBar.tintColor = UIColor.textPrimaryColor
         self.navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
     }
 

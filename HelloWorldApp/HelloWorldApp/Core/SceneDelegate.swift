@@ -13,6 +13,7 @@ import Services
 import CommonApplication
 import Deeplinks
 import CommonNet
+import Resources
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -31,6 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // # TODO: Add Onboarding screen to show how to manage scenes and use navigation stack
         let tabBarController = UITabBarController()
+        tabBarController.tabBar.tintColor = .accentColor
         let controllers = [
             createHelloWorldModule(),
             createChangeLanguageModule()

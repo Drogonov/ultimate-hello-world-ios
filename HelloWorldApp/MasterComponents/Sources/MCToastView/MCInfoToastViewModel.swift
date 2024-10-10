@@ -91,7 +91,7 @@ public class MCInfoToastView: UIView {
         }
         infoLabel.attributedText = viewModel.text.style(
             .body,
-            color: .actionButtonTextColor,
+            color: .buttonTextColor,
             alignment: .left
         )
         show()
@@ -115,7 +115,7 @@ extension MCInfoToastView: ViewConfigurable {
 
     public func configureViews() {
         isHidden = true
-        backgroundColor = .actionButtonBackgroundColor
+        backgroundColor = .buttonBackgroundColor
         layer.cornerRadius = MCConstants.shimmerLabelCornerRadius
         addSubview(infoLabel)
     }

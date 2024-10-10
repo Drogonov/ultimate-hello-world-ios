@@ -47,9 +47,9 @@ struct MoreInfoView: View {
                         .background(
                             Rectangle()
                                 .cornerRadius(16)
-                                .foregroundColor(.actionButtonBackgroundColor)
+                                .foregroundColor(.buttonBackgroundColor)
                         )
-                        .foregroundColor(.actionButtonTextColor)
+                        .foregroundColor(.buttonTextColor)
                 }
             }
             .padding()

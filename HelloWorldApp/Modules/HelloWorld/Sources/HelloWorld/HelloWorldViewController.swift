@@ -11,6 +11,7 @@ import DI
 import Common
 import Services
 import CommonUI
+import Resources
 
 // MARK: - HelloWorldViewController
 
@@ -68,7 +69,7 @@ extension HelloWorldViewController: HelloWorldViewInput {
 extension HelloWorldViewController: ViewConfigurable {
 
     public func configureViews() {
-        view.backgroundColor = .backgroundColor
+        view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
     }

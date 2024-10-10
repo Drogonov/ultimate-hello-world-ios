@@ -73,7 +73,7 @@ extension ChangeLanguageViewController: ChangeLanguageViewInput {
 extension ChangeLanguageViewController: ViewConfigurable {
 
     public func configureViews() {
-        view.backgroundColor = .backgroundColor
+        view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
     }

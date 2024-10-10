@@ -77,7 +77,7 @@ extension MagicViewController: MagicViewInput {
 extension MagicViewController: ViewConfigurable {
 
     public func configureViews() {
-        view.backgroundColor = .backgroundColor
+        view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
     }

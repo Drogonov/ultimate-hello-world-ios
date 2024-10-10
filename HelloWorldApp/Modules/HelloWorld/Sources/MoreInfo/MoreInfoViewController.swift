@@ -73,7 +73,7 @@ extension MoreInfoViewController: MoreInfoViewInput {
 extension MoreInfoViewController: ViewConfigurable {
 
     public func configureViews() {
-        view.backgroundColor = .backgroundColor
+        view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
     }

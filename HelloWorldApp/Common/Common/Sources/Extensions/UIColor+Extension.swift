@@ -7,32 +7,32 @@
 
 import UIKit
 import SwiftUI
+import Resources
 
-// # TODO: Use generated Colors instead
 public extension UIColor {
-    static let backgroundColor = UIColor.systemBackground
-    static let secondaryBackground = UIColor.secondarySystemBackground
+    static let surfaceColor = Asset.surfaceColor.color
+    static let surfaceSecondaryColor = Asset.surfaceSecondaryColor.color
 
-    static let primaryTextColor = UIColor.label
-    static let secondaryTextColor = UIColor.gray
+    static let textPrimaryColor = Asset.textPrimaryColor.color
+    static let textSecondaryColor = Asset.textSecondaryColor.color
 
-    static let actionButtonTextColor = UIColor.systemBackground
-    static let actionButtonBackgroundColor = UIColor.label
+    static let buttonTextColor = Asset.buttonTextColor.color
+    static let buttonBackgroundColor = Asset.buttonBackgroundColor.color
 
-    static let accentColor = UIColor(rgb: 0xCFD4D9)
+    static let accentColor = Asset.accentColor.color
 }
 
 public extension Color {
-    static let backgroundColor = Color(UIColor.backgroundColor)
-    static let secondaryBackground = Color(UIColor.secondaryBackground)
+    static let surfaceColor = Asset.surfaceColor.swiftUIColor
+    static let surfaceSecondaryColor = Asset.surfaceSecondaryColor.swiftUIColor
 
-    static let primaryTextColor = Color(UIColor.primaryTextColor)
-    static let secondaryTextColor = Color(UIColor.secondaryTextColor)
+    static let textPrimaryColor = Asset.textPrimaryColor.swiftUIColor
+    static let textSecondaryColor = Asset.textSecondaryColor.swiftUIColor
 
-    static let actionButtonTextColor = Color(UIColor.actionButtonTextColor)
-    static let actionButtonBackgroundColor = Color(UIColor.actionButtonBackgroundColor)
+    static let buttonTextColor = Asset.buttonTextColor.swiftUIColor
+    static let buttonBackgroundColor = Asset.buttonBackgroundColor.swiftUIColor
 
-    static let accentColor = Color(UIColor.accentColor)
+    static let accentColor = Asset.accentColor.swiftUIColor
 }
 
 public extension UIColor {
