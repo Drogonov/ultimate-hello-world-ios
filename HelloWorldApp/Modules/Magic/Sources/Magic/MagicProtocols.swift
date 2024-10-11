@@ -12,10 +12,6 @@ import CommonApplication
 
 // MARK: - Module Protocols
 
-public protocol MagicModuleInput: MVPModuleInputProtocol {
-    func set(dataStorage: MagicDataStorage)
-}
-
 // sourcery: AutoMockable
 public protocol MagicModuleOutput: MVPModuleOutputProtocol {}
 

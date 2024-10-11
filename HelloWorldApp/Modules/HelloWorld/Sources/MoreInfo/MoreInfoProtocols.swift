@@ -44,5 +44,5 @@ protocol MoreInfoPresenterInput: NativeAlertProtocol {
 
 // sourcery: AutoMockable
 protocol MoreInfoRouterInput: BaseRouterInput {
-//    func goToMagicScreen(dataStorage: MagicDataStorage)
+    func goToMagicScreen(dataStorage: MagicDataStorage)
 }

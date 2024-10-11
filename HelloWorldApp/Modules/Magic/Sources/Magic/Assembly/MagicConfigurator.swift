@@ -8,6 +8,7 @@
 import Swinject
 import Net
 import Services
+import CommonApplication
 
 // MARK: - LoanConfigurator
 

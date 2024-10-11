@@ -2,5 +2,6 @@
     "title": "More Info",
     "imageUrl": "https://picsum.photos/seed/picsum/200/300",
     "text": "Lorem Ipsum is simply dummy text of the printing and typesetting",
-    "buttonTitle": "Open Magic Screen"
+    "buttonTitle": "Open Magic Screen",
+    "deeplink": "https://helloworldapp.com/magic?languageCode=RU"
 }

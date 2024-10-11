@@ -15,6 +15,7 @@ final class AppStartupFlowBuilder {
 
     func build() -> [Command] {[
         InitServicesCommand(),
-        InitDeeplinksCommand()
+        InitDeeplinksCommand(),
+        InitRoutingsCommand()
     ]}
 }

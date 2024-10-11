@@ -22,11 +22,15 @@ public class GetMoreInfoResponseMo: BaseResponse {
     /// Title of button
     public private(set) var buttonTitle: String?
 
+    /// Deeplink to magic screen
+    public private(set) var deeplink: URL?
+
     required public init(map: Map) throws {
         title = try? map.value(Constants.title)
         imageUrl = try? map.value(Constants.imageUrl)
         text = try? map.value(Constants.text)
         buttonTitle = try? map.value(Constants.buttonTitle)
+        deeplink = try? map.value(Constants.deeplink)
 
         try super.init(map: map)
     }
@@ -37,6 +41,7 @@ public class GetMoreInfoResponseMo: BaseResponse {
         imageUrl >>> map[Constants.imageUrl]
         text >>> map[Constants.text]
         buttonTitle >>> map[Constants.buttonTitle]
+        deeplink >>> map[Constants.deeplink]
     }
 }
 
@@ -48,5 +53,6 @@ fileprivate extension GetMoreInfoResponseMo {
         static let imageUrl = "imageUrl"
         static let text = "text"
         static let buttonTitle = "buttonTitle"
+        static let deeplink = "deeplink"
     }
 }

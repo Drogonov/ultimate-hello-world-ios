@@ -7,6 +7,11 @@
 
 import Foundation
 import CommonNet
+import DI
+
+public protocol MagicModuleInput: MVPModuleInputProtocol {
+    func set(dataStorage: MagicDataStorage)
+}
 
 // MARK: - MagicDataStorage
 

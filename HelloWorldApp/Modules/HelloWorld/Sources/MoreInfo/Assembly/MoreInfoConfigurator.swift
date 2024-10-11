@@ -37,6 +37,7 @@ fileprivate extension MoreInfoConfigurator {
         }
         .initCompleted { resolver, instance in
             instance.sourceViewController = resolver.resolveSafe(MoreInfoViewController.self)
+            instance.routing = resolver.resolveSafe(HelloWorldModuleRoutingProtocol.self)
         }
         .implements(MoreInfoRouterInput.self)
     }

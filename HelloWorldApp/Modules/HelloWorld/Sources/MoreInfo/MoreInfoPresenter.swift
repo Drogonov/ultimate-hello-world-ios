@@ -76,10 +76,12 @@ extension MoreInfoPresenter: MoreInfoPresenterInput {
     func viewWillDissapear() {}
 
     func viewButtonTapped() {
-        guard let content = DeeplinkContent(
-            urlString: "https://helloworldapp.com/magic?languageCode=RU",
+        guard let urlString = getMoreInfoResponse?.deeplink?.absoluteString,
+              let content = DeeplinkContent(
+            urlString: urlString,
             isExternal: false
         ) else {
+            router.goToMagicScreen(dataStorage: MagicDataStorage())
             return
         }
 
