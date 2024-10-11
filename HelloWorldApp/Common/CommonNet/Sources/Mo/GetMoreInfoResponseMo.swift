@@ -30,7 +30,7 @@ public class GetMoreInfoResponseMo: BaseResponse {
         imageUrl = try? map.value(Constants.imageUrl)
         text = try? map.value(Constants.text)
         buttonTitle = try? map.value(Constants.buttonTitle)
-        deeplink = try? map.value(Constants.deeplink)
+        deeplink = try? map.value(Constants.deeplink, using: URLTransform())
 
         try super.init(map: map)
     }

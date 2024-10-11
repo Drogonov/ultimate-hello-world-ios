@@ -19,7 +19,8 @@ public class MagicFlowModuleFactory {
     private static var resolver: Resolver = {
         let configurators: [Assembly] = [
             ServiceConfigurator(),
-            MagicConfigurator()
+            MagicConfigurator(),
+            OnboardingConfigurator()
         ]
 
         DIAssembler.apply(configurators)
@@ -34,6 +35,12 @@ extension MagicFlowModuleFactory {
     public class func magicModule() -> MVPModuleFactory {
         MVPModuleFactory {
             resolver.resolve(MagicViewController.self)!
+        }
+    }
+
+    public class func onboardingModule() -> MVPModuleFactory {
+        MVPModuleFactory {
+            resolver.resolve(OnboardingViewController.self)!
         }
     }
 }

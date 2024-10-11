@@ -9,15 +9,24 @@
 import DI
 import Swinject
 import HelloWorld
+import CommonApplication
 
 final class HelloWorldAppRoutingConfigurator: Assembly {
 
     func assemble(container: Container) {
+        registerMainTabBarProvider(in: container)
         registerHelloWorldModuleRouting(in: container)
     }
 }
 
 fileprivate extension HelloWorldAppRoutingConfigurator {
+
+    func registerMainTabBarProvider(in container: Container) {
+        container.register(MainTabBarProviderProtocol.self) { _ in
+            MainTabBarProvider()
+        }
+        .implements(MainTabBarProviderProtocol.self)
+    }
 
     func registerHelloWorldModuleRouting(in container: Container) {
         container.register(HelloWorldModuleRoutingProtocol.self) { _ in

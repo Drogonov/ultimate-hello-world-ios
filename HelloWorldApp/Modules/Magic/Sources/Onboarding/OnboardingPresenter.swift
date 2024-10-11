@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import DI
+import CommonApplication
 
 // MARK: - OnboardingPresenter
 
@@ -42,10 +43,17 @@ class OnboardingPresenter {
 
 extension OnboardingPresenter: OnboardingPresenterInput {
     func viewIsReady() {
-        let model = OnboardingModel(title: dataStorage?.response)
+        guard let dataStorage = dataStorage else {
+            return
+        }
+        
+        let model = OnboardingModel(
+            text: dataStorage.onboardingText,
+            buttonText: dataStorage.onboardingButtonText
+        )
 
-        viewModel.navigationTitle = model.title ?? .empty
-        viewModel.text = model.title ?? .empty
+        viewModel.text = model.text ?? .empty
+        viewModel.buttonText = model.buttonText ?? .empty
 
         self.view?.setView(with: viewModel)
     }
@@ -54,7 +62,9 @@ extension OnboardingPresenter: OnboardingPresenterInput {
 
     func viewWillDissapear() {}
 
-    func viewButtonTapped() {}
+    func viewButtonTapped() {
+        router.goToMainTabBar()
+    }
 
     func getEmptyModel() -> OnboardingViewModel {
         viewModel

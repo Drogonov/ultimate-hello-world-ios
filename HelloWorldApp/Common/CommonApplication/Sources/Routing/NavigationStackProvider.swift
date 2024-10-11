@@ -16,6 +16,22 @@ public class NavigationStackProvider {
     public func set(isNavigationBarHidden: Bool) {
         navigationStack?.isNavigationBarHidden = isNavigationBarHidden
     }
+
+    // Method to clear the navigation stack and set a new root view controller
+    public func setNewRootViewController(_ newRootViewController: UIViewController, animated: Bool = true) {
+        // Check if the navigation stack exists
+        if let navigationStack = navigationStack {
+            // Set the new root view controller, replacing the current stack
+            navigationStack.setViewControllers([newRootViewController], animated: animated)
+        } else {
+            // Handle the case where navigationStack might be nil
+            // For example, by initializing a new UINavigationController
+            let newNavigationStack = UINavigationController(rootViewController: newRootViewController)
+            newNavigationStack.isNavigationBarHidden = self.navigationStack?.isNavigationBarHidden ?? false
+            self.navigationStack = newNavigationStack
+        }
+    }
+
 }
 
 // # TODO: Implement service instead of singltone

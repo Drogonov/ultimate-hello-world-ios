@@ -14,5 +14,6 @@ struct OnboardingModel: Equatable {
 
     // MARK: Public Properties
 
-    let title: String?
+    let text: String?
+    let buttonText: String?
 }

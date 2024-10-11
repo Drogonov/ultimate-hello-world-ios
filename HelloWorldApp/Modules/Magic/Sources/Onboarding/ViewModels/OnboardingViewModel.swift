@@ -14,6 +14,6 @@ class OnboardingViewModel: ObservableObject {
 
     // MARK: Public Properties
 
-    var navigationTitle: String = .empty
     @Published var text: String = .empty
+    @Published var buttonText: String = .empty
 }

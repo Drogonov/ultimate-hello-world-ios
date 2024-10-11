@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     var deeplinksService: DeeplinksServiceProtocol?
-    var navigationStackService: NavigationStackServiceProtocol?
+    var mainCoordinator: MainCoordinator?
 
     // MARK: Methods
 
@@ -30,24 +30,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         window?.makeKeyAndVisible()
 
-        // # TODO: Add Onboarding screen to show how to manage scenes and use navigation stack
-        let tabBarController = UITabBarController()
-        tabBarController.tabBar.tintColor = .accentColor
-        let controllers = [
-            createHelloWorldModule(),
-            createChangeLanguageModule()
-        ]
-
-        tabBarController.viewControllers = controllers
-        let navController = UINavigationController(rootViewController: tabBarController)
-        // Set the tab bar controller as the root view controller
-        self.window?.rootViewController = navController
-
-//        navigationStackService = resolveDependency(NavigationStackServiceProtocol.self, name: "common")
-//        navigationStackService?.set(navigationStack: window?.rootViewController?.navigationController)
-//        navigationStackService?.set(isNavigationBarHidden: true)
-        NavigationStackProvider.shared.navigationStack = window?.rootViewController as? UINavigationController
-        NavigationStackProvider.shared.set(isNavigationBarHidden: true)
+        if let window = window {
+            mainCoordinator = MainCoordinator(window: window)
+            mainCoordinator?.start()
+        }
 
         // Handle initial link if any
         deeplinksService = resolveDependency(DeeplinksServiceProtocol.self)
@@ -116,39 +102,5 @@ private extension SceneDelegate {
                 executeHandler: true
             )
         }
-    }
-
-    func createHelloWorldModule() -> UINavigationController {
-        let configurator = MVPModuleConfigurator(HelloWorldFlowModuleFactory.helloWorldModule())
-        let viewController = configurator.getViewController()
-        configurator.configure { (input: HelloWorldModuleInput?) in
-            input?.set(dataStorage: HelloWorldDataStorage())
-        }
-
-        let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.tabBarItem = UITabBarItem(
-            title: "Home",
-            image: UIImage(systemName: "house"),
-            selectedImage: UIImage(systemName: "house.fill")
-        )
-
-        return navigationController
-    }
-
-    func createChangeLanguageModule() -> UINavigationController {
-        let configurator = MVPModuleConfigurator(HelloWorldFlowModuleFactory.changeLanguageModule())
-        let viewController = configurator.getViewController()
-        configurator.configure { (input: ChangeLanguageModuleInput?) in
-            input?.set(dataStorage: ChangeLanguageDataStorage())
-        }
-
-        let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.tabBarItem = UITabBarItem(
-            title: "Language",
-            image: UIImage(systemName: "globe.central.south.asia"),
-            selectedImage: UIImage(systemName: "globe.central.south.asia.fill")
-        )
-
-        return navigationController
     }
 }

@@ -43,4 +43,6 @@ protocol OnboardingPresenterInput: AnyObject {
 // MARK: - Router Protocols
 
 // sourcery: AutoMockable
-protocol OnboardingRouterInput: BaseRouterInput {}
+protocol OnboardingRouterInput: BaseRouterInput {
+    func goToMainTabBar()
+}

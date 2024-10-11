@@ -10,6 +10,7 @@ import Foundation
 public enum CommonCacheKey: String, CacheKeyable {
     case isShownAlert = "isShownAlert"
     case isUserLoggedIn = "isUserLoggedIn"
+    case isUserSawOnboarding = "isUserSawOnboarding"
 
     public var value: String {
         rawValue

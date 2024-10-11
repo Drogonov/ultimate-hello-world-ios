@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import MasterComponents
+import Common
 
 // MARK: - OnboardingView
 
@@ -21,13 +23,23 @@ struct OnboardingView: View {
 
     var body: some View {
         VStack {
+            Text(model.text)
+                .font(TextStyle.body.font)
+                .padding(.vertical, 8)
+
             Button {
                 buttonTapped()
             } label: {
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundStyle(.tint)
-                Text(model.text)
+                Text(model.buttonText)
+                    .font(TextStyle.body.font)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 16)
+                    .background(
+                        Rectangle()
+                            .cornerRadius(16)
+                            .foregroundColor(.buttonBackgroundColor)
+                    )
+                    .foregroundColor(.buttonTextColor)
             }
         }
         .padding()

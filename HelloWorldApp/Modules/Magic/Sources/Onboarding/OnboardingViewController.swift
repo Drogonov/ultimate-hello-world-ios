@@ -11,6 +11,7 @@ import UIKit
 import SnapKit
 import Common
 import CommonUI
+import Resources
 
 // MARK: - OnboardingViewController
 
@@ -63,7 +64,6 @@ final class OnboardingViewController: UIViewController, MVPModuleProtocol, BaseV
 extension OnboardingViewController: OnboardingViewInput {
 
     func setView(with viewModel: OnboardingViewModel) {
-        setNavigationBarTitle(with: viewModel.navigationTitle)
         configureView(with: viewModel)
     }
 }
@@ -73,7 +73,7 @@ extension OnboardingViewController: OnboardingViewInput {
 extension OnboardingViewController: ViewConfigurable {
 
     public func configureViews() {
-        view.backgroundColor = .backgroundColor
+        view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
     }

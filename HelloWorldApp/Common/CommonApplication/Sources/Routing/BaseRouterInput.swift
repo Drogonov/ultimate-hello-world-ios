@@ -62,6 +62,8 @@ public protocol BaseRouterInput: AnyObject {
 
     ///
     func presentActionSheet(title: String?, message: String?, actions: [UIAlertAction])
+
+    func openMainTabBarAsFirsNavigationController()
 }
 
 /// Provide default value for parameters
@@ -114,6 +116,7 @@ open class BaseRouter {
     }
 
     var navigationStackService: NavigationStackServiceProtocol? = resolveDependency(NavigationStackServiceProtocol.self, name: "common")
+    var mainTabBarProvider: MainTabBarProviderProtocol? = resolveDependency(MainTabBarProviderProtocol.self)
 
     private var isPushing = false
 
@@ -243,6 +246,14 @@ extension BaseRouter: BaseRouterInput {
             return
         }
         navigationController.popToViewController(rootVC, animated: true)
+    }
+
+    public final func openMainTabBarAsFirsNavigationController() {
+        guard let mainTabController = mainTabBarProvider?.provideMainTabBar() else {
+            return
+        }
+
+        NavigationStackProvider.shared.setNewRootViewController(mainTabController)
     }
 }
 
