@@ -3,6 +3,9 @@ import ProjectDescription
 let project = Project(
     name: "Persistence",
     organizationName: "Smart Lads Software",
+    packages: [
+        .package(url: "https://github.com/realm/realm-swift", from: "10.0.0")
+    ],
     targets: [
         .target(
             name: "Persistence",
@@ -10,7 +13,10 @@ let project = Project(
             product: .framework,
             bundleId: "com.drogonov.HelloWorldApp.Persistence",
             infoPlist: .default,
-            sources: ["Sources/**"]
+            sources: ["Sources/**"],
+            dependencies: [
+                .package(product: "RealmSwift")
+            ]
         ),
         .target(
             name: "PersistenceTests",

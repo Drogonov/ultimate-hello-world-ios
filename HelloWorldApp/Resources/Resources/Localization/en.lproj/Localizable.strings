@@ -34,7 +34,6 @@
 "change" = "Изменить";
 "app_outdated" = "Ваша текущая версия приложения не поддерживается. Необходимо обновить приложение";
 
-
 /*
  HELLOWORLD
  */
@@ -48,3 +47,11 @@
  */
 
 "change_language_title" = "Hello World";
+"change_language_text" = "Hello World";
+
+/*
+ ONBOARDING
+ */
+
+"onboarding_text" = "Here you can see information about our onboarding";
+"onboarding_buttonText" = "Let's Go!";

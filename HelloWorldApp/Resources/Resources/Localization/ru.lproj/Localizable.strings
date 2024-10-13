@@ -48,3 +48,10 @@
 
 "change_language_title" = "Привет Мир";
 "change_language_text" = "Привет Мир";
+
+/*
+ ONBOARDING
+ */
+
+"onboarding_text" = "Здесь информация о нашем онбоардинге";
+"onboarding_buttonText" = "Погнали";

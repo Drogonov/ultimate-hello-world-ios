@@ -19,7 +19,9 @@ public final class ServiceConfigurator: Assembly {
         registerNavigationStackService(in: container)
         registerFatallErrorWithTypeService(in: container)
         registerTypeCheckerService(in: container)
+        registerRealmService(in: container)
         registerSessionCacher(in: container)
+        registerLongCacher(in: container)
         registerNetworkManager(in: container)
         registerModifier(in: container)
         registerBaseURLService(in: container)
@@ -68,6 +70,24 @@ fileprivate extension ServiceConfigurator {
         }
         .implements(CacheProtocol.self, name: CacherType.session)
         .inObjectScope(.container)
+    }
+
+    func registerLongCacher(in container: Container) {
+        container.register(LongCacher.self) { _ in
+            LongCacher()
+        }
+        .initCompleted { resolver, manager in
+            manager.realmService = resolver.resolveSafe(RealmServiceProtocol.self)
+        }
+        .implements(CacheProtocol.self, name: CacherType.long)
+        .inObjectScope(.container)
+    }
+
+    func registerRealmService(in container: Container) {
+        container.register(RealmService.self) { _ in
+            RealmService()
+        }
+        .implements(RealmServiceProtocol.self)
     }
 
     func registerNetworkManager(in container: Container) {

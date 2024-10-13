@@ -12,16 +12,21 @@ import Deeplinks
 import CommonApplication
 import Magic
 import Persistence
+import Resources
 
-protocol Coordinator {
+// MARK: Coordinator
+
+protocol CoordinatorProtocol {
     func start()
 }
 
-class MainCoordinator: Coordinator {
+// MARK: - MainCoordinator
 
-    // Properties
+class MainCoordinator: CoordinatorProtocol {
+
+    // MARK: Properties
+
     private let window: UIWindow
-
     private var mainTabBarProvider: MainTabBarProviderProtocol?
     private var navigationStackService: NavigationStackServiceProtocol?
     private var sessionCache: CacheProtocol?
@@ -37,39 +42,43 @@ class MainCoordinator: Coordinator {
     }
 
     func start() {
-        if shouldShowOnboarding() {
-            showOnboarding()
-        } else {
+        if isUserSawOnboarding() {
             showMainTabBar()
+        } else {
+            showOnboarding()
         }
 
         NavigationStackProvider.shared.navigationStack = window.rootViewController as? UINavigationController
         NavigationStackProvider.shared.set(isNavigationBarHidden: true)
     }
+}
 
-    private func shouldShowOnboarding() -> Bool {
-        self.sessionCache?.read(Bool.self, withKey: CommonCacheKey.isUserSawOnboarding) ?? true
+// MARK: - Private Methods
+
+fileprivate extension MainCoordinator {
+    func isUserSawOnboarding() -> Bool {
+        self.sessionCache?.read(Bool.self, withKey: CommonCacheKey.isUserSawOnboarding) ?? false
     }
 
-    private func showOnboarding() {
+    func showOnboarding() {
         let navController = createOnboardingModule()
         window.rootViewController = navController
-        self.sessionCache?.write(Bool.self, withKey: CommonCacheKey.isUserSawOnboarding)
+        self.sessionCache?.write(true, withKey: CommonCacheKey.isUserSawOnboarding)
     }
 
-    private func showMainTabBar() {
+    func showMainTabBar() {
         if let tabBarController = mainTabBarProvider?.provideMainTabBar() {
             window.rootViewController =  UINavigationController(rootViewController: tabBarController)
         }
     }
 
-    private func createOnboardingModule() -> UINavigationController {
+    func createOnboardingModule() -> UINavigationController {
         let configurator = MVPModuleConfigurator(MagicFlowModuleFactory.onboardingModule())
         let viewController = configurator.getViewController()
         configurator.configure { (input: OnboardingModuleInput?) in
             input?.set(dataStorage: OnboardingDataStorage(
-                onboardingText: "onboardingText",
-                onboardingButtonText: "onboardingButtonText"
+                onboardingText: ResourcesStrings.onboardingText(),
+                onboardingButtonText: ResourcesStrings.onboardingButtonText()
             ))
         }
 

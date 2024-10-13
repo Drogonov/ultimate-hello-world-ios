@@ -7,7 +7,8 @@ let project = Project(
     packages: [
         .package(url: "https://github.com/tristanhimmelman/ObjectMapper", from: "4.2.0"),
         .package(url: "https://github.com/SnapKit/SnapKit", from: "5.7.1"),
-        .package(url: "https://github.com/Swinject/Swinject", from: "2.8.4")
+        .package(url: "https://github.com/Swinject/Swinject", from: "2.8.4"),
+        .package(url: "https://github.com/realm/realm-swift", from: "10.0.0")
     ],
     targets: [
         .target(
@@ -22,6 +23,7 @@ let project = Project(
                 .package(product: "ObjectMapper"),
                 .package(product: "SnapKit"),
                 .package(product: "Swinject"),
+                .package(product: "RealmSwift"),
                 .project(target: "DI", path: "DI"),
                 .project(target: "Resources", path: "Resources"),
                 .project(target: "MasterComponents", path: "MasterComponents"),

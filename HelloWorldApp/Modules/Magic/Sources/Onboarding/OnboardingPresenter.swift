@@ -90,11 +90,3 @@ extension OnboardingPresenter: OnboardingModuleOutput {}
 // MARK: - Private Methods
 
 fileprivate extension OnboardingPresenter {}
-
-// MARK: - Constants
-
-fileprivate extension OnboardingPresenter {
-
-    // delete if not needed
-    // enum Constants {}
-}

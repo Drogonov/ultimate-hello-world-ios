@@ -23,20 +23,26 @@ struct OnboardingView: View {
 
     var body: some View {
         VStack {
+            Spacer()
+
             Text(model.text)
                 .font(TextStyle.body.font)
-                .padding(.vertical, 8)
+                .multilineTextAlignment(.center)
+                .padding(.vertical, MCSpacing.spacingS)
+
+            Spacer()
+
 
             Button {
                 buttonTapped()
             } label: {
                 Text(model.buttonText)
                     .font(TextStyle.body.font)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 16)
+                    .padding(.vertical, MCSpacing.spacingS)
+                    .padding(.horizontal, MCSpacing.spacingL)
                     .background(
                         Rectangle()
-                            .cornerRadius(16)
+                            .cornerRadius(MCSpacing.spacingL)
                             .foregroundColor(.buttonBackgroundColor)
                     )
                     .foregroundColor(.buttonTextColor)
@@ -59,7 +65,8 @@ fileprivate extension OnboardingView {
 struct OnboardingView_Previews: PreviewProvider {
     static var previews: some View {
         let model = OnboardingViewModel()
-        model.text = "Hello World"
+        model.text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
+        model.buttonText = "Hellow World"
 
         return OnboardingView(
             model: model,

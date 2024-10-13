@@ -29,6 +29,11 @@ public struct ResourcesStrings {
     }
 
     /// Hello World
+    public static func changeLanguageText() -> String {
+        tr("Localizable", "change_language_text")
+    }
+
+    /// Hello World
     public static func changeLanguageTitle() -> String {
         tr("Localizable", "change_language_title")
     }
@@ -106,6 +111,16 @@ public struct ResourcesStrings {
     /// оk
     public static func ok() -> String {
         tr("Localizable", "ok")
+    }
+
+    /// Let's Go!
+    public static func onboardingButtonText() -> String {
+        tr("Localizable", "onboarding_buttonText")
+    }
+
+    /// Here you can see information about our onboarding
+    public static func onboardingText() -> String {
+        tr("Localizable", "onboarding_text")
     }
 
     /// Обновить
