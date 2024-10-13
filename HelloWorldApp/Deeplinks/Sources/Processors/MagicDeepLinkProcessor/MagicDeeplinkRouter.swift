@@ -26,6 +26,8 @@ final class MagicDeeplinkRouter: BaseRouter {
 
 extension MagicDeeplinkRouter: MagicDeeplinkRouterProtocol {
     func showMagic(dataStorage: MagicDataStorage, moduleOutput: MagicModuleOutput) {
+        NavigationStackProvider.shared.set(isNavigationBarHidden: false)
+        
         let configurator = MVPModuleConfigurator(MagicFlowModuleFactory.magicModule())
         let viewController = configurator.getViewController()
         configurator.configure { (input: MagicModuleInput?) in

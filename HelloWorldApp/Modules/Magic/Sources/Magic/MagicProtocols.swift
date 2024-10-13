@@ -13,7 +13,9 @@ import CommonApplication
 // MARK: - Module Protocols
 
 // sourcery: AutoMockable
-public protocol MagicModuleOutput: MVPModuleOutputProtocol {}
+public protocol MagicModuleOutput: MVPModuleOutputProtocol {
+    func magicNavigationItemBackAction(_ completion: () -> Void)
+}
 
 // MARK: - View Protocols
 
@@ -29,6 +31,7 @@ protocol MagicPresenterInput: NativeAlertProtocol {
     func viewIsReady()
     func viewWillAppear()
     func viewWillDissapear()
+    func viewNavigationItemBackAction(_ completion: () -> Void)
 
     func getEmptyModel() -> MagicViewModel
 }

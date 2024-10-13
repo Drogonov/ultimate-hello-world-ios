@@ -69,6 +69,10 @@ extension MagicPresenter: MagicPresenterInput {
 
     func viewWillDissapear() {}
 
+    func viewNavigationItemBackAction(_ completion: () -> Void) {
+        moduleOutput?.magicNavigationItemBackAction(completion)
+    }
+
     func getEmptyModel() -> MagicViewModel {
         getMagicResponse = dataStorage?.response
 
@@ -95,10 +99,6 @@ extension MagicPresenter: MagicModuleInput {
         self.dataStorage = dataStorage
     }
 }
-
-// MARK: - MagicModuleOutput
-
-extension MagicPresenter: MagicModuleOutput {}
 
 // MARK: - Private Methods
 

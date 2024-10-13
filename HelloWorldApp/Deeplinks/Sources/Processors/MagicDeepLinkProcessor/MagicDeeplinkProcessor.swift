@@ -41,7 +41,12 @@ extension MagicDeeplinkProcessor: DeeplinkProcessorProtocol {
 
 // MARK: - MagicModuleOutput
 
-extension MagicDeeplinkProcessor: MagicModuleOutput {}
+extension MagicDeeplinkProcessor: MagicModuleOutput {
+    func magicNavigationItemBackAction(_ completion: () -> Void) {
+        NavigationStackProvider.shared.set(isNavigationBarHidden: true)
+        completion()
+    }
+}
 
 // MARK: - Handle Deeplink
 

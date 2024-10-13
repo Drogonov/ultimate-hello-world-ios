@@ -36,10 +36,10 @@ final class MagicViewController: UIViewController, MVPModuleProtocol, BaseViewCo
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // # TODO: Move logic with NavigationStackProvider to Deeplink Processor via moduleOutput
         navigationItem.backAction = UIAction { _ in
-            NavigationStackProvider.shared.set(isNavigationBarHidden: true)
-            self.navigationController?.popViewController(animated: true)
+            self.presenter.viewNavigationItemBackAction {
+                self.navigationController?.popViewController(animated: true)
+            }
         }
 
         configure()
@@ -49,7 +49,6 @@ final class MagicViewController: UIViewController, MVPModuleProtocol, BaseViewCo
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        NavigationStackProvider.shared.set(isNavigationBarHidden: false)
         presenter.viewWillAppear()
     }
 
