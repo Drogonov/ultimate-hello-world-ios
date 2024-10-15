@@ -6,6 +6,7 @@
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.
 
 import ServicesMocks
+import Common
 @testable import MagicMocks
 @testable import Magic
 import XCTest
@@ -103,5 +104,16 @@ extension MagicPresenterTests {
 
         // then
         XCTAssertNotNil(result)
+    }
+
+    func testViewNavigationItemBackAction() {
+        // given
+        // ...
+
+        // when
+        presenter.viewNavigationItemBackAction {}
+
+        // then
+        XCTAssertTrue(true)
     }
 }

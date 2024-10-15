@@ -1,5 +1,5 @@
 //
-//  FatalErrorWithTypeService.swift
+//  FatalErrorWithTypeProvider.swift
 //  CommonNet
 //
 //  Created by Anton Vlezko on 20/05/2024.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - FatalErrorWithTypeServiceProtocol
+// MARK: - FatalErrorWithTypeProviderProtocol
 
-public protocol FatalErrorWithTypeServiceProtocol: AnyObject {
+protocol FatalErrorWithTypeProviderProtocol: AnyObject {
     func fatalErrorWithType(
         _ message: @autoclosure () -> String,
         file: StaticString,
@@ -19,7 +19,9 @@ public protocol FatalErrorWithTypeServiceProtocol: AnyObject {
 
 // MARK: - Service
 
-public class FatalErrorWithTypeService {
+public class FatalErrorWithTypeProvider {
+
+    static public let shared = FatalErrorWithTypeProvider()
 
     // MARK: Properties
 
@@ -31,12 +33,12 @@ public class FatalErrorWithTypeService {
 
     // MARK: Construction
 
-    public init() {}
+    private init() {}
 }
 
-// MARK: - FatalErrorWithTypeServiceProtocol
+// MARK: - FatalErrorWithTypeProviderProtocol
 
-extension FatalErrorWithTypeService: FatalErrorWithTypeServiceProtocol {
+extension FatalErrorWithTypeProvider: FatalErrorWithTypeProviderProtocol {
     public func fatalErrorWithType(
         _ message: @autoclosure () -> String = "",
         file: StaticString = #file,

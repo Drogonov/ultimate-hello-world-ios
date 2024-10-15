@@ -9,6 +9,7 @@ import UIKit
 
 public class NavigationStackProvider {
     static public let shared = NavigationStackProvider()
+
     public var navigationStack: UINavigationController?
 
     private init() {}
@@ -31,7 +32,6 @@ public class NavigationStackProvider {
             self.navigationStack = newNavigationStack
         }
     }
-
 }
 
 // # TODO: Implement service instead of singltone

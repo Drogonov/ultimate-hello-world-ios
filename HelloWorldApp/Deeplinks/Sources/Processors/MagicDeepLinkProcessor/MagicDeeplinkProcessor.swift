@@ -9,6 +9,7 @@ import Foundation
 import CommonApplication
 import MasterComponents
 import CommonNet
+import Common
 import Magic
 
 final class MagicDeeplinkProcessor: NativeAlertProtocol {
@@ -42,9 +43,9 @@ extension MagicDeeplinkProcessor: DeeplinkProcessorProtocol {
 // MARK: - MagicModuleOutput
 
 extension MagicDeeplinkProcessor: MagicModuleOutput {
-    func magicNavigationItemBackAction(_ completion: () -> Void) {
+    func magicNavigationItemBackAction(_ completion: VoidBlock?) {
         NavigationStackProvider.shared.set(isNavigationBarHidden: true)
-        completion()
+        completion?()
     }
 }
 

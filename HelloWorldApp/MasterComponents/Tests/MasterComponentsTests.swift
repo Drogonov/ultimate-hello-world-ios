@@ -6,7 +6,7 @@
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.
 
 import XCTest
-@testable import Services
+@testable import MasterComponents
 
 final class MasterComponentsTests: XCTestCase {
 

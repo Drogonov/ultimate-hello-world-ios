@@ -17,6 +17,9 @@
          location = "group:CommonNet/CommonNet.xcodeproj">
       </FileRef>
       <FileRef
+         location = "group:CommonTest/CommonTest.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:CommonUI/CommonUI.xcodeproj">
       </FileRef>
    </Group>

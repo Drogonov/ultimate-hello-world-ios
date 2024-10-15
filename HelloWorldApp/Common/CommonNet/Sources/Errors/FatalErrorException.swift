@@ -6,14 +6,9 @@
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.
 
 import Foundation
-import DI
 
 /// A fatal error exception which should completely halt the application execution.
 open class FatalErrorException: NSException {
-
-    // MARK: Properties
-
-    var typeCheckerService = dependencyResolver().resolveSafe(TypeCheckerServiceProtocol.self)
 
     // MARK: Construction
     
@@ -29,7 +24,7 @@ open class FatalErrorException: NSException {
     ) {
         super.init(
             name: NSExceptionName(
-                rawValue: typeCheckerService.typeName(
+                rawValue: TypeCheckerProvider.shared.typeName(
                     of: FatalErrorException.self
                 )
             ),

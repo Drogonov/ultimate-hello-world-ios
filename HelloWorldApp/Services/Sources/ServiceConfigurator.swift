@@ -17,8 +17,6 @@ public final class ServiceConfigurator: Assembly {
 
     public func assemble(container: Container) {
         registerNavigationStackService(in: container)
-        registerFatallErrorWithTypeService(in: container)
-        registerTypeCheckerService(in: container)
         registerRealmService(in: container)
         registerSessionCacher(in: container)
         registerLongCacher(in: container)
@@ -48,20 +46,6 @@ fileprivate extension ServiceConfigurator {
             LanguageChangeService()
         }
         .implements(LanguageChangeServiceProtocol.self)
-    }
-
-    func registerTypeCheckerService(in container: Container) {
-        container.register(TypeCheckerServiceProtocol.self) { _ in
-            TypeCheckerService()
-        }
-        .implements(TypeCheckerServiceProtocol.self)
-    }
-
-    func registerFatallErrorWithTypeService(in container: Container) {
-        container.register(FatalErrorWithTypeServiceProtocol.self) { _ in
-            FatalErrorWithTypeService()
-        }
-        .implements(FatalErrorWithTypeServiceProtocol.self)
     }
 
     func registerSessionCacher(in container: Container) {

@@ -18,7 +18,9 @@ let project = Project(
                 .package(product: "Swinject"),
                 .project(target: "Services", path: "../../Services"),
                 .project(target: "Resources", path: "../../Resources"),
-                .project(target: "Net", path: "../../Net")
+                .project(target: "Net", path: "../../Net"),
+                .project(target: "CommonApplication", path: "../../Common/CommonApplication"),
+                .project(target: "Common", path: "../../Common/Common"),
             ]
         ),
         .target(
@@ -39,7 +41,8 @@ let project = Project(
             ],
             dependencies: [
                 .target(name: "Magic"),
-                .target(name: "MagicMocks")
+                .target(name: "MagicMocks"),
+                .project(target: "CommonTest", path: "../../Common/CommonTest"),
             ]
         ),
         .target(
@@ -50,7 +53,9 @@ let project = Project(
             infoPlist: .default,
             sources: ["Mocks/**"],
             dependencies: [
-                .target(name: "Magic")
+                .target(name: "Magic"),
+                .project(target: "CommonApplication", path: "../../Common/CommonApplication"),
+                .project(target: "Common", path: "../../Common/Common"),
             ]
         )
     ]

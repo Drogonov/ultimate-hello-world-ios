@@ -15,7 +15,9 @@ let project = Project(
             infoPlist: .default,
             sources: ["Sources/**"],
             dependencies: [
-                .package(product: "RealmSwift")
+                .package(product: "RealmSwift"),
+                .project(target: "CommonNet", path: "../Common/CommonNet"),
+                .project(target: "DI", path: "../DI"),
             ]
         ),
         .target(

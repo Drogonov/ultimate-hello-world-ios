@@ -69,7 +69,7 @@ extension MagicPresenter: MagicPresenterInput {
 
     func viewWillDissapear() {}
 
-    func viewNavigationItemBackAction(_ completion: () -> Void) {
+    func viewNavigationItemBackAction(_ completion: VoidBlock?) {
         moduleOutput?.magicNavigationItemBackAction(completion)
     }
 

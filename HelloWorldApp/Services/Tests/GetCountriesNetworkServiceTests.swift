@@ -10,6 +10,8 @@ import PersistenceMocks
 @testable import ServicesMocks
 @testable import Services
 import XCTest
+import CommonNet
+import CommonTest
 
 // sourcery: AutoTestsMultiple
 class GetCountriesNetworkServiceTests: XCTestCase {
@@ -49,16 +51,19 @@ class GetCountriesNetworkServiceTests: XCTestCase {
 
 extension GetCountriesNetworkServiceTests {
 
-    func testGetCountriesData() {
+    func testGetCountriesData() async {
         // given
-        // # TODO: add functionality to load objects from JSONs
-//        let request =
+        let response = loadObjectFromJson(GetCountriesResponseMo.self, filename: "getCountriesService_success")
+
         let forceRequest = true
+        let request: GetCountriesRequestMo = .init(languageCode: "en")
+
+        api.getCountriesDataRequestGetCountriesRequestMoGetCountriesResponseMoReturnValue = response
 
         // when
-//        let result = service.getCountriesData(request: request, forceRequest: forceRequest)
+        let result = try? await service.getCountriesData(request: request, forceRequest: forceRequest)
 
         // then
-        XCTAssertTrue(true)
+        XCTAssertNotNil(result)
     }
 }

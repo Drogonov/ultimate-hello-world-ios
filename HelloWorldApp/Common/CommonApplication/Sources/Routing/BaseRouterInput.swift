@@ -102,6 +102,10 @@ public extension BaseRouterInput {
     func presentActionSheet(title: String? = nil, message: String? = nil, actions: [UIAlertAction]) {
         presentActionSheet(title: title, message: message, actions: actions)
     }
+
+    func openMainTabBarAsFirsNavigationController() {
+        openMainTabBarAsFirsNavigationController()
+    }
 }
 
 // MARK: - BaseRouter

@@ -1,5 +1,5 @@
 //
-//  TypeCheckerService.swift
+//  TypeCheckerProvider.swift
 //  CommonNet
 //
 //  Created by Anton Vlezko on 20/05/2024.
@@ -8,27 +8,28 @@
 import Foundation
 import DI
 
-public protocol TypeCheckerServiceProtocol {
+protocol TypeCheckerProviderProtocol {
     func typeName(of subject: Any) -> String
     func reflect(_ type: Any.Type) -> ReflectedType
 }
 
-// MARK: - TypeCheckerService
+// MARK: - TypeCheckerProvider
 
-public class TypeCheckerService {
+public class TypeCheckerProvider {
 
     // MARK: - Properties
 
-    var fatalErrorWithTypeService = dependencyResolver().resolveSafe(FatalErrorWithTypeServiceProtocol.self)
+    static public let shared = TypeCheckerProvider()
+    let fatalErrorWithTypeProvider = FatalErrorWithTypeProvider.shared
 
     // MARK: Construction
 
-    public init() {}
+    private init() {}
 }
 
-// MARK: - TypeCheckerProtocol
+// MARK: - TypeCheckerProviderProtocol
 
-extension TypeCheckerService: TypeCheckerServiceProtocol {
+extension TypeCheckerProvider: TypeCheckerProviderProtocol {
     public func typeName(of subject: Any) -> String {
         let type = (subject is Any.Type) ? subject : Swift.type(of: subject)
 
@@ -61,7 +62,7 @@ extension TypeCheckerService: TypeCheckerServiceProtocol {
 
 // MARK: - Private Methods
 
-fileprivate extension TypeCheckerService {
+fileprivate extension TypeCheckerProvider {
     func split(fullName: String, maxDepth: UInt = UInt.max) -> MetatypeNode {
         var wrappedName = Substring(fullName)
         var names = [String]()
@@ -112,7 +113,7 @@ fileprivate extension TypeCheckerService {
             } else if let range = value.range(of: "<T>") {
                 canonicalName = value.replacingCharacters(in: range, with: "<\(canonicalName)>")
             } else {
-                fatalErrorWithTypeService.fatalErrorWithType(
+                fatalErrorWithTypeProvider.fatalErrorWithType(
                     "Invalid state. Value ‘\(value)’ does not contains placeholder ‘<T>’.",
                     file: #file,
                     line: #line
@@ -145,7 +146,7 @@ fileprivate extension TypeCheckerService {
 
 // MARK: - Inner Types
 
-fileprivate extension TypeCheckerService {
+fileprivate extension TypeCheckerProvider {
     
     class MetatypeNode {
 
@@ -169,7 +170,7 @@ fileprivate extension TypeCheckerService {
 
 // MARK: - Constants
 
-fileprivate extension TypeCheckerService {
+fileprivate extension TypeCheckerProvider {
     enum Constants {
        static let prefixImplicitlyUnwrappedOptionals = [
            "Swift.ImplicitlyUnwrappedOptionals<",

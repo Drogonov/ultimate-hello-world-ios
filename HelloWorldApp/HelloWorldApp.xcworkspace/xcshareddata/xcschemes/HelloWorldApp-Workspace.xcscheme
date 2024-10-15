@@ -84,6 +84,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5549A002513C4861774FC71F"
+               BuildableName = "CommonTest.framework"
+               BlueprintName = "CommonTest"
+               ReferencedContainer = "container:Common/CommonTest/CommonTest.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "CFD7DEB690E20277121FAD5C"
                BuildableName = "CommonUI.framework"
                BlueprintName = "CommonUI"

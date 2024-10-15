@@ -32,7 +32,7 @@ let project = Project(
             bundleId: "com.drogonov.HelloWorldApp.ServicesTests",
             infoPlist: .default,
             sources: ["Tests/**"],
-            resources: [],
+            resources: ["Resources/**"],
             scripts: [
                 .pre(
                     path: "./Tests/Sourcery/sourcery.sh",
@@ -43,7 +43,8 @@ let project = Project(
             ],
             dependencies: [
                 .target(name: "Services"),
-                .target(name: "ServicesMocks")
+                .target(name: "ServicesMocks"),
+                .project(target: "CommonTest", path: "../Common/CommonTest"),
             ]
         ),
         .target(

@@ -6,4 +6,4 @@ output:
   path: ../../Mocks/AutoMockable.generated.swift
 args:
   autoMockableTestableImports: ["Magic"]
-  autoMockableImports: ["CommonApplicationMocks", "CommonApplication"]
+  autoMockableImports: ["CommonApplicationMocks", "CommonApplication", "Common"]

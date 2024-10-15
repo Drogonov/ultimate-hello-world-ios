@@ -6,17 +6,12 @@
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.
 
 import Foundation
-import DI
 
 public final class TopLayerError: Error, CustomStringConvertible, CustomDebugStringConvertible {
 
     // MARK: Properties
 
     public let error: ErrorResponseMo
-
-    // MARK: Private Properties
-
-    private var typeCheckerService = dependencyResolver().resolveSafe(TypeCheckerServiceProtocol.self)
 
     // MARK: Computed Properties
 
@@ -49,6 +44,6 @@ public final class TopLayerError: Error, CustomStringConvertible, CustomDebugStr
 
 fileprivate extension TopLayerError {
     func getDescription() -> String {
-        typeCheckerService.typeName(of: self)
+        TypeCheckerProvider.shared.typeName(of: self)
     }
 }

@@ -19,7 +19,8 @@ let project = Project(
                 .project(target: "Services", path: "../../Services"),
                 .project(target: "Resources", path: "../../Resources"),
                 .project(target: "Net", path: "../../Net"),
-                .project(target: "Deeplinks", path: "../../Deeplinks")
+                .project(target: "Deeplinks", path: "../../Deeplinks"),
+                .project(target: "DI", path: "../../DI")
             ]
         ),
         .target(
@@ -40,7 +41,8 @@ let project = Project(
             ],
             dependencies: [
                 .target(name: "HelloWorld"),
-                .target(name: "HelloWorldMocks")
+                .target(name: "HelloWorldMocks"),
+                .project(target: "CommonTest", path: "../../Common/CommonTest"),
             ]
         ),
         .target(

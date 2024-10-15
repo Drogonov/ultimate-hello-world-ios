@@ -9,12 +9,13 @@ import Foundation
 import DI
 import MasterComponents
 import CommonApplication
+import Common
 
 // MARK: - Module Protocols
 
 // sourcery: AutoMockable
 public protocol MagicModuleOutput: MVPModuleOutputProtocol {
-    func magicNavigationItemBackAction(_ completion: () -> Void)
+    func magicNavigationItemBackAction(_ completion: VoidBlock?)
 }
 
 // MARK: - View Protocols
@@ -31,7 +32,7 @@ protocol MagicPresenterInput: NativeAlertProtocol {
     func viewIsReady()
     func viewWillAppear()
     func viewWillDissapear()
-    func viewNavigationItemBackAction(_ completion: () -> Void)
+    func viewNavigationItemBackAction(_ completion: VoidBlock?)
 
     func getEmptyModel() -> MagicViewModel
 }

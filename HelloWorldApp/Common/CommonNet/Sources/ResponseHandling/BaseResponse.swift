@@ -7,7 +7,6 @@
 
 import Foundation
 import ObjectMapper
-import DI
 
 /// The abstract base class for data models.
 open class BaseResponse: EquatableHashableModel, ImmutableMappable {
@@ -19,11 +18,6 @@ open class BaseResponse: EquatableHashableModel, ImmutableMappable {
     public static var typeName: String {
         return String(describing: self)
     }
-
-    // MARK: Private Properties
-
-    private var typeCheckerService = dependencyResolver().resolveSafe(TypeCheckerServiceProtocol.self)
-    private var fatalErrorWithTypeService = dependencyResolver().resolveSafe(FatalErrorWithTypeServiceProtocol.self)
 
     // MARK: Construction
 
@@ -71,8 +65,8 @@ open class BaseResponse: EquatableHashableModel, ImmutableMappable {
             let object = try typeOfT.init(JSON: json)
             return forceCast(object, to: typeOfT)
         } catch {
-            let className = typeCheckerService.reflect(typeOfT).fullName
-            fatalErrorWithTypeService.fatalErrorWithType(
+            let className = TypeCheckerProvider.shared.reflect(typeOfT).fullName
+            FatalErrorWithTypeProvider.shared.fatalErrorWithType(
                 "Couldn't clone object ‘\(String(describing: className))’",
                 file: #file,
                 line: #line
