@@ -44,8 +44,6 @@ class GetCountriesNetworkServiceTests: XCTestCase {
     }
 // sourcery:end
 }
-// sourcery:inline:GetCountriesNetworkServiceTests.TestsImpTemplate
-// sourcery:end
 
 // MARK: - GetCountriesNetworkServiceProtocol
 
@@ -67,3 +65,6 @@ extension GetCountriesNetworkServiceTests {
         XCTAssertNotNil(result)
     }
 }
+
+// sourcery:inline:GetCountriesNetworkServiceTests.TestsImpTemplate
+// sourcery:end

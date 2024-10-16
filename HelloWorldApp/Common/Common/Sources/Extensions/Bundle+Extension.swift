@@ -17,7 +17,6 @@ import Foundation
 /// https://blog.devgenius.io/how-to-force-change-app-language-programmatically-without-breaking-your-app-1c73be9608e0
 
 var _bundle: UInt8 = 0
-var _frameworkBundle: UInt8 = 0
 
 private class BundleEx: Bundle, @unchecked Sendable {
     override func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
@@ -32,7 +31,7 @@ private class BundleEx: Bundle, @unchecked Sendable {
 }
 
 // # TODO: Rewrite bundle id to save language safe
-/// It is not the best way to do it try to rewrite code later.Becouse Resources target can have other names
+/// It is not the best way to do it try to rewrite code later.Because Resources target can have other names
 public extension Bundle {
     class func setLanguage(_ language: String?) {
         let oneToken: String = Bundle.main.bundleIdentifier ?? "com.drogonov.HelloWorldApp"

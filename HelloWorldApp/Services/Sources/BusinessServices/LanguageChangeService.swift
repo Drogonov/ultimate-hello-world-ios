@@ -7,6 +7,7 @@
 
 import Foundation
 import Common
+import CommonNet
 
 // sourcery: AutoMockable
 public protocol LanguageChangeServiceProtocol {
