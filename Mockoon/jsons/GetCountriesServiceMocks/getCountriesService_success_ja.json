@@ -1,0 +1,26 @@
+{
+    "title": "国の変更",
+    "countries": [
+        {
+            "name": "イングランド",
+            "languageName": "英語",
+            "languageCode": "en",
+            "emoji": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+            "isCurrent": false
+        },
+        {
+            "name": "ロシア",
+            "languageName": "ロシア語",
+            "languageCode": "ru",
+            "emoji": "🇷🇺",
+            "isCurrent": false
+        },
+        {
+            "name": "日本",
+            "languageName": "日本語",
+            "languageCode": "ja",
+            "emoji": "🇯🇵",
+            "isCurrent": true
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 {
     "errorResponseMo": {
-        "errorMsg": "Неправильный код страны",
+        "errorMsg": "Country code isnt valid",
         "errorCode": "BUSINESS_ERROR",
         "errorSubCode": "INCORRECT_COUNTRY_CODE",
         "errorFields": []

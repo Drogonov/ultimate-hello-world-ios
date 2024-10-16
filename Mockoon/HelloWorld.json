@@ -23,14 +23,76 @@
           "label": "",
           "headers": [],
           "bodyType": "FILE",
-          "filePath": "jsons/GetHelloServiceMocks/getHelloService_success.json",
+          "filePath": "jsons/GetHelloServiceMocks/getHelloService_success_en.json",
           "databucketID": "",
           "sendFileAsBody": true,
-          "rules": [],
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "en",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "b222ded2-9221-4d03-8a61-77b2c17d7569",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetHelloServiceMocks/getHelloService_success_ru.json",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ru",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "dc6cc6d3-ae41-47b0-acf1-6a7a30abd911",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetHelloServiceMocks/getHelloService_success_ja.json",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ja",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
           "crudKey": "id",
           "callbacks": []
         },
@@ -41,12 +103,34 @@
           "statusCode": 403,
           "label": "",
           "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
+          "bodyType": "FILE",
+          "filePath": "jsons/CommonErrors/UNKNOWN_ERROR.json",
           "databucketID": "",
           "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ru",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "en",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ja",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": false,
@@ -71,10 +155,18 @@
           "label": "",
           "headers": [],
           "bodyType": "FILE",
-          "filePath": "jsons/GetCountriesServiceMocks/getCountriesService_success.json",
+          "filePath": "jsons/GetCountriesServiceMocks/getCountriesService_success_en.json",
           "databucketID": "",
           "sendFileAsBody": true,
-          "rules": [],
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "en",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
@@ -84,16 +176,51 @@
         },
         {
           "uuid": "8c75c9cf-38b3-44f4-a7af-dc8cc34ff65f",
-          "body": "{\n    \"title\": \"Change Countries\",\n    \"countries\": [\n        {\n            \"name\": \"England\",\n            \"languageName\": \"english\",\n            \"languageCode\": \"en\",\n            \"emoji\": \"🏴󠁧󠁢󠁥󠁮󠁧󠁿\",\n            \"isCurrent\": true\n        },\n        {\n            \"name\": \"Russia\",\n            \"languageName\": \"russian\",\n            \"languageCode\": \"ru\",\n            \"emoji\": \"🇷🇺\",\n            \"isCurrent\": false\n        },\n        {\n            \"name\": \"Japan\",\n            \"languageName\": \"japanies\",\n            \"languageCode\": \"jp\",\n            \"emoji\": \"🇯🇵\",\n            \"isCurrent\": false\n        }\n    ]\n}\n",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "",
           "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
+          "bodyType": "FILE",
+          "filePath": "jsons/GetCountriesServiceMocks/getCountriesService_success_ru.json",
           "databucketID": "",
           "sendFileAsBody": false,
-          "rules": [],
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ru",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "756fbf44-d58b-4456-9bb4-9cf012f2b74c",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetCountriesServiceMocks/getCountriesService_success_ja.json",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ja",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
@@ -102,7 +229,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": null
     },
     {
       "uuid": "1571c615-0ae4-436d-af03-f3c0ce5916f8",
@@ -119,14 +246,76 @@
           "label": "",
           "headers": [],
           "bodyType": "FILE",
-          "filePath": "jsons/GetMoreInfoServiceMocks/getMoreInfoService_success.json",
+          "filePath": "jsons/GetMoreInfoServiceMocks/getMoreInfoService_success_en.json",
           "databucketID": "",
           "sendFileAsBody": true,
-          "rules": [],
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "en",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "c47cc2d3-3688-4f33-85d9-5c519195d257",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetMoreInfoServiceMocks/getMoreInfoService_success_ru.json",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ru",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "32d071a3-c7b9-4e83-8115-8365556a90cb",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetMoreInfoServiceMocks/getMoreInfoService_success_ja.json",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ja",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
           "crudKey": "id",
           "callbacks": []
         }
@@ -148,14 +337,117 @@
           "label": "",
           "headers": [],
           "bodyType": "FILE",
-          "filePath": "jsons/GetMagicServiceMocks/getMagicService_success.json",
+          "filePath": "jsons/GetMagicServiceMocks/getMagicService_success_en.json",
           "databucketID": "",
           "sendFileAsBody": true,
-          "rules": [],
-          "rulesOperator": "OR",
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "en",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "518bff3c-fb5c-4239-ad5e-465b46ec8699",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetMagicServiceMocks/getMagicService_success_ru.json",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ru",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "69338151-e061-4442-bbe9-2ee28fa270bb",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/GetMagicServiceMocks/getMagicService_success_ja.json",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ja",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "49aa27a8-fb98-46f7-8b13-41feb6170910",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "jsons/CommonErrors/UNKNOWN_ERROR.json",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ru",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "ja",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "languageCode",
+              "value": "en",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
           "crudKey": "id",
           "callbacks": []
         }

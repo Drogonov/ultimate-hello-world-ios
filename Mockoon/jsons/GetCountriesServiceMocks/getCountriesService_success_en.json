@@ -6,19 +6,19 @@
             "languageName": "english",
             "languageCode": "en",
             "emoji": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-            "isCurrent": false
+            "isCurrent": true
         },
         {
             "name": "Russia",
             "languageName": "russian",
             "languageCode": "ru",
             "emoji": "🇷🇺",
-            "isCurrent": true
+            "isCurrent": false
         },
         {
             "name": "Japan",
             "languageName": "japanies",
-            "languageCode": "jp",
+            "languageCode": "ja",
             "emoji": "🇯🇵",
             "isCurrent": false
         }

@@ -15,13 +15,19 @@ import Foundation
 public enum Language: String {
     case english = "en"
     case russian = "ru"
+    case japanese = "ja"
 
     static func map(value: String) -> Self {
         switch value {
         case Language.english.rawValue:
             return .english
+
         case Language.russian.rawValue:
             return .russian
+
+        case Language.japanese.rawValue:
+            return .japanese
+            
         default:
             return .english
         }

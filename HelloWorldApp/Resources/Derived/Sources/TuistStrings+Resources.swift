@@ -9,37 +9,37 @@ import Common
 // swiftlint:disable explicit_type_interface identifier_name line_length nesting type_body_length type_name
 public struct ResourcesStrings {
 
-    /// Ваша текущая версия приложения не поддерживается. Необходимо обновить приложение
+    /// Your current version of the application is not supported. The application needs to be updated
     public static func appOutdated() -> String {
         tr("Localizable", "app_outdated")
     }
 
-    /// Внимание!
+    /// Attention!
     public static func attention() -> String {
         tr("Localizable", "attention")
     }
 
-    /// Отмена
+    /// Cancel
     public static func cancel() -> String {
         tr("Localizable", "cancel")
     }
 
-    /// Изменить
+    /// Change
     public static func change() -> String {
         tr("Localizable", "change")
     }
 
-    /// Hello World
+    /// Change Language
     public static func changeLanguageText() -> String {
         tr("Localizable", "change_language_text")
     }
 
-    /// Hello World
+    /// Change Language
     public static func changeLanguageTitle() -> String {
         tr("Localizable", "change_language_title")
     }
 
-    /// Понятно
+    /// Clear
     public static func clear() -> String {
         tr("Localizable", "clear")
     }
@@ -49,12 +49,12 @@ public struct ResourcesStrings {
         tr("Localizable", "error_convertation",p1)
     }
 
-    /// Failed to convert response from %@ to JSON in total. Get nil at the end of conversion
+    /// Failed to convert response from %@ to JSON completely. Received nil at the end of conversion
     public static func errorConvertationNil(_ p1: String) -> String {
         tr("Localizable", "error_convertation_nil",p1)
     }
 
-    /// Request %@ respond with empty data
+    /// Request %@ responded with empty data
     public static func errorEmptyData(_ p1: String) -> String {
         tr("Localizable", "error_empty_data",p1)
     }
@@ -64,17 +64,17 @@ public struct ResourcesStrings {
         tr("Localizable", "error_serialization")
     }
 
-    /// %@\n\nКод ошибки: %@
+    /// %@\n\nError Code: %@
     public static func errorWithTraceId(_ p1: String, _ p2: String) -> String {
         tr("Localizable", "error_with_trace_id",p1, p2)
     }
 
-    /// Функциональность недоступна
+    /// Functionality is unavailable
     public static func forbiddenErrorDefaultMessage() -> String {
         tr("Localizable", "forbidden_error_default_message")
     }
 
-    /// Функциональность недоступна
+    /// Functionality is unavailable
     public static func functionalityUnavailable() -> String {
         tr("Localizable", "functionality_unavailable")
     }
@@ -94,22 +94,27 @@ public struct ResourcesStrings {
         tr("Localizable", "hello_world_title")
     }
 
-    /// Интернет недоступен
+    /// Internet is unavailable
     public static func internetNotAvailable() -> String {
         tr("Localizable", "internet_not_available")
     }
 
-    /// Подключитесь к другой сети, проверьте интернет и повторите попытку
+    /// Connect to another network, check the internet and try again
     public static func internetNotAvailableMessage() -> String {
         tr("Localizable", "internet_not_available_message")
     }
 
-    /// Проблема с подключением к интернету
+    /// Internet Connection Issue
     public static func internetNotAvailableTitle() -> String {
         tr("Localizable", "internet_not_available_title")
     }
 
-    /// оk
+    /// Tap to see error alert 🏴‍☠️
+    public static func magicButtonText() -> String {
+        tr("Localizable", "magic_button_text")
+    }
+
+    /// Ok
     public static func ok() -> String {
         tr("Localizable", "ok")
     }
@@ -124,27 +129,27 @@ public struct ResourcesStrings {
         tr("Localizable", "onboarding_text")
     }
 
-    /// Обновить
+    /// Refresh
     public static func refresh() -> String {
         tr("Localizable", "refresh")
     }
 
-    /// Извините, произошла ошибка выполнения запроса, попробуйте повторить действие позже
+    /// Sorry, a request error occurred, please try again later
     public static func serverInaccessible() -> String {
         tr("Localizable", "server_inaccessible")
     }
 
-    /// Перезагрузите его и повторите попытку входа позже
+    /// Reload it and try logging in later
     public static func serverInaccessibleMessage() -> String {
         tr("Localizable", "server_inaccessible_message")
     }
 
-    /// Приложение временно недоступно
+    /// Application is temporarily unavailable
     public static func serverInaccessibleTitle() -> String {
         tr("Localizable", "server_inaccessible_title")
     }
 
-    /// Функциональность временно недоступна
+    /// Functionality is temporarily unavailable
     public static func unknownError() -> String {
         tr("Localizable", "unknown_error")
     }

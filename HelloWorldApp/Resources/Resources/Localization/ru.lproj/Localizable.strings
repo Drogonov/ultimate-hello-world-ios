@@ -50,6 +50,12 @@
 "change_language_text" = "Привет Мир";
 
 /*
+ MAGIC
+ */
+
+"magic_button_text" = "Tap to see error alert 🇷🇺";
+
+/*
  ONBOARDING
  */
 

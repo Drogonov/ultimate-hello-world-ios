@@ -21,35 +21,49 @@ struct MoreInfoView: View {
 
     var body: some View {
         ScrollView {
-            VStack {
-                AsyncImage(url: model.imageUrl) { image in
-                    image.resizable()
-                        .frame(width: 200, height: 200)
-                        .clipped()
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: 200, height: 200)
+            VStack(alignment: .leading) {
+
+                HStack {
+                    Spacer()
+
+                    AsyncImage(url: model.imageUrl) { image in
+                        image.resizable()
+                            .frame(width: 200, height: 200)
+                            .clipped()
+                    } placeholder: {
+                        ProgressView()
+                            .frame(width: .infinity, height: 200)
+                    }
+                    .cornerRadius(16)
+                    .padding(.vertical, 8)
+
+
+                    Spacer()
                 }
-                .cornerRadius(16)
-                .padding(.vertical, 8)
 
                 Text(model.text)
                     .font(TextStyle.body.font)
                     .padding(.vertical, 8)
 
-                Button {
-                    buttonTapped()
-                } label: {
-                    Text(model.buttonTitle)
-                        .font(TextStyle.body.font)
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 16)
-                        .background(
-                            Rectangle()
-                                .cornerRadius(16)
-                                .foregroundColor(.buttonBackgroundColor)
-                        )
-                        .foregroundColor(.buttonTextColor)
+                HStack {
+                    Spacer()
+
+                    Button {
+                        buttonTapped()
+                    } label: {
+                        Text(model.buttonTitle)
+                            .font(TextStyle.body.font)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .background(
+                                Rectangle()
+                                    .cornerRadius(16)
+                                    .foregroundColor(.buttonBackgroundColor)
+                            )
+                            .foregroundColor(.buttonTextColor)
+                    }
+
+                    Spacer()
                 }
             }
             .padding()

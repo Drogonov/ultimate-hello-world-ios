@@ -34,6 +34,8 @@ protocol MagicPresenterInput: NativeAlertProtocol {
     func viewWillDissapear()
     func viewNavigationItemBackAction(_ completion: VoidBlock?)
 
+    func viewButtonTapped()
+
     func getEmptyModel() -> MagicViewModel
 }
 

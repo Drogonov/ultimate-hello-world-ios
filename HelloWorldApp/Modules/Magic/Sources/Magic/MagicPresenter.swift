@@ -14,6 +14,7 @@ import Services
 import Net
 import CommonApplication
 import CommonNet
+import Resources
 
 // MARK: - MagicPresenter
 
@@ -73,6 +74,20 @@ extension MagicPresenter: MagicPresenterInput {
         moduleOutput?.magicNavigationItemBackAction(completion)
     }
 
+    func viewButtonTapped() {
+        // showing error alert
+        let request = GetMagicRequestMo(languageCode: "error")
+
+        Task {
+            do {
+                let response = try await getMagicNetworkService?.getMagicData(request: request, forceRequest: false)
+                handleSuccess(response: response)
+            } catch {
+                handleFailure(error: error.getTopLayerErrorResponse())
+            }
+        }
+    }
+
     func getEmptyModel() -> MagicViewModel {
         getMagicResponse = dataStorage?.response
 
@@ -128,7 +143,15 @@ fileprivate extension MagicPresenter {
             message: error.errorMsg
         )
 
-        let viewModel = NativeAlertViewModel(body: body)
+        let buttons = NativeAlertViewModel.Buttons(
+            firstTitle: ResourcesStrings.ok(),
+            firstAction: {}
+        )
+
+        let viewModel = NativeAlertViewModel(
+            body: body,
+            buttons: buttons
+        )
 
         showNativeAlert(viewModel: viewModel)
     }

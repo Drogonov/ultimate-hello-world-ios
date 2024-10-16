@@ -147,7 +147,15 @@ fileprivate extension MoreInfoPresenter {
             message: error.errorMsg
         )
 
-        let viewModel = NativeAlertViewModel(body: body)
+        let buttons = NativeAlertViewModel.Buttons(
+            firstTitle: ResourcesStrings.ok(),
+            firstAction: {}
+        )
+
+        let viewModel = NativeAlertViewModel(
+            body: body,
+            buttons: buttons
+        )
 
         showNativeAlert(viewModel: viewModel)
     }

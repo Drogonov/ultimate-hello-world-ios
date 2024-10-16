@@ -1,0 +1,63 @@
+/*
+ ERROR
+ */
+
+"error_with_trace_id" = "%@\n\nエラーコード: %@";
+
+"error_empty_data" = "リクエスト %@ は空のデータを返しました";
+"error_serialization" = "レスポンスをJSONにシリアライズできませんでした";
+"error_convertation" = "レスポンスを %@ からJSONに変換できませんでした";
+"error_convertation_nil" = "レスポンスを %@ から完全にJSONに変換できませんでした。変換の最後にnilを取得しました";
+
+"internet_not_available_title" = "インターネット接続の問題";
+"internet_not_available_message" = "別のネットワークに接続し、インターネットを確認して再試行してください";
+"internet_not_available" = "インターネットが使用できません";
+
+"server_inaccessible" = "申し訳ありませんが、リクエストエラーが発生しました。後でもう一度お試しください";
+"server_inaccessible_title" = "アプリケーションは一時的に利用できません";
+"server_inaccessible_message" = "リロードして後でもう一度ログインをお試しください";
+
+"unknown_error" = "機能が一時的に使用できません";
+"functionality_unavailable" = "機能が使用できません";
+
+"forbidden_error_default_message" = "機能が使用できません";
+
+/*
+ COMMON
+ */
+
+"ok" = "OK";
+"attention" = "注意!";
+"refresh" = "更新";
+"clear" = "クリア";
+"cancel" = "キャンセル";
+"change" = "変更";
+"app_outdated" = "現在のアプリケーションのバージョンはサポートされていません。アプリケーションを更新する必要があります";
+
+/*
+ HELLOWORLD
+ */
+
+"hello_world_title" = "ハローワールド";
+"hello_world_text" = "ハローワールド";
+"hello_world_button_title" = "ハローワールド";
+
+/*
+ CHANGE LANGUAGE
+ */
+
+"change_language_title" = "言語を変更";
+"change_language_text" = "言語を変更";
+
+/*
+ MAGIC
+ */
+
+"magic_button_text" = "Tap to see error alert 🇯🇵";
+
+/*
+ ONBOARDING
+ */
+
+"onboarding_text" = "こちらでオンボーディングに";
+"onboarding_buttonText" = "GO!";

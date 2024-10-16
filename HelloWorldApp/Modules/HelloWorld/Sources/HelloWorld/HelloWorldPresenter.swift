@@ -53,7 +53,7 @@ class HelloWorldPresenter {
 // MARK: - HelloWorldPresenterInput
 
 extension HelloWorldPresenter: HelloWorldPresenterInput {
-    // # TODO: Update JSONs in Mockoon to imitate change of the language and update strings in the app for better UX. Also check UI one more time and make it a little bit better.
+
     func viewIsReady() {
         let code = languageService?.getCurrentLanguage() ?? Language.english
         let request = GetHelloRequestMo(languageCode: code.rawValue)
@@ -69,14 +69,17 @@ extension HelloWorldPresenter: HelloWorldPresenterInput {
     }
 
     func viewWillAppear() {
-        guard let response = getHelloResponse else {
-            return
+        let code = languageService?.getCurrentLanguage() ?? Language.english
+        let request = GetHelloRequestMo(languageCode: code.rawValue)
+
+        Task {
+            do {
+                let response = try await getHelloNetworkService?.getHelloData(request: request, forceRequest: false)
+                handleSuccess(response: response)
+            } catch {
+                handleFailure(error: error.getTopLayerErrorResponse())
+            }
         }
-
-        let model = getModel(from: response)
-        setViewModel(with: model)
-
-        view?.setView(with: viewModel)
     }
 
     func viewWillDissapear() {}
@@ -145,7 +148,15 @@ fileprivate extension HelloWorldPresenter {
             message: error.errorMsg
         )
 
-        let viewModel = NativeAlertViewModel(body: body)
+        let buttons = NativeAlertViewModel.Buttons(
+            firstTitle: ResourcesStrings.ok(),
+            firstAction: {}
+        )
+
+        let viewModel = NativeAlertViewModel(
+            body: body,
+            buttons: buttons
+        )
 
         showNativeAlert(viewModel: viewModel)
     }

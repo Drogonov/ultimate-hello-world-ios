@@ -1,0 +1,26 @@
+{
+    "title": "Изменить страну",
+    "countries": [
+        {
+            "name": "Англия",
+            "languageName": "английский",
+            "languageCode": "en",
+            "emoji": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+            "isCurrent": false
+        },
+        {
+            "name": "Россия",
+            "languageName": "русский",
+            "languageCode": "ru",
+            "emoji": "🇷🇺",
+            "isCurrent": true
+        },
+        {
+            "name": "Япония",
+            "languageName": "японский",
+            "languageCode": "ja",
+            "emoji": "🇯🇵",
+            "isCurrent": false
+        }
+    ]
+}

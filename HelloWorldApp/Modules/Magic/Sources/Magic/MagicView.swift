@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MasterComponents
+import Resources
 
 // MARK: - MagicView
 
@@ -15,12 +16,13 @@ struct MagicView: View {
     // MARK: Properties
 
     @ObservedObject var model: MagicViewModel
+    var buttonTapped: () -> Void
 
     // MARK: Construction
 
     var body: some View {
         ScrollView {
-            VStack {
+            VStack(alignment: .leading) {
                 Text(model.mainText)
                     .font(TextStyle.body.font)
                     .padding(.vertical, 8)
@@ -32,7 +34,31 @@ struct MagicView: View {
                 Text(model.infoText)
                     .font(TextStyle.body.font)
                     .padding(.vertical, 8)
-            }   
+
+                Spacer()
+
+                HStack {
+                    Spacer()
+
+                    Button {
+                        buttonTapped()
+                    } label: {
+                        Text(ResourcesStrings.magicButtonText())
+                            .font(TextStyle.body.font)
+                            .padding(.vertical, MCSpacing.spacingS)
+                            .padding(.horizontal, MCSpacing.spacingL)
+                            .background(
+                                Rectangle()
+                                    .cornerRadius(MCSpacing.spacingL)
+                                    .foregroundColor(.buttonBackgroundColor)
+                            )
+                            .foregroundColor(.buttonTextColor)
+                    }
+                    .padding()
+
+                    Spacer()
+                }
+            }
             .padding()
         }
     }
@@ -56,7 +82,8 @@ struct MagicView_Previews: PreviewProvider {
         model.infoText = "Hello World"
 
         return MagicView(
-            model: model
+            model: model,
+            buttonTapped: {}
         )
     }
 }

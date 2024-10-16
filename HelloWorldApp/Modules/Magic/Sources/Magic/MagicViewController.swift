@@ -27,7 +27,10 @@ final class MagicViewController: UIViewController, MVPModuleProtocol, BaseViewCo
 
     lazy var testView: MagicView = {
         MagicView(
-            model: self.presenter.getEmptyModel()
+            model: self.presenter.getEmptyModel(),
+            buttonTapped: {
+                self.presenter.viewButtonTapped()
+            }
         )
     }()
 

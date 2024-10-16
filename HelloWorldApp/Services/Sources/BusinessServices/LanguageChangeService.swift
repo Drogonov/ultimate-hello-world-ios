@@ -32,7 +32,7 @@ extension LanguageChangeService: LanguageChangeServiceProtocol {
 
     public func getCurrentLanguage() -> Language? {
         let defaults = UserDefaults.standard
-        guard let code = defaults.string(forKey: "AppleLanguage") as String? else {
+        guard let code = defaults.string(forKey: Constants.languageKey) as String? else {
             return Language(rawValue: String(Locale.current.identifier.split(separator: "_").first ?? "en"))
         }
 
