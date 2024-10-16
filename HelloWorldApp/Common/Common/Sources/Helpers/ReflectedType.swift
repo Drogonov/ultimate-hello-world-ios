@@ -1,9 +1,10 @@
 //
 //  ReflectedType.swift
-//  CommonNet
+//  Common
 //
-//  Created by Anton Vlezko on 20/05/2024.
-//  Copyright (c) 2024 Smart Lads Software. All rights reserved.
+//  Created by Anton Vlezko on 16/10/24.
+//  Copyright © 2024 Smart Lads Software. All rights reserved.
+//
 
 import Foundation
 
@@ -34,3 +35,4 @@ public struct ReflectedType {
         self.isProtocol = isProtocol
     }
 }
+

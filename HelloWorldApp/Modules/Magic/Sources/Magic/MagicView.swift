@@ -6,7 +6,7 @@
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.
 
 import SwiftUI
-import Common
+import MasterComponents
 
 // MARK: - MagicView
 

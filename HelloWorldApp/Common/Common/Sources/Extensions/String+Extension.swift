@@ -162,18 +162,6 @@ public extension Optional where Wrapped == String {
 
 public extension String {
 
-    /// Makes attributed string with any style from app design.
-    /// - Parameters:
-    ///   - style: Design text style
-    ///   - color: Font color
-    /// - Returns: Attributed string formatted accordingly to design
-    func style(_ style: TextStyle, color: UIColor = .textPrimaryColor, alignment: NSTextAlignment = .natural) -> NSAttributedString {
-        NSAttributedString(string: self, attributes: .make(style, color: color, alignment: alignment))
-    }
-}
-
-public extension String {
-
     // MARK: Properties
 
     /// Checks if a String is empty ("") or whitespace only.

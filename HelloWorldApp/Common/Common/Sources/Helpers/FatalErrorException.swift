@@ -1,9 +1,10 @@
 //
 //  FatalErrorException.swift
-//  CommonNet
+//  Common
 //
-//  Created by Anton Vlezko on 16/05/2024.
-//  Copyright (c) 2024 Smart Lads Software. All rights reserved.
+//  Created by Anton Vlezko on 16/10/24.
+//  Copyright © 2024 Smart Lads Software. All rights reserved.
+//
 
 import Foundation
 
@@ -11,7 +12,7 @@ import Foundation
 open class FatalErrorException: NSException {
 
     // MARK: Construction
-    
+
     /// Initializes and returns a newly created exception object.
     ///
     /// - Parameters:
@@ -43,7 +44,7 @@ open class FatalErrorException: NSException {
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
     }
-    
+
     /// Initializes and returns a newly created exception object.
     ///
     /// - Parameters:

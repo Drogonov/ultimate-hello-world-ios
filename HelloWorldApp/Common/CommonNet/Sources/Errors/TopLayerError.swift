@@ -6,6 +6,7 @@
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.
 
 import Foundation
+import Common
 
 public final class TopLayerError: Error, CustomStringConvertible, CustomDebugStringConvertible {
 

@@ -7,6 +7,7 @@
 
 import Foundation
 import ObjectMapper
+import Common
 
 /// The abstract base class for data models.
 open class BaseResponse: EquatableHashableModel, ImmutableMappable {

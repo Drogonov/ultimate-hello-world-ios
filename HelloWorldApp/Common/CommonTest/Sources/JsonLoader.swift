@@ -9,6 +9,7 @@
 import Foundation
 import ObjectMapper
 import CommonNet
+import Common
 import XCTest
 
 public class JsonLoader {

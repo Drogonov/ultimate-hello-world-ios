@@ -10,8 +10,8 @@ import DI
 import UIKit
 import SnapKit
 import Common
-import CommonUI
 import Resources
+import MasterComponents
 
 // MARK: - OnboardingViewController
 

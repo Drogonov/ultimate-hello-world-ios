@@ -19,9 +19,6 @@
       <FileRef
          location = "group:CommonTest/CommonTest.xcodeproj">
       </FileRef>
-      <FileRef
-         location = "group:CommonUI/CommonUI.xcodeproj">
-      </FileRef>
    </Group>
    <FileRef
       location = "group:DI/DI.xcodeproj">

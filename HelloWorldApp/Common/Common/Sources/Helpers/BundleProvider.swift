@@ -1,6 +1,6 @@
 //
 //  BundleProvider.swift
-//  CommonNet
+//  Common
 //
 //  Created by Anton Vlezko on 16/10/24.
 //  Copyright © 2024 Smart Lads Software. All rights reserved.
@@ -10,11 +10,21 @@ import Foundation
 
 public final class BundleProvider {
 
+    // MARK: Properties
+
+    private var bundlesContent = [Bundle.main: Set<String>()]
+    private var currentLanguageBundle: Bundle?
+
+    // MARK: Construction
+
     public static let shared = BundleProvider()
 
     private init() {
         loadAllBundles()
+        loadCurrentLanguageBundle()
     }
+
+    // MARK: Methods
 
     public func bundleForClass(_ aClass: AnyClass) -> Bundle? {
         var result: Bundle?
@@ -31,8 +41,20 @@ public final class BundleProvider {
         bundlesContent.first(where: { $0.value.contains(resourceName) })?.key
     }
 
+    // Set current bundle with following language
+    public func setLanguage(_ language: String) {
+        currentLanguageBundle = loadBundle(for: language)
+    }
+
+    // Get localized string from current language bundle
+    public func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
+        return currentLanguageBundle?.localizedString(forKey: key, value: value, table: tableName) ?? key
+    }
+}
+
+fileprivate extension BundleProvider {
     // Cache bundles and its content on first call
-    private func loadAllBundles() {
+    func loadAllBundles() {
         let url = Bundle.main.privateFrameworksURL!
 
         let fileManager = FileManager.default
@@ -45,7 +67,13 @@ public final class BundleProvider {
         extractContentFileNames(in: Bundle.main)
     }
 
-    private func extractContentFileNames(in bundle: Bundle?) {
+    // Init current language bundle with saved language
+    func loadCurrentLanguageBundle() {
+        let language = UserDefaults.standard.string(forKey: Constants.languageKey) ?? Constants.defaultLanguage
+        currentLanguageBundle = loadBundle(for: language)
+    }
+
+    func extractContentFileNames(in bundle: Bundle?) {
         guard let bundle = bundle else {
             return
         }
@@ -60,5 +88,25 @@ public final class BundleProvider {
         bundlesContent[bundle] = Set(fileNames)
     }
 
-    private var bundlesContent = [Bundle.main: Set<String>()]
+    func loadBundle(for language: String) -> Bundle? {
+        guard let bundle = bundleForResourceName(language) else {
+            return nil
+        }
+
+        if let path = bundle.path(forResource: language, ofType: Constants.resourcesType) {
+            return Bundle(path: path)
+        }
+
+        return nil
+    }
+}
+
+// MARK: - Constants
+
+fileprivate extension BundleProvider {
+    enum Constants {
+        static let resourcesType: String = "lproj"
+        static let languageKey: String = "AppleLanguage"
+        static let defaultLanguage: String = "en"
+    }
 }

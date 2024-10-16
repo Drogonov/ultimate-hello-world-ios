@@ -1,9 +1,10 @@
 //
-//  UIColor+Extension.swift
-//  Common
+//  Color+extension.swift
+//  MasterComponents
 //
-//  Created by Anton Vlezko on 12/03/2024.
-//  Copyright (c) 2024 Smart Lads Software. All rights reserved.
+//  Created by Anton Vlezko on 16/10/24.
+//  Copyright © 2024 Smart Lads Software. All rights reserved.
+//
 
 import UIKit
 import SwiftUI
@@ -52,4 +53,3 @@ public extension UIColor {
        )
    }
 }
-

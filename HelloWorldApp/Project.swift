@@ -35,7 +35,6 @@ let project = Project(
                 .project(target: "Magic", path: "Modules/Magic"),
                 .project(target: "Common", path: "Common/Common"),
                 .project(target: "CommonNet", path: "Common/CommonNet"),
-                .project(target: "CommonUI", path: "Common/CommonUI"),
                 .project(target: "CommonApplication", path: "Common/CommonApplication")
             ],
             settings: .settings(

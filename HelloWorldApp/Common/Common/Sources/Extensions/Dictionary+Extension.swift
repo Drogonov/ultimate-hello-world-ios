@@ -75,21 +75,3 @@ public extension Dictionary {
         }
     }
 }
-
-public extension Dictionary where Key == NSAttributedString.Key, Value == Any {
-    static func make(
-        _ style: TextStyle,
-        color: UIColor? = .black,
-        lineBreakMode: NSLineBreakMode? = .byTruncatingTail,
-        alignment: NSTextAlignment? = .natural
-    ) -> TextAttributes {
-        var result: TextAttributes = style.attributes
-        color.map { result[.foregroundColor] = $0 }
-        if let paragraphStyle = result[.paragraphStyle] as? NSMutableParagraphStyle {
-            alignment.map { paragraphStyle.alignment = $0 }
-            lineBreakMode.map { paragraphStyle.lineBreakMode = $0 }
-        }
-
-        return result
-    }
-}

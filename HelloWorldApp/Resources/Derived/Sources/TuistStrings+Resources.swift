@@ -1,6 +1,7 @@
 // Generated using SwiftGen, by O.Halligon — https://github.com/SwiftGen/SwiftGen
 
 import Foundation
+import Common
 
 // swiftlint:disable superfluous_disable_command
 // swiftlint:disable file_length
@@ -151,12 +152,11 @@ public struct ResourcesStrings {
 
 fileprivate extension ResourcesStrings {
     static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-        let format = NSLocalizedString(
-            key,
-            tableName: table,
-            bundle: Bundle(identifier: "com.drogonov.HelloWorldApp.Resources") ?? Bundle.main,
-            comment: ""
-        )
+        let format = BundleProvider.shared.localizedString(
+             forKey: key,
+             value: nil,
+             table: table
+         )
         return String(format: format, arguments: args)
     }
 }

@@ -1,12 +1,12 @@
 //
 //  TypeCheckerProvider.swift
-//  CommonNet
+//  Common
 //
-//  Created by Anton Vlezko on 20/05/2024.
-//  Copyright (c) 2024 Smart Lads Software. All rights reserved.
+//  Created by Anton Vlezko on 16/10/24.
+//  Copyright © 2024 Smart Lads Software. All rights reserved.
+//
 
 import Foundation
-import DI
 
 protocol TypeCheckerProviderProtocol {
     func typeName(of subject: Any) -> String
@@ -147,7 +147,7 @@ fileprivate extension TypeCheckerProvider {
 // MARK: - Inner Types
 
 fileprivate extension TypeCheckerProvider {
-    
+
     class MetatypeNode {
 
         // MARK:  Properties
@@ -185,3 +185,4 @@ fileprivate extension TypeCheckerProvider {
        ]
    }
 }
+

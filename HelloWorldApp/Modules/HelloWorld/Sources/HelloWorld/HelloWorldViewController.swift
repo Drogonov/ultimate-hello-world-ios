@@ -10,8 +10,8 @@ import SnapKit
 import DI
 import Common
 import Services
-import CommonUI
 import Resources
+import MasterComponents
 
 // MARK: - HelloWorldViewController
 

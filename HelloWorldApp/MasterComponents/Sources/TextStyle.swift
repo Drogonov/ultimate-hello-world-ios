@@ -1,9 +1,10 @@
 //
 //  TextStyle.swift
-//  Common
+//  MasterComponents
 //
-//  Created by Anton Vlezko on 27/05/2024.
-//  Copyright (c) 2024 Smart Lads Software. All rights reserved.
+//  Created by Anton Vlezko on 16/10/24.
+//  Copyright © 2024 Smart Lads Software. All rights reserved.
+//
 
 import UIKit
 import SwiftUI
@@ -57,8 +58,8 @@ public extension TextStyle {
             result = [
                 .font: UIFont.resolve(fontName: .robotoRegular, size: Size.k12),
                 .paragraphStyle: paragraphStyle(lineHeightMultiple: LineHeight.k112),
-                .foregroundColor: UIColor.textSecondaryColor,
-                .underlineColor: UIColor.textSecondaryColor.withAlphaComponent(0.7),
+                .foregroundColor: UIColor.label,
+                .underlineColor: UIColor.label.withAlphaComponent(0.7),
                 .underlineStyle: NSUnderlineStyle.single.rawValue
             ]
         }
@@ -136,5 +137,35 @@ public extension TextStyle {
         static let k037: Float = 0.37
         static let k038: Float = 0.38
         static let k041: Float = 0.41
+    }
+}
+
+public extension Dictionary where Key == NSAttributedString.Key, Value == Any {
+    static func make(
+        _ style: TextStyle,
+        color: UIColor? = .black,
+        lineBreakMode: NSLineBreakMode? = .byTruncatingTail,
+        alignment: NSTextAlignment? = .natural
+    ) -> TextAttributes {
+        var result: TextAttributes = style.attributes
+        color.map { result[.foregroundColor] = $0 }
+        if let paragraphStyle = result[.paragraphStyle] as? NSMutableParagraphStyle {
+            alignment.map { paragraphStyle.alignment = $0 }
+            lineBreakMode.map { paragraphStyle.lineBreakMode = $0 }
+        }
+
+        return result
+    }
+}
+
+public extension String {
+
+    /// Makes attributed string with any style from app design.
+    /// - Parameters:
+    ///   - style: Design text style
+    ///   - color: Font color
+    /// - Returns: Attributed string formatted accordingly to design
+    func style(_ style: TextStyle, color: UIColor = .textPrimaryColor, alignment: NSTextAlignment = .natural) -> NSAttributedString {
+        NSAttributedString(string: self, attributes: .make(style, color: color, alignment: alignment))
     }
 }

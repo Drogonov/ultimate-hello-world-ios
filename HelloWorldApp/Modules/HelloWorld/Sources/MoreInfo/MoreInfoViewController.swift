@@ -10,7 +10,7 @@ import SnapKit
 import DI
 import Common
 import Services
-import CommonUI
+import MasterComponents
 
 // MARK: - MoreInfoViewController
 
