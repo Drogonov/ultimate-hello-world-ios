@@ -119,7 +119,6 @@ open class BaseRouter {
         NavigationStackProvider.shared.navigationStack
     }
 
-    var navigationStackService: NavigationStackServiceProtocol? = resolveDependency(NavigationStackServiceProtocol.self, name: "common")
     var mainTabBarProvider: MainTabBarProviderProtocol? = resolveDependency(MainTabBarProviderProtocol.self)
 
     private var isPushing = false

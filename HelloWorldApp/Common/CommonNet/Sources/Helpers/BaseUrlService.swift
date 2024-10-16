@@ -8,9 +8,16 @@
 import Foundation
 import Common
 
+public protocol BaseURLServiceProtocol {
+    var baseURL: String? { get }
+
+    func setBaseURLValue(_ value: String)
+    func resetDefaultBaseURL()
+}
+
 // MARK: - BaseURLService
 
-public class BaseURLService: BaseURLServiceProtocol {
+public class BaseURLService {
 
     // MARK: Public properties
 
@@ -19,33 +26,41 @@ public class BaseURLService: BaseURLServiceProtocol {
     // MARK: Private properties
 
     private let userDefaults: UserDefaults = .standard
+    private let configurationProvider: ConfigurationProviderProtocol = ConfigurationProvider()
 
     // MARK: Init
 
     public init() {
         getBaseURL()
     }
+}
 
-    // MARK: Public Methods
+// MARK: - BaseURLServiceProtocol
 
+extension BaseURLService: BaseURLServiceProtocol {
     public func setBaseURLValue(_ value: String) {
+        guard URL(string: value) != nil else {
+            return
+        }
+
         userDefaults.set(value, forKey: Constants.baseURLKey)
+        baseURL = value
     }
 
     public func resetDefaultBaseURL() {
-        // Not used.
+        baseURL = configurationProvider.defaultBaseURL
+        userDefaults.set(baseURL, forKey: Constants.baseURLKey)
     }
 }
 
 // MARK: - Private Methods
 
 private extension BaseURLService {
-
     func getBaseURL() {
-        if userDefaults.object(forKey: Constants.baseURLKey).isNone {
-            baseURL = Constants.defaultBaseURL
+        if let savedURL = userDefaults.string(forKey: Constants.baseURLKey) {
+            baseURL = savedURL
         } else {
-            baseURL = userDefaults.object(forKey: Constants.baseURLKey) as? String
+            baseURL = configurationProvider.defaultBaseURL
         }
     }
 }
@@ -53,10 +68,7 @@ private extension BaseURLService {
 // MARK: - Constants
 
 fileprivate extension BaseURLService {
-
-    // # TODO: Fix BaseURL service so it will be working normally not like this hardcodded shit
     enum Constants {
         static let baseURLKey = "baseURLKey"
-        static let defaultBaseURL = "http://localhost:6868"
     }
 }

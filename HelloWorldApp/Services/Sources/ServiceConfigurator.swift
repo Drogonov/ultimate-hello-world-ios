@@ -16,7 +16,6 @@ import CommonApplication
 public final class ServiceConfigurator: Assembly {
 
     public func assemble(container: Container) {
-        registerNavigationStackService(in: container)
         registerRealmService(in: container)
         registerSessionCacher(in: container)
         registerLongCacher(in: container)
@@ -33,13 +32,6 @@ public final class ServiceConfigurator: Assembly {
 // MARK: - Private Methods
 
 fileprivate extension ServiceConfigurator {
-    func registerNavigationStackService(in container: Container) {
-        container.register(NavigationStackServiceProtocol.self) { _ in
-            NavigationStackService()
-        }
-        .implements(NavigationStackServiceProtocol.self, name: "common")
-        .inObjectScope(.container)
-    }
 
     func registerLanguageChangeService(in container: Container) {
         container.register(LanguageChangeServiceProtocol.self) { _ in

@@ -28,7 +28,6 @@ class MainCoordinator: CoordinatorProtocol {
 
     private let window: UIWindow
     private var mainTabBarProvider: MainTabBarProviderProtocol?
-    private var navigationStackService: NavigationStackServiceProtocol?
     private var sessionCache: CacheProtocol?
 
 
@@ -37,7 +36,6 @@ class MainCoordinator: CoordinatorProtocol {
     ) {
         self.window = window
         mainTabBarProvider = resolveDependency(MainTabBarProviderProtocol.self)
-        navigationStackService = resolveDependency(NavigationStackServiceProtocol.self)
         sessionCache = resolveDependency(CacheProtocol.self, name: CacherType.long)
     }
 
