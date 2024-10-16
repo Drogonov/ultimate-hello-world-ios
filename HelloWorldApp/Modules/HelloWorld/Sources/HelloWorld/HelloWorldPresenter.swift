@@ -68,7 +68,16 @@ extension HelloWorldPresenter: HelloWorldPresenterInput {
         }
     }
 
-    func viewWillAppear() {}
+    func viewWillAppear() {
+        guard let response = getHelloResponse else {
+            return
+        }
+
+        let model = getModel(from: response)
+        setViewModel(with: model)
+
+        view?.setView(with: viewModel)
+    }
 
     func viewWillDissapear() {}
 
