@@ -6,11 +6,9 @@ let project = generateProject(
     targets: [
         TargetInfo(
             type: .plain,
-            packages: [
-                .package(url: "https://github.com/realm/realm-swift", from: "10.0.0")
-            ],
             dependencies: [
-                .package(product: "RealmSwift"),
+                .external(name: "RealmSwift"),
+                .external(name: "Realm"),
                 generateDependency(name: .CommonNet),
                 generateDependency(name: .DI)
             ]

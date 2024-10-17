@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D18DC70C6307B67795085E4C"
+               BuildableName = "Bid.framework"
+               BlueprintName = "Bid"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/RealmDatabase/RealmDatabase.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "E08ABD263855627D83D37766"
                BuildableName = "Common.framework"
                BlueprintName = "Common"
@@ -322,6 +336,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AEC90AB9F2C168A2C69A14AF"
+               BuildableName = "ObjectMapper.framework"
+               BlueprintName = "ObjectMapper"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/ObjectMapper/ObjectMapper.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "F3146B293FED9DDA696696CB"
                BuildableName = "Persistence.framework"
                BlueprintName = "Persistence"
@@ -354,6 +382,76 @@
                BuildableName = "PersistenceTests.xctest"
                BlueprintName = "PersistenceTests"
                ReferencedContainer = "container:Persistence/Persistence.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "490DDD077B8425595663EFC0"
+               BuildableName = "Realm.framework"
+               BlueprintName = "Realm"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/Realm/Realm.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A73CAD04A8157C930CA1AC9D"
+               BuildableName = "RealmCore.framework"
+               BlueprintName = "RealmCore"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/RealmDatabase/RealmDatabase.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AAA1EF9290F3AF3130BAE7B0"
+               BuildableName = "RealmCoreResources.framework"
+               BlueprintName = "RealmCoreResources"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/RealmDatabase/RealmDatabase.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "31F5299407FAEA5B884504F7"
+               BuildableName = "RealmDatabase_RealmCoreResources.bundle"
+               BlueprintName = "RealmDatabase_RealmCoreResources"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/RealmDatabase/RealmDatabase.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1FF649F623857B7908EE0C75"
+               BuildableName = "RealmSwift.framework"
+               BlueprintName = "RealmSwift"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/Realm/Realm.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -410,6 +508,62 @@
                BuildableName = "ServicesTests.xctest"
                BlueprintName = "ServicesTests"
                ReferencedContainer = "container:Services/Services.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8A043024BB190898066F1729"
+               BuildableName = "SnapKit.framework"
+               BlueprintName = "SnapKit"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/SnapKit/SnapKit.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6373C89B0415733128F88C67"
+               BuildableName = "SnapKit_SnapKit.bundle"
+               BlueprintName = "SnapKit_SnapKit"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/SnapKit/SnapKit.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "589345361EDD5EBC786D0C14"
+               BuildableName = "Swinject.framework"
+               BlueprintName = "Swinject"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/Swinject/Swinject.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "387C2EFC255826241EB68E8C"
+               BuildableName = "s2geometry.framework"
+               BlueprintName = "s2geometry"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/RealmDatabase/RealmDatabase.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -515,10 +669,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E08ABD263855627D83D37766"
-            BuildableName = "Common.framework"
-            BlueprintName = "Common"
-            ReferencedContainer = "container:Common/Common/Common.xcodeproj">
+            BlueprintIdentifier = "D18DC70C6307B67795085E4C"
+            BuildableName = "Bid.framework"
+            BlueprintName = "Bid"
+            ReferencedContainer = "container:Tuist/.build/tuist-derived/RealmDatabase/RealmDatabase.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </LaunchAction>
@@ -531,10 +685,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E08ABD263855627D83D37766"
-            BuildableName = "Common.framework"
-            BlueprintName = "Common"
-            ReferencedContainer = "container:Common/Common/Common.xcodeproj">
+            BlueprintIdentifier = "D18DC70C6307B67795085E4C"
+            BuildableName = "Bid.framework"
+            BlueprintName = "Bid"
+            ReferencedContainer = "container:Tuist/.build/tuist-derived/RealmDatabase/RealmDatabase.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

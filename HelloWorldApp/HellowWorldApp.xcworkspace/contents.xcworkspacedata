@@ -51,4 +51,23 @@
    <FileRef
       location = "group:Services/Services.xcodeproj">
    </FileRef>
+   <Group
+      location = "container:"
+      name = "Dependencies">
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/ObjectMapper/ObjectMapper.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Realm/Realm.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/RealmDatabase/RealmDatabase.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/SnapKit/SnapKit.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Swinject/Swinject.xcodeproj">
+      </FileRef>
+   </Group>
 </Workspace>

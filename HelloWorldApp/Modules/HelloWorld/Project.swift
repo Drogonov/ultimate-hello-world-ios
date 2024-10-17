@@ -6,11 +6,8 @@ let project = generateProject(
     targets: [
         TargetInfo(
             type: .plain,
-            packages: [
-                .package(url: "https://github.com/Swinject/Swinject", from: "2.8.4")
-            ],
             dependencies: [
-                .package(product: "Swinject"),
+                .external(name: "Swinject"),
                 generateDependency(name: .Services),
                 generateDependency(name: .Resources),
                 generateDependency(name: .Net),

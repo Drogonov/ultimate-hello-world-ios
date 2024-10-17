@@ -4,12 +4,6 @@ import ProjectDescriptionHelpers
 let project = Project(
     name: ProjectName.HellowWorldApp.rawValue,
     organizationName: Constants.organisationName,
-    packages: [
-        .package(url: "https://github.com/tristanhimmelman/ObjectMapper", from: "4.2.0"),
-        .package(url: "https://github.com/SnapKit/SnapKit", from: "5.7.1"),
-        .package(url: "https://github.com/Swinject/Swinject", from: "2.8.4"),
-        .package(url: "https://github.com/realm/realm-swift", from: "10.0.0")
-    ],
     targets: [
         .target(
             name: ProjectName.HellowWorldApp.rawValue,
@@ -20,10 +14,10 @@ let project = Project(
             sources: ["Sources**"],
             entitlements: "Sources/Supporting Files/HelloWorldApp.entitlements",
             dependencies: [
-                .package(product: "ObjectMapper"),
-                .package(product: "SnapKit"),
-                .package(product: "Swinject"),
-                .package(product: "RealmSwift"),
+                .external(name: "ObjectMapper"),
+                .external(name: "SnapKit"),
+                .external(name: "Swinject"),
+                .external(name: "RealmSwift"),
                 generateDependency(name: .DI),
                 generateDependency(name: .Resources),
                 generateDependency(name: .MasterComponents),

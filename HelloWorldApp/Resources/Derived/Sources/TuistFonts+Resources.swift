@@ -18,8 +18,8 @@
 // MARK: - Fonts
 
 // swiftlint:disable identifier_name line_length type_body_length
-public enum ResourcesFontFamily {
-  public enum Roboto {
+public enum ResourcesFontFamily: Sendable {
+  public enum Roboto: Sendable {
     public static let black = ResourcesFontConvertible(name: "Roboto-Black", family: "Roboto", path: "Roboto-Black.ttf")
     public static let blackItalic = ResourcesFontConvertible(name: "Roboto-BlackItalic", family: "Roboto", path: "Roboto-BlackItalic.ttf")
     public static let bold = ResourcesFontConvertible(name: "Roboto-Bold", family: "Roboto", path: "Roboto-Bold.ttf")
@@ -43,7 +43,7 @@ public enum ResourcesFontFamily {
 
 // MARK: - Implementation Details
 
-public struct ResourcesFontConvertible {
+public struct ResourcesFontConvertible: Sendable {
   public let name: String
   public let family: String
   public let path: String
