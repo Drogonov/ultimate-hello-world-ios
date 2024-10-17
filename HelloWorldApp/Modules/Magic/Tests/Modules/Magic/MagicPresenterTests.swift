@@ -116,4 +116,15 @@ extension MagicPresenterTests {
         // then
         XCTAssertTrue(true)
     }
+
+    func testViewButtonTapped() {
+        // given
+        // ...
+        
+        // when
+//        presenter.viewButtonTapped()
+
+        // then
+        XCTAssertTrue(true)
+    }
 }

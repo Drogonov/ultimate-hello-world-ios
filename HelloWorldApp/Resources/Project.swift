@@ -1,20 +1,15 @@
 import ProjectDescription
+import ProjectDescriptionHelpers
 
-let project = Project(
-    name: "Resources",
-    organizationName: "Smart Lads Software",
+let project = generateProject(
+    projectName: .Resources,
     targets: [
-        .target(
-            name: "Resources",
-            destinations: .iOS,
-            product: .framework,
-            bundleId: "com.drogonov.HelloWorldApp.Resources",
-            infoPlist: .default,
-            sources: ["Sources/**"],
-            resources: ["Resources/**"],
+        TargetInfo(
+            type: .plain,
             dependencies: [
-                .project(target: "Common", path: "../Common/Common"),
-            ]
+                generateDependency(name: .Common)
+            ],
+            doesIncludeResources: true
         )
     ]
 )

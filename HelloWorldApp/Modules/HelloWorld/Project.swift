@@ -1,60 +1,40 @@
 import ProjectDescription
+import ProjectDescriptionHelpers
 
-let project = Project(
-    name: "HelloWorld",
-    organizationName: "Smart Lads Software",
-    packages: [
-        .package(url: "https://github.com/Swinject/Swinject", from: "2.8.4")
-    ],
+let project = generateProject(
+    projectName: .HelloWorld,
     targets: [
-        .target(
-            name: "HelloWorld",
-            destinations: .iOS,
-            product: .framework,
-            bundleId: "com.drogonov.HelloWorldApp.HelloWorld",
-            infoPlist: .default,
-            sources: ["Sources/**"],
-            dependencies: [
-                .package(product: "Swinject"),
-                .project(target: "Services", path: "../../Services"),
-                .project(target: "Resources", path: "../../Resources"),
-                .project(target: "Net", path: "../../Net"),
-                .project(target: "Deeplinks", path: "../../Deeplinks"),
-                .project(target: "DI", path: "../../DI")
-            ]
-        ),
-        .target(
-            name: "HelloWorldTests",
-            destinations: .iOS,
-            product: .unitTests,
-            bundleId: "com.drogonov.HelloWorldApp.HelloWorldTests",
-            infoPlist: .default,
-            sources: ["Tests/**"],
-            resources: [],
-            scripts: [
-                .pre(
-                    path: "./Tests/Sourcery/sourcery.sh",
-                    arguments: ["${PROJECT_DIR}/../..", "${PROJECT_DIR}"],
-                    name: "Sourcery",
-                    basedOnDependencyAnalysis: false
-                )
+        TargetInfo(
+            type: .plain,
+            packages: [
+                .package(url: "https://github.com/Swinject/Swinject", from: "2.8.4")
             ],
             dependencies: [
-                .target(name: "HelloWorld"),
-                .target(name: "HelloWorldMocks"),
-                .project(target: "CommonTest", path: "../../Common/CommonTest"),
+                .package(product: "Swinject"),
+                generateDependency(name: .Services),
+                generateDependency(name: .Resources),
+                generateDependency(name: .Net),
+                generateDependency(name: .DI),
+                generateDependency(name: .Common),
+                generateDependency(name: .CommonApplication)
             ]
         ),
-        .target(
-            name: "HelloWorldMocks",
-            destinations: .iOS,
-            product: .framework,
-            bundleId: "com.drogonov.HelloWorldApp.HelloWorldMocks",
-            infoPlist: .default,
-            sources: ["Mocks/**"],
+        TargetInfo(
+            type: .test,
             dependencies: [
-                .target(name: "HelloWorld")
+                .target(name: ProjectName.HelloWorld.rawValue),
+                .target(name: ProjectName.HelloWorld.mockName),
+                generateDependency(name: .CommonTest)
+            ],
+            doesUseSourcery: true
+        ),
+        TargetInfo(
+            type: .mock,
+            dependencies: [
+                .target(name: ProjectName.HelloWorld.rawValue),
+                generateDependency(name: .Common),
+                generateDependency(name: .CommonApplication)
             ]
-        )
+        ),
     ]
 )

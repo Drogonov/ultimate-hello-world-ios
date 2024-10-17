@@ -68,11 +68,10 @@ public func generateDependency(name: ProjectName) -> TargetDependency {
 }
 
 public func generateSourceryScript(pathToTarget: String) -> TargetScript {
-    let fileManager = FileManager.default
-    let currentDirectoryPath = fileManager.currentDirectoryPath
+    let currentDirectoryPath = FileManager.default.currentDirectoryPath
     let localDirectoryPath = "\(currentDirectoryPath)\(pathToTarget)"
 
-    let scriptPath = filePath(currentPath: localDirectoryPath, fileName: "sourcery.sh")
+    let scriptPath = filePath(currentPath: currentDirectoryPath, fileName: "sourcery.sh")
     let sourceryScriptPath = filePath(currentPath: currentDirectoryPath, fileName: "sourcery").pathString
     let sourceryConfigPath = filePath(currentPath: localDirectoryPath, fileName: "sourcery.yml").pathString
 

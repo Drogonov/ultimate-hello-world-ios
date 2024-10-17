@@ -1,22 +1,17 @@
 import ProjectDescription
+import ProjectDescriptionHelpers
 
-let project = Project(
-    name: "CommonTest",
-    organizationName: "Smart Lads Software",
-    packages: [
-        .package(url: "https://github.com/tristanhimmelman/ObjectMapper", from: "4.2.0"),
-    ],
+let project = generateProject(
+    projectName: .CommonTest,
     targets: [
-        .target(
-            name: "CommonTest",
-            destinations: .iOS,
-            product: .framework,
-            bundleId: "com.drogonov.HelloWorldApp.CommonTest",
-            infoPlist: .default,
-            sources: ["Sources/**"],
+        TargetInfo(
+            type: .plain,
+            packages: [
+                .package(url: "https://github.com/tristanhimmelman/ObjectMapper", from: "4.2.0"),
+            ],
             dependencies: [
                 .package(product: "ObjectMapper"),
-                .project(target: "CommonNet", path: "../CommonNet"),
+                generateDependency(name: .CommonNet),
                 .xctest
             ]
         )

@@ -1,19 +1,14 @@
 import ProjectDescription
+import ProjectDescriptionHelpers
 
-let project = Project(
-    name: "DI",
-    organizationName: "Smart Lads Software",
-    packages: [
-        .package(url: "https://github.com/Swinject/Swinject", from: "2.8.4"),
-    ],
+let project = generateProject(
+    projectName: .DI,
     targets: [
-        .target(
-            name: "DI",
-            destinations: .iOS,
-            product: .framework,
-            bundleId: "com.drogonov.HelloWorldApp.DI",
-            infoPlist: .default,
-            sources: ["Sources/**"],
+        TargetInfo(
+            type: .plain,
+            packages: [
+                .package(url: "https://github.com/Swinject/Swinject", from: "2.8.4"),
+            ],
             dependencies: [
                 .package(product: "Swinject")
             ]
