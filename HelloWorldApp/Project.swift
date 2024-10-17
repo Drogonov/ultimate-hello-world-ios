@@ -50,6 +50,33 @@ let project = Project(
             ]
         )
     ]
-// # TODO: Add target for proper tests of the app
-//    schemes: [debugScheme]
+    // # TODO: Add target for proper tests of the app
+//    schemes: [
+//        .scheme(
+//            name: "HelloWorldAppTests",
+//            shared: true,
+//            buildAction: .buildAction(targets: [
+//                .project(
+//                    path: Path(stringLiteral: ProjectName.HellowWorldApp.rawValue),
+//                    target: ProjectName.HellowWorldApp.rawValue
+//                ),
+//                .project(
+//                    path: Path(stringLiteral: ProjectName.CommonApplication.path),
+//                    target: ProjectName.CommonApplication.rawValue
+//                ),
+//                // Add build targets here if necessary
+//            ]),
+//            testAction: .targets([
+//                .testableTarget(target: .project(
+//                    path: Path(stringLiteral: ProjectName.HellowWorldApp.rawValue),
+//                    target: ProjectName.HellowWorldApp.testName
+//                )),
+//                .testableTarget(target: .project(
+//                    path: Path(stringLiteral: ProjectName.CommonApplication.rawValue),
+//                    target: ProjectName.CommonApplication.testName
+//                ))
+//            ])
+//        )
+//    ]
 )
+
