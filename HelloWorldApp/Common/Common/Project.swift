@@ -1,16 +1,11 @@
 import ProjectDescription
+import ProjectDescriptionHelpers
 
-let project = Project(
-    name: "Common",
-    organizationName: "Smart Lads Software",
+let project = generateProject(
+    projectName: .Common,
     targets: [
-        .target(
-            name: "Common",
-            destinations: .iOS,
-            product: .framework,
-            bundleId: "com.drogonov.HelloWorldApp.Common",
-            infoPlist: .default,
-            sources: ["Sources/**"]
+        TargetInfo(
+            type: .plain
         )
     ]
 )

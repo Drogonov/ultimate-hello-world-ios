@@ -1,48 +1,29 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project(
-    name: "CommonApplication",
-    organizationName: "Smart Lads Software",
+let project = generateProject(
+    projectName: .CommonApplication,
     targets: [
-        .target(
-            name: "CommonApplication",
-            destinations: .iOS,
-            product: .framework,
-            bundleId: "com.drogonov.HelloWorldApp.CommonApplication",
-            infoPlist: .default,
-            sources: ["Sources/**"],
+        TargetInfo(
+            type: .plain,
             dependencies: [
-                .project(target: "CommonNet", path: "../CommonNet"),
-                .project(target: "Common", path: "../Common"),
+                generateDependency(name: .CommonNet),
+                generateDependency(name: .Common)
             ]
         ),
-        .target(
-            name: "CommonApplicationTests",
-            destinations: .iOS,
-            product: .unitTests,
-            bundleId: "com.drogonov.HelloWorldApp.CommonApplicationTests",
-            infoPlist: .default,
-            sources: ["Tests/**"],
-            resources: [],
-            scripts: [
-                Project.generateSourceryScript(pathToTarget: "/Common/CommonApplication")
+        TargetInfo(
+            type: .test,
+            dependencies: [
+                .target(name: ProjectName.CommonApplication.rawValue),
+                .target(name: ProjectName.CommonApplication.mockName)
             ],
+            doesUseSourcery: true
+        ),
+        TargetInfo(
+            type: .mock,
             dependencies: [
-                .target(name: "CommonApplication"),
-                .target(name: "CommonApplicationMocks")
+                .target(name: ProjectName.CommonApplication.rawValue),
             ]
         ),
-        .target(
-            name: "CommonApplicationMocks",
-            destinations: .iOS,
-            product: .framework,
-            bundleId: "com.drogonov.HelloWorldApp.CommonApplicationMocks",
-            infoPlist: .default,
-            sources: ["Mocks/**"],
-            dependencies: [
-                .target(name: "CommonApplication")
-            ]
-        )
     ]
 )
