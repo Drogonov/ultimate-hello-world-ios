@@ -11,7 +11,7 @@ let project = Project(
             product: .app,
             bundleId: Constants.rootBundleId,
             infoPlist: "Sources/Supporting Files/Info.plist",
-            sources: ["Sources**"],
+            sources: ["Sources/**"],
             entitlements: "Sources/Supporting Files/HelloWorldApp.entitlements",
             dependencies: [
                 .external(name: "ObjectMapper"),

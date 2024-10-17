@@ -1,6 +1,19 @@
 // swift-tools-version: 5.9
 @preconcurrency import PackageDescription
 
+#if TUIST
+    import ProjectDescription
+    let packageSettings = PackageSettings(
+        productTypes: [
+            "Swinject": .framework,
+            "RealmSwift": .framework,
+            "Realm": .framework,
+            "ObjectMapper": .framework,
+            "SnapKit": .framework
+        ]
+    )
+#endif  
+
 let package = Package(
     name: "MyApp",
     dependencies: [

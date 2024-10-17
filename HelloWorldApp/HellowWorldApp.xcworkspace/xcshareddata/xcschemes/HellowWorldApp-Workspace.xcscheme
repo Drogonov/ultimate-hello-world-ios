@@ -532,20 +532,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6373C89B0415733128F88C67"
-               BuildableName = "SnapKit_SnapKit.bundle"
-               BlueprintName = "SnapKit_SnapKit"
-               ReferencedContainer = "container:Tuist/.build/tuist-derived/SnapKit/SnapKit.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "589345361EDD5EBC786D0C14"
                BuildableName = "Swinject.framework"
                BlueprintName = "Swinject"
