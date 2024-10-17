@@ -9,6 +9,7 @@ import DI
 import Foundation
 import Swinject
 import CommonNet
+import CommonApplication
 
 public protocol DeeplinkFlowProcessorFactoryProtocol {
     var resolver: Resolver { get }

@@ -1,15 +1,17 @@
 //
 //  DeeplinkContent.swift
-//  Deeplinks
+//  CommonApplication
 //
-//  Created by Anton Vlezko on 27/09/2024.
-//  Copyright (c) 2024 Smart Lads Software. All rights reserved.
+//  Created by Anton Vlezko on 17/10/24.
+//  Copyright © 2024 Smart Lads Software. All rights reserved.
+//
 
 import Foundation
+import CommonNet
 
 public class DeeplinkContent {
 
-    public init(url: URL, type: DeeplinkType, parameters: DeeplinkContentParameters?, option: DeeplinkProcessingOptionType?) {
+    public init(url: URL, type: DeeplinkType, parameters: DeeplinkContentParametersMo?, option: DeeplinkProcessingOptionType?) {
         self.url = url
         self.type = type
         self.parameters = parameters
@@ -31,7 +33,7 @@ public class DeeplinkContent {
 
     public let url: URL
     public let type: DeeplinkType
-    public let parameters: DeeplinkContentParameters?
+    public let parameters: DeeplinkContentParametersMo?
     public private(set) var processingOption: DeeplinkProcessingOptionType?
     public private(set) var isExternal: Bool = false
 
@@ -57,4 +59,5 @@ public class DeeplinkContent {
     private let transform = LinkTransform()
     private var additionalPayload: Any?
 }
+
 

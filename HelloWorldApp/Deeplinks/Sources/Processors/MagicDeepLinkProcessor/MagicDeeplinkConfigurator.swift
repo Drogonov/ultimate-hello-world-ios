@@ -9,6 +9,7 @@ import DI
 import UIKit
 import Swinject
 import CommonNet
+import CommonApplication
 
 final class MagicDeeplinkConfigurator: Assembly {
 

@@ -1,15 +1,15 @@
 //
-//  DeeplinkContentParameters.swift
-//  Deeplinks
+//  DeeplinkContentParametersMo.swift
+//  CommonNet
 //
-//  Created by Anton Vlezko on 27/09/2024.
-//  Copyright (c) 2024 Smart Lads Software. All rights reserved.
+//  Created by Anton Vlezko on 17/10/24.
+//  Copyright © 2024 Smart Lads Software. All rights reserved.
+//
 
 import ObjectMapper
 import Foundation
-import CommonNet
 
-public final class DeeplinkContentParameters: BaseResponse {
+public final class DeeplinkContentParametersMo: BaseResponse {
 
     public var languageCode: String?
     public var utmSource: String?

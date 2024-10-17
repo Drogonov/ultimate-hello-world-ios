@@ -168,34 +168,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E11D51ABFDCEAF4BC6090480"
-               BuildableName = "HelloWorldApp.app"
-               BlueprintName = "HelloWorldApp"
-               ReferencedContainer = "container:HelloWorldApp.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9B78EF798153186A1FFD2A81"
-               BuildableName = "HelloWorldAppTests.xctest"
-               BlueprintName = "HelloWorldAppTests"
-               ReferencedContainer = "container:HelloWorldApp.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "3B75E2C509D4A479A5C484CB"
                BuildableName = "HelloWorldMocks.framework"
                BlueprintName = "HelloWorldMocks"
@@ -214,6 +186,34 @@
                BuildableName = "HelloWorldTests.xctest"
                BlueprintName = "HelloWorldTests"
                ReferencedContainer = "container:Modules/HelloWorld/HelloWorld.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9780C83C09D2709533C18D6F"
+               BuildableName = "HellowWorldApp.app"
+               BlueprintName = "HellowWorldApp"
+               ReferencedContainer = "container:HellowWorldApp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6828C656E9638084F5BD69D0"
+               BuildableName = "HellowWorldAppTests.xctest"
+               BlueprintName = "HellowWorldAppTests"
+               ReferencedContainer = "container:HellowWorldApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -444,20 +444,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9B78EF798153186A1FFD2A81"
-               BuildableName = "HelloWorldAppTests.xctest"
-               BlueprintName = "HelloWorldAppTests"
-               ReferencedContainer = "container:HelloWorldApp.xcodeproj">
+               BlueprintIdentifier = "DE5CD5E050490D65859A7E16"
+               BuildableName = "HelloWorldTests.xctest"
+               BlueprintName = "HelloWorldTests"
+               ReferencedContainer = "container:Modules/HelloWorld/HelloWorld.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DE5CD5E050490D65859A7E16"
-               BuildableName = "HelloWorldTests.xctest"
-               BlueprintName = "HelloWorldTests"
-               ReferencedContainer = "container:Modules/HelloWorld/HelloWorld.xcodeproj">
+               BlueprintIdentifier = "6828C656E9638084F5BD69D0"
+               BuildableName = "HellowWorldAppTests.xctest"
+               BlueprintName = "HellowWorldAppTests"
+               ReferencedContainer = "container:HellowWorldApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference

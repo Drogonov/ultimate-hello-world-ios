@@ -1,9 +1,9 @@
 import ProjectDescription
+import ProjectDescriptionHelpers
 
-// # TODO: Add to Tuist methods to avoid unnecessary harcoding
 let project = Project(
-    name: "HelloWorldApp",
-    organizationName: "Smart Lads Software",
+    name: ProjectName.HellowWorldApp.rawValue,
+    organizationName: Constants.organisationName,
     packages: [
         .package(url: "https://github.com/tristanhimmelman/ObjectMapper", from: "4.2.0"),
         .package(url: "https://github.com/SnapKit/SnapKit", from: "5.7.1"),
@@ -12,47 +12,47 @@ let project = Project(
     ],
     targets: [
         .target(
-            name: "HelloWorldApp",
+            name: ProjectName.HellowWorldApp.rawValue,
             destinations: .iOS,
             product: .app,
-            bundleId: "com.drogonov.HelloWorldApp",
-            infoPlist: "HelloWorldApp/Supporting Files/Info.plist",
-            sources: ["HelloWorldApp/**"],
-            entitlements: "HelloWorldApp/Supporting Files/HelloWorldApp.entitlements",
+            bundleId: Constants.rootBundleId,
+            infoPlist: "Sources/Supporting Files/Info.plist",
+            sources: ["Sources**"],
+            entitlements: "Sources/Supporting Files/HelloWorldApp.entitlements",
             dependencies: [
                 .package(product: "ObjectMapper"),
                 .package(product: "SnapKit"),
                 .package(product: "Swinject"),
                 .package(product: "RealmSwift"),
-                .project(target: "DI", path: "DI"),
-                .project(target: "Resources", path: "Resources"),
-                .project(target: "MasterComponents", path: "MasterComponents"),
-                .project(target: "Persistence", path: "Persistence"),
-                .project(target: "Net", path: "Net"),
-                .project(target: "Services", path: "Services"),
-                .project(target: "Deeplinks", path: "Deeplinks"),
-                .project(target: "HelloWorld", path: "Modules/HelloWorld"),
-                .project(target: "Magic", path: "Modules/Magic"),
-                .project(target: "Common", path: "Common/Common"),
-                .project(target: "CommonNet", path: "Common/CommonNet"),
-                .project(target: "CommonApplication", path: "Common/CommonApplication")
+                generateDependency(name: .DI),
+                generateDependency(name: .Resources),
+                generateDependency(name: .MasterComponents),
+                generateDependency(name: .Persistence),
+                generateDependency(name: .Net),
+                generateDependency(name: .Services),
+                generateDependency(name: .Deeplinks),
+                generateDependency(name: .HelloWorld),
+                generateDependency(name: .Magic),
+                generateDependency(name: .Common),
+                generateDependency(name: .CommonNet),
+                generateDependency(name: .CommonApplication),
             ],
             settings: .settings(
                 base: [
-                    "CODE_SIGN_ENTITLEMENTS": "HelloWorldApp/Supporting Files/HelloWorldApp.entitlements"
+                    "CODE_SIGN_ENTITLEMENTS": "Sources/Supporting Files/HelloWorldApp.entitlements"
                 ]
             )
         ),
         .target(
-            name: "HelloWorldAppTests",
+            name: ProjectName.HellowWorldApp.testName,
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "com.drogonov.HelloWorldAppTests",
+            bundleId: "\(Constants.rootBundleId)Tests",
             infoPlist: .default,
-            sources: ["HelloWorldAppTests/**"],
+            sources: ["Tests/**"],
             resources: [],
             dependencies: [
-                .target(name: "HelloWorldApp")
+                .target(name: ProjectName.HellowWorldApp.rawValue)
             ]
         )
     ]

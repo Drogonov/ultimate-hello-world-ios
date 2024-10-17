@@ -6,20 +6,7 @@
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.
 
 import Foundation
-import CommonNet
-
-// sourcery: AutoMockable
-public protocol DeeplinksServiceProtocol {
-    var linkContent: DeeplinkContent? { get }
-    var context: DeeplinkProcessorContext? { get set }
-
-    func handleDeeplink(content: DeeplinkContent, executeHandler: Bool)
-    func canHandleLink(url: URL) -> Bool
-    func canHandleLink(content: DeeplinkContent) -> Bool
-
-    func reset()
-    func resetProcessors()
-}
+import CommonApplication
 
 public final class DeeplinksService: DeeplinksServiceProtocol {
 

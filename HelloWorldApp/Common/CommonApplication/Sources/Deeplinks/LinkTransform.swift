@@ -1,15 +1,15 @@
 //
 //  LinkTransform.swift
-//  Deeplinks
+//  CommonApplication
 //
-//  Created by Anton Vlezko on 27/09/2024.
-//  Copyright (c) 2024 Smart Lads Software. All rights reserved.
+//  Created by Anton Vlezko on 17/10/24.
+//  Copyright © 2024 Smart Lads Software. All rights reserved.
+//
 
 import Foundation
-import ObjectMapper
-import Foundation
-import Common
 import CommonNet
+import Common
+import ObjectMapper
 
 public protocol TransformType {
     associatedtype Object
@@ -35,7 +35,7 @@ public class LinkTransform: TransformType {
            let url = URL(string: cleanString) {
 
             if let type = parseDeeplinkType(url: url) {
-                let parameters = parseQueryParameters(url: url, as: DeeplinkContentParameters.self)
+                let parameters = parseQueryParameters(url: url, as: DeeplinkContentParametersMo.self)
                 result = .Deeplink(DeeplinkContent(url: url, type: type, parameters: parameters, option: nil))
             } else {
                 result = .plainLink(url)
@@ -103,3 +103,4 @@ fileprivate extension LinkTransform {
         static let domainsSeparator = "."
     }
 }
+

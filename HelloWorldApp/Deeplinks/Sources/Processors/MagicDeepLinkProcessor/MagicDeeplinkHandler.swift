@@ -7,6 +7,7 @@
 
 import Foundation
 import CommonNet
+import CommonApplication
 
 final public class MagicDeeplinkHandler: AbstractDeeplinkHandler {
 

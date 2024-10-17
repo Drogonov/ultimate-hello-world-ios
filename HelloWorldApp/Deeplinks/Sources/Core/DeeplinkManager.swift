@@ -11,6 +11,7 @@ import UIKit
 import CommonNet
 import Persistence
 import MasterComponents
+import CommonApplication
 
 @objcMembers
 public final class DeeplinksManager: NSObject {

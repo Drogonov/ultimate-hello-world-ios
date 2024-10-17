@@ -7,6 +7,7 @@
 
 import Foundation
 import CommonNet
+import CommonApplication
 
 public protocol DeeplinkHandlerProtocol {
     var next: DeeplinkHandlerProtocol? { get }

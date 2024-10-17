@@ -9,8 +9,8 @@ import Swinject
 import Services
 import Net
 import DI
-import Deeplinks
 import UIKit
+import CommonApplication
 
 // MARK: - LoanConfigurator
 

@@ -8,6 +8,7 @@
 import Foundation
 import DI
 import Swinject
+import CommonApplication
 
 final public class InitDeeplinksCommand: Command {
 

@@ -3,13 +3,15 @@ import ProjectDescription
 // MARK: - Constants
 
 public enum Constants {
-    static let organisationName = "Smart Lads Software"
-    static let rootBundleId = "com.drogonov.HelloWorldApp"
+    public static let organisationName = "Smart Lads Software"
+    public static let rootBundleId = "com.drogonov.HelloWorldApp"
 }
 
 // MARK: - Enums
 
 public enum ProjectName: String, Codable {
+    case HellowWorldApp
+
     case Common
     case CommonApplication
     case CommonNet
@@ -34,6 +36,9 @@ public enum ProjectName: String, Codable {
 
     public var path: String {
         switch self {
+        case .HellowWorldApp:
+            return "/"
+            
         case .Common:
             return "/Common/Common"
 
