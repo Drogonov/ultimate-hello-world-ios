@@ -1,4 +1,5 @@
 import ProjectDescription
+import ProjectDescriptionHelpers
 
 let project = Project(
     name: "CommonApplication",
@@ -25,12 +26,7 @@ let project = Project(
             sources: ["Tests/**"],
             resources: [],
             scripts: [
-                .pre(
-                    path: "./Tests/Sourcery/sourcery.sh",
-                    arguments: ["${PROJECT_DIR}/../..", "${PROJECT_DIR}"],
-                    name: "Sourcery",
-                    basedOnDependencyAnalysis: false
-                )
+                Project.generateSourceryScript(pathToTarget: "/Common/CommonApplication")
             ],
             dependencies: [
                 .target(name: "CommonApplication"),

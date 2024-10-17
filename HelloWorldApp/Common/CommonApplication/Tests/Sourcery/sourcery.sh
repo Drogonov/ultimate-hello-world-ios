@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Arguments
-ROOT_DIR="$1"
-PROJECT_DIR="$2"
+SCRIPT_DIR="$1"
+CONFIG_DIR="$2"
 
 # Variables
-SOURCERY="${ROOT_DIR}/scripts/sourcery-2/bin/sourcery"
-CONFIG="${PROJECT_DIR}/Tests/Sourcery/sourcery.yml"
+SOURCERY="${SCRIPT_DIR}"
+CONFIG="${CONFIG_DIR}"
 
 # Run Sourcery
 "${SOURCERY}" --config "${CONFIG}" --verbose
