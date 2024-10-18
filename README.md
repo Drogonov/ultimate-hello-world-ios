@@ -47,7 +47,7 @@ It is simple **MVP+R** architecture app with a few SwiftUI screens and two disti
 
 ### 2. Build the App
 
-- [Install Tuist](https://docs.tuist.io/guides/quick-start/install-tuist) version 4.20 or above
+- [Install Tuist](https://docs.tuist.io/guides/quick-start/install-tuist) version 4.30 or above
 - Open in terminal root app folder
 
 ```
@@ -60,6 +60,8 @@ tuist install && tuist generate
 ```
 - When project will be generated Xcode will be opened and you can start testing app!
 
+- I recommend you to use custom scheme HelloWorldApp-Debug
+
 ### 3. Install Templates
 
 - Start in terminal script to install Templates
@@ -71,7 +73,7 @@ sh <your_root_dir>/ultimate-hello-world-ios/Templates/install-swifty-mvp-xcode-t
 
 ### How to Test?
 
-- Change target to HelloWorldApp-Workspace and press 
+- Change target to HelloWorldApp-Debug and press 
 - If you will have problems pls try to build CommonApplication tests directly by changing target to it and pressing _Cmd+U_ (this problems is already in _TODOs_)
 
 ## Project Targets Description
@@ -100,7 +102,7 @@ sh <your_root_dir>/ultimate-hello-world-ios/Templates/install-swifty-mvp-xcode-t
 
 - **CommonNet** - Consists of common networking utilities and components shared across the application's network layer.
 
-- **CommonUI** - Provides shared UI components and styles, standardizing the app's visual design.
+- **CommonTest** - Provides shared Test components to improve testing of the app.
 
 - **CommonApplication** - Contains code shared across multiple application modules, ensuring consistency and efficiency.
 
