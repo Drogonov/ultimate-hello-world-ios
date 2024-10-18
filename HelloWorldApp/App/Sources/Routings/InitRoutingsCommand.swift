@@ -21,7 +21,7 @@ public final class InitRoutingsCommand: Command {
 fileprivate extension InitRoutingsCommand {
     func initalizeRoutingsAssemblies() {
         DIAssembler.apply([
-            HelloWorldAppRoutingConfigurator()
+            AppRoutingConfigurator()
         ])
     }
 }

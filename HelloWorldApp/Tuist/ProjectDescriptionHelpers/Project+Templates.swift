@@ -67,6 +67,20 @@ public func generateDependency(name: ProjectName) -> TargetDependency {
     )
 }
 
+//public func generateTargetReference(name: ProjectName) -> TargetReference {
+//    .project(
+//        path: Path(stringLiteral: name.path),
+//        target: name.rawValue
+//    )
+//}
+//
+//public func generateTestTargetReference(name: ProjectName) -> TargetReference {
+//    .project(
+//        path: Path(stringLiteral: name.path),
+//        target: name.testName
+//    )
+//}
+
 public func generateSourceryScript(pathToTarget: String) -> TargetScript {
     let currentDirectoryPath = FileManager.default.currentDirectoryPath
     let localDirectoryPath = "\(currentDirectoryPath)\(pathToTarget)"

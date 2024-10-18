@@ -1,5 +1,5 @@
 //
-//  HelloWorldAppRoutingConfigurator.swift
+//  AppRoutingConfigurator.swift
 //  HelloWorldApp
 //
 //  Created by Anton Vlezko on 11/10/24.
@@ -11,7 +11,7 @@ import Swinject
 import HelloWorld
 import CommonApplication
 
-final class HelloWorldAppRoutingConfigurator: Assembly {
+final class AppRoutingConfigurator: Assembly {
 
     func assemble(container: Container) {
         registerMainTabBarProvider(in: container)
@@ -19,7 +19,7 @@ final class HelloWorldAppRoutingConfigurator: Assembly {
     }
 }
 
-fileprivate extension HelloWorldAppRoutingConfigurator {
+fileprivate extension AppRoutingConfigurator {
 
     func registerMainTabBarProvider(in container: Container) {
         container.register(MainTabBarProviderProtocol.self) { _ in

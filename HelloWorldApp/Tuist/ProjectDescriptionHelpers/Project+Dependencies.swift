@@ -5,12 +5,13 @@ import ProjectDescription
 public enum Constants {
     public static let organisationName = "Smart Lads Software"
     public static let rootBundleId = "com.drogonov.HelloWorldApp"
+    public static let projectName = "HelloWorldApp"
 }
 
 // MARK: - Enums
 
 public enum ProjectName: String, Codable {
-    case HellowWorldApp
+    case App
 
     case Common
     case CommonApplication
@@ -36,47 +37,47 @@ public enum ProjectName: String, Codable {
 
     public var path: String {
         switch self {
-        case .HellowWorldApp:
-            return "/"
-            
+        case .App:
+            return "/App"
+
         case .Common:
-            return "/Common/Common"
+            return "/Frameworks/Common/Common"
 
         case .CommonApplication:
-            return "/Common/CommonApplication"
+            return "/Frameworks/Common/CommonApplication"
 
         case .CommonNet:
-            return "/Common/CommonNet"
+            return "/Frameworks/Common/CommonNet"
 
         case .CommonTest:
-            return "/Common/CommonTest"
+            return "/Frameworks/Common/CommonTest"
 
         case .Deeplinks:
-            return "/Deeplinks"
+            return "/Frameworks/Deeplinks"
 
         case .DI:
-            return "/DI"
+            return "/Frameworks/DI"
 
         case .MasterComponents:
-            return "/MasterComponents"
+            return "/Frameworks/MasterComponents"
 
         case .HelloWorld:
-            return "/Modules/HelloWorld"
+            return "/Frameworks/Modules/HelloWorld"
 
         case .Magic:
-            return "/Modules/Magic"
+            return "/Frameworks/Modules/Magic"
 
         case .Net:
-            return "/Net"
+            return "/Frameworks/Net"
 
         case .Persistence:
-            return "/Persistence"
+            return "/Frameworks/Persistence"
 
         case .Resources:
-            return "/Resources"
+            return "/Frameworks/Resources"
 
         case .Services:
-            return "/Services"
+            return "/Frameworks/Services"
         }
     }
 }
