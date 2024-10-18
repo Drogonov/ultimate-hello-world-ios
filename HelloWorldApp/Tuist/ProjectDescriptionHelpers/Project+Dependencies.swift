@@ -10,7 +10,7 @@ public enum Constants {
 
 // MARK: - Enums
 
-public enum ProjectName: String, Codable {
+public enum ProjectName: String, Codable, CaseIterable {
     case App
 
     case Common
@@ -35,50 +35,54 @@ public enum ProjectName: String, Codable {
         "\(self.rawValue)Mocks"
     }
 
-    public var path: String {
+    public var rootPath: String {
         switch self {
         case .App:
-            return "/App"
+            return "App"
 
         case .Common:
-            return "/Frameworks/Common/Common"
+            return "Frameworks/Common/Common"
 
         case .CommonApplication:
-            return "/Frameworks/Common/CommonApplication"
+            return "Frameworks/Common/CommonApplication"
 
         case .CommonNet:
-            return "/Frameworks/Common/CommonNet"
+            return "Frameworks/Common/CommonNet"
 
         case .CommonTest:
-            return "/Frameworks/Common/CommonTest"
+            return "Frameworks/Common/CommonTest"
 
         case .Deeplinks:
-            return "/Frameworks/Deeplinks"
+            return "Frameworks/Deeplinks"
 
         case .DI:
-            return "/Frameworks/DI"
+            return "Frameworks/DI"
 
         case .MasterComponents:
-            return "/Frameworks/MasterComponents"
+            return "Frameworks/MasterComponents"
 
         case .HelloWorld:
-            return "/Frameworks/Modules/HelloWorld"
+            return "Frameworks/Modules/HelloWorld"
 
         case .Magic:
-            return "/Frameworks/Modules/Magic"
+            return "Frameworks/Modules/Magic"
 
         case .Net:
-            return "/Frameworks/Net"
+            return "Frameworks/Net"
 
         case .Persistence:
-            return "/Frameworks/Persistence"
+            return "Frameworks/Persistence"
 
         case .Resources:
-            return "/Frameworks/Resources"
+            return "Frameworks/Resources"
 
         case .Services:
-            return "/Frameworks/Services"
+            return "Frameworks/Services"
         }
+    }
+
+    public var path: String {
+        "/\(rootPath)"
     }
 }
 

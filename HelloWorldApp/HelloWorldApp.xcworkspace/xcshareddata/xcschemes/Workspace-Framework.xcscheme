@@ -20,6 +20,20 @@
                ReferencedContainer = "container:App/HelloWorldApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CFFD2F569F6F5A50F8F94C0B"
+               BuildableName = "CommonApplication.framework"
+               BlueprintName = "CommonApplication"
+               ReferencedContainer = "container:Frameworks/Common/CommonApplication/CommonApplication.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -36,6 +50,16 @@
                BuildableName = "AppTests.xctest"
                BlueprintName = "AppTests"
                ReferencedContainer = "container:App/HelloWorldApp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6B42AA3AE836E0F5B47357B5"
+               BuildableName = "CommonApplicationTests.xctest"
+               BlueprintName = "CommonApplicationTests"
+               ReferencedContainer = "container:Frameworks/Common/CommonApplication/CommonApplication.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

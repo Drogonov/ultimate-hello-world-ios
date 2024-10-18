@@ -67,19 +67,26 @@ public func generateDependency(name: ProjectName) -> TargetDependency {
     )
 }
 
-//public func generateTargetReference(name: ProjectName) -> TargetReference {
-//    .project(
-//        path: Path(stringLiteral: name.path),
-//        target: name.rawValue
-//    )
-//}
-//
-//public func generateTestTargetReference(name: ProjectName) -> TargetReference {
-//    .project(
-//        path: Path(stringLiteral: name.path),
-//        target: name.testName
-//    )
-//}
+public func generateTargetReference(name: ProjectName, isForTest: Bool = false) -> TargetReference {
+    .project(
+        path: Path(stringLiteral: name.rootPath),
+        target: isForTest ? name.testName : name.rawValue
+    )
+}
+
+public func generateTargetsReferences(names: [ProjectName]) -> [TargetReference] {
+    names.compactMap { name in
+        generateTargetReference(name: name)
+    }
+}
+
+public func generateTestableTargetsReferences(names: [ProjectName]) -> [TestableTarget] {
+    names.compactMap { name in
+            .testableTarget(
+                target: generateTargetReference(name: name, isForTest: true)
+            )
+    }
+}
 
 public func generateSourceryScript(pathToTarget: String) -> TargetScript {
     let currentDirectoryPath = FileManager.default.currentDirectoryPath
