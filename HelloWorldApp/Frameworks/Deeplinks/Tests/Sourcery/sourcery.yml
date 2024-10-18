@@ -1,7 +1,7 @@
 sources:
   - ../../../Deeplinks
 templates:
-  - ../../../scripts/sourcery-2/Templates/AutoMockable.stencil
+  - ../../../../scripts/sourcery-2/Templates/AutoMockable.stencil
 output:
   path: ../../Mocks/AutoMockable.generated.swift
 args:

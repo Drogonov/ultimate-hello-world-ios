@@ -1,7 +1,7 @@
 sources:
   - ../../../Persistence
 templates:
-  - ../../../scripts/sourcery-2/Templates
+  - ../../../../scripts/sourcery-2/Templates
 output:
   path: ../../Mocks/AutoMockable.generated.swift
 args:
