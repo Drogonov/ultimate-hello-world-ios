@@ -73,8 +73,8 @@ sh <your_root_dir>/ultimate-hello-world-ios/Templates/install-swifty-mvp-xcode-t
 
 ### How to Test?
 
-- Change target to HelloWorldApp-Debug and press 
-- If you will have problems pls try to build CommonApplication tests directly by changing target to it and pressing _Cmd+U_ (this problems is already in _TODOs_)
+- Change target to HelloWorldApp-Debug and press _Cmd+U_
+- If you will have problems pls try to build CommonApplication tests directly by changing target to it and pressing _Cmd+U_ and after that try again. On fresh builds it can happen.
 
 ## Project Targets Description
 
