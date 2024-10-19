@@ -1,6 +1,8 @@
 import ProjectDescription
 import Foundation
 
+// MARK: - Project Generation
+
 public func generateProject(projectName: ProjectName, targets: [TargetInfo]) -> Project {
     let targets: [Target] = targets.compactMap { target in
         let name: String
@@ -36,6 +38,9 @@ public func generateProject(projectName: ProjectName, targets: [TargetInfo]) -> 
             scripts = [
                 generateSourceryScript(pathToTarget: projectName.path)
             ]
+
+            let config = getSourceryYamlConfig(name: projectName)
+            createSourceryYamlConfig(config: config)
         }
 
         return .target(
@@ -59,6 +64,8 @@ public func generateProject(projectName: ProjectName, targets: [TargetInfo]) -> 
 
     return project
 }
+
+// MARK: - Target Generation
 
 public func generateDependency(name: ProjectName) -> TargetDependency {
     .project(
@@ -88,6 +95,8 @@ public func generateTestableTargetsReferences(names: [ProjectName]) -> [Testable
     }
 }
 
+// MARK: - Sourcery Generation
+
 public func generateSourceryScript(pathToTarget: String) -> TargetScript {
     let currentDirectoryPath = FileManager.default.currentDirectoryPath
     let localDirectoryPath = "\(currentDirectoryPath)\(pathToTarget)"
@@ -104,7 +113,46 @@ public func generateSourceryScript(pathToTarget: String) -> TargetScript {
     )
 }
 
-private func filePath(currentPath: String, fileName: String) -> Path {
+private func getSourceryYamlConfig(name: ProjectName) -> SourceryYamlConfig {
+    let currentDirectoryPath = FileManager.default.currentDirectoryPath
+
+    return SourceryYamlConfig(
+        projectPath: "\(currentDirectoryPath)\(name.path)\(name.sourceryPath)",
+        fileName: "sourcery.yml",
+        sourcesPath: "\(currentDirectoryPath)\(name.path)",
+        templatesPath: filePath(currentPath: currentDirectoryPath, fileName: "AutoMockable.stencil", returnDirectoryOnly: true).pathString,
+        outputPath: "\(currentDirectoryPath)\(name.path)\(name.mockPath)",
+        argsTestableImports: "[Services]",
+        argsImports: "[CommonNet , Common]"
+    )
+}
+
+private func createSourceryYamlConfig(config: SourceryYamlConfig) {
+    let fileContent = """
+    sources:
+      - \(config.sourcesPath)
+    templates:
+      - \(config.templatesPath)
+    output:
+      path: \(config.outputPath)
+    args:
+      autoMockableTestableImports: \(config.argsTestableImports)
+      autoMockableImports: \(config.argsImports)
+    """
+
+    let filePath = "\(config.projectPath)/\(config.fileName)"
+
+    do {
+        try fileContent.write(toFile: filePath, atomically: true, encoding: .utf8)
+        print("YAML file created at \(config.sourcesPath)")
+    } catch {
+        print("Failed to create YAML file: \(error.localizedDescription)")
+    }
+}
+
+// MARK: - Private Methods
+
+private func filePath(currentPath: String, fileName: String, returnDirectoryOnly: Bool = false) -> Path {
     let fileManager = FileManager.default
 
     // This function recursively searches for the file
@@ -123,7 +171,7 @@ private func filePath(currentPath: String, fileName: String) -> Path {
                         }
                     } else if item == fileName {
                         // File found
-                        return fullPath
+                        return returnDirectoryOnly ? path : fullPath
                     }
                 }
             }

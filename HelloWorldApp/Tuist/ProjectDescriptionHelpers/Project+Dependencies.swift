@@ -84,6 +84,14 @@ public enum ProjectName: String, Codable, CaseIterable {
     public var path: String {
         "/\(rootPath)"
     }
+
+    public var sourceryPath: String {
+        "/Tests/Sourcery"
+    }
+
+    public var mockPath: String {
+        "/Mocks/AutoMockable.generated.swift"
+    }
 }
 
 public enum TargetType: String, Codable {
@@ -114,4 +122,16 @@ public struct TargetInfo: Codable {
         self.doesIncludeResources = doesIncludeResources
         self.doesUseSourcery = doesUseSourcery
     }
+}
+
+// MARK: - Sourcery Generation
+
+struct SourceryYamlConfig {
+    let projectPath: String
+    let fileName: String
+    let sourcesPath: String
+    let templatesPath: String
+    let outputPath: String
+    let argsTestableImports: String
+    let argsImports: String
 }

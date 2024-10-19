@@ -1,9 +1,0 @@
-sources:
-  - ../../../Magic
-templates:
-  - ../../../../../scripts/sourcery-2/Templates
-output:
-  path: ../../Mocks/AutoMockable.generated.swift
-args:
-  autoMockableTestableImports: ["Magic"]
-  autoMockableImports: ["CommonApplicationMocks", "CommonApplication", "Common"]

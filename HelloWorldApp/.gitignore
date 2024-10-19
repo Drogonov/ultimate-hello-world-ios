@@ -90,5 +90,6 @@ fastlane/test_output
 
 iOSInjectionProject/
 *.generated.*
+sourcery.yml
 *.xcodeproj
 *.package.resolved

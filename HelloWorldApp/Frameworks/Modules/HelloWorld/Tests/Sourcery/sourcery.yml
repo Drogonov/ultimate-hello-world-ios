@@ -1,9 +1,0 @@
-sources:
-  - ../../../HelloWorld
-templates:
-  - ../../../../../scripts/sourcery-2/Templates
-output:
-  path: ../../Mocks/AutoMockable.generated.swift
-args:
-  autoMockableTestableImports: ["HelloWorld"]
-  autoMockableImports: ["CommonApplicationMocks", "CommonApplication", "DI"]
