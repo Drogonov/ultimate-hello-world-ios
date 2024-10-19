@@ -115,20 +115,64 @@ public func generateSourceryScript(pathToTarget: String) -> TargetScript {
 
 private func getSourceryYamlConfig(name: ProjectName) -> SourceryYamlConfig {
     let currentDirectoryPath = FileManager.default.currentDirectoryPath
+    let args = getSourceryYamlArgs(name: name)
 
     return SourceryYamlConfig(
+        name: name,
         projectPath: "\(currentDirectoryPath)\(name.path)\(name.sourceryPath)",
         fileName: "sourcery.yml",
         sourcesPath: "\(currentDirectoryPath)\(name.path)",
         templatesPath: filePath(currentPath: currentDirectoryPath, fileName: "AutoMockable.stencil", returnDirectoryOnly: true).pathString,
         outputPath: "\(currentDirectoryPath)\(name.path)\(name.mockPath)",
-        argsTestableImports: "[Services]",
-        argsImports: "[CommonNet , Common]"
+        argsTestableImports: args.argsTestableImports,
+        argsImports: args.argsImports
     )
+}
+
+private func getSourceryYamlArgs(name: ProjectName) -> (argsTestableImports: String, argsImports: String) {
+    let argsTestableImports: String
+    let argsImports: String
+
+    switch name {
+    case .CommonApplication:
+        argsTestableImports = "[CommonApplication]"
+        argsImports = "[Common]"
+
+    case .Deeplinks:
+        argsTestableImports = "[Deeplinks]"
+        argsImports = "[Common, CommonApplication]"
+
+    case .MasterComponents:
+        argsTestableImports = "[MasterComponents]"
+        argsImports = "[UIKit, Common, Resources]"
+
+    case .HelloWorld:
+        argsTestableImports = "[HelloWorld]"
+        argsImports = "[Common, CommonApplicationMocks, CommonApplication, DI]"
+
+    case .Magic:
+        argsTestableImports = "[Magic]"
+        argsImports = "[Common, CommonApplicationMocks, CommonApplication, DI]"
+
+    case .Persistence:
+        argsTestableImports = "[Persistence]"
+        argsImports = "[]"
+
+    case .Services:
+        argsTestableImports = "[Services]"
+        argsImports = "[CommonNet , Common]"
+
+    default:
+        argsTestableImports = "[]"
+        argsImports = "[]"
+    }
+
+    return (argsTestableImports: argsTestableImports, argsImports: argsImports)
 }
 
 private func createSourceryYamlConfig(config: SourceryYamlConfig) {
     let fileContent = """
+    # Generated from Tuist/ProjectDescriptionHelpers/Project+Dependencies.swift by createSourceryYamlConfig
     sources:
       - \(config.sourcesPath)
     templates:
@@ -144,7 +188,7 @@ private func createSourceryYamlConfig(config: SourceryYamlConfig) {
 
     do {
         try fileContent.write(toFile: filePath, atomically: true, encoding: .utf8)
-        print("YAML file created at \(config.sourcesPath)")
+        print("YAML file created at \(config.name.rawValue)")
     } catch {
         print("Failed to create YAML file: \(error.localizedDescription)")
     }

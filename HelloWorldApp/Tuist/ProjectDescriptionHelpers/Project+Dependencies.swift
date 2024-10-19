@@ -127,6 +127,7 @@ public struct TargetInfo: Codable {
 // MARK: - Sourcery Generation
 
 struct SourceryYamlConfig {
+    let name: ProjectName
     let projectPath: String
     let fileName: String
     let sourcesPath: String
