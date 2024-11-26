@@ -59,6 +59,9 @@
       location = "container:"
       name = "Dependencies">
       <FileRef
+         location = "group:Tuist/.build/tuist-derived/KeychainAccess/KeychainAccess.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:Tuist/.build/tuist-derived/ObjectMapper/ObjectMapper.xcodeproj">
       </FileRef>
       <FileRef

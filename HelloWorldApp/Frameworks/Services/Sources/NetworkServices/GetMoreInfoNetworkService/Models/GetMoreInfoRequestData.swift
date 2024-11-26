@@ -14,7 +14,7 @@ struct GetMoreInfoRequestData: NetRequestResponseProtocol {
     var paramsEncoder: NetEncoderProtocol = FormURLEncoderForMo()
     var params: [String: Any]? = nil
     var timeout: NetTimeoutProtocol = NetTimeout.normal
-    var urlPath: String = "/info"
+    var urlPath: String = "/app/info"
     var headers: NetHeaders = .defaultHeaders()
     var serializer = UniversalMappableSerializer<GetMoreInfoResponseMo>()
     var stringUrl: String?

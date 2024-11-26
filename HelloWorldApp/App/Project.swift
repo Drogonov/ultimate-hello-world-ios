@@ -18,6 +18,7 @@ let project = Project(
                 .external(name: "SnapKit"),
                 .external(name: "Swinject"),
                 .external(name: "RealmSwift"),
+                .external(name: "KeychainAccess"),
                 generateDependency(name: .DI),
                 generateDependency(name: .Resources),
                 generateDependency(name: .MasterComponents),

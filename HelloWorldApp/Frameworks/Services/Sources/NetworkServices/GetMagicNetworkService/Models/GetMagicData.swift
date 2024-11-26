@@ -14,7 +14,7 @@ struct GetMagicRequestData: NetRequestResponseProtocol {
     var paramsEncoder: NetEncoderProtocol = FormURLEncoderForMo()
     var params: [String: Any]? = nil
     var timeout: NetTimeoutProtocol = NetTimeout.normal
-    var urlPath: String = "/magic"
+    var urlPath: String = "/app/magic"
     var headers: NetHeaders = .defaultHeaders()
     var serializer = UniversalMappableSerializer<GetMagicResponseMo>()
     var stringUrl: String?

@@ -10,13 +10,13 @@ import Foundation
 import Net
 import CommonNet
 
-struct ___VARIABLE_productName___RequestData: NTRequestResponseProtocol {
-    var method: NTMethod = .post
-    var paramsEncoder: NTEncoderProtocol = FormURLEncoderForMo()
+struct ___VARIABLE_productName___RequestData: NetRequestResponseProtocol {
+    var method: NetMethod = .post
+    var paramsEncoder: NetEncoderProtocol = FormURLEncoderForMo()
     var params: [String: Any]? = nil
-    var timeout: NTTimeoutProtocol = ACTimeout.normal
+    var timeout: NetTimeoutProtocol = NetTimeout.normal
     var urlPath: String = "/___VARIABLE_methodName___"
-    var headers: NTHeaders = .defaultHeaders()
+    var headers: NetHeaders = .defaultHeaders()
     var serializer = UniversalMappableSerializer<___VARIABLE_productName___ResponseMo>()
     var stringUrl: String?
 

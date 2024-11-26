@@ -14,7 +14,7 @@ struct GetCountriesRequestData: NetRequestResponseProtocol {
     var paramsEncoder: NetEncoderProtocol = FormURLEncoderForMo()
     var params: [String: Any]? = nil
     var timeout: NetTimeoutProtocol = NetTimeout.normal
-    var urlPath: String = "/countries"
+    var urlPath: String = "/app/countries"
     var headers: NetHeaders = .defaultHeaders()
     var serializer = UniversalMappableSerializer<GetCountriesResponseMo>()
     var stringUrl: String?

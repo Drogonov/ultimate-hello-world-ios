@@ -6,6 +6,7 @@
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.
 
 import Foundation
+import CommonNet
 
 public protocol NetworkManagerProtocol {
 
@@ -56,6 +57,18 @@ public class NetworkManager: NetworkManagerProtocol {
             responseError = error
         }
 
+        // if we catch first time unauthorized error we will try to refresh tokens and call previous request one more time
+        if let urlResponse = response?.response as? HTTPURLResponse,
+           urlResponse.statusCode == 401 {
+            let wasRefreshed = await tryToRefreshTokens()
+            if wasRefreshed {
+                response = try? await requestInterceptor(request: request)
+                if let response = response {
+                    logger?.log(request: response.urlRequest, loadedData: response.data, response: response.response)
+                }
+            }
+        }
+
         return try request.serializer.serialize(
             requestData: response?.data,
             response: response?.response,
@@ -82,6 +95,7 @@ public class NetworkManager: NetworkManagerProtocol {
     }
 
     // MARK: Private methods
+
     @available(iOS 13, macOS 12, *)
     private func loadData<Request: NetRequestProtocol>(
         request: Request
@@ -117,8 +131,8 @@ public class NetworkManager: NetworkManagerProtocol {
             logger?.didReceiveResponse(response: response, data: data, error: nil, request: finalRequest)
 
             modifier?.receivedCookies(
-                    for: request,
-                    cookies: extractCookies(from: response)
+                for: request,
+                cookies: extractCookies(from: response)
             )
 
             return (data, response, urlRequest)
@@ -135,6 +149,33 @@ public class NetworkManager: NetworkManagerProtocol {
         }
     }
 
+    private func tryToRefreshTokens() async -> Bool {
+        let request = RefreshTokenRequestData()
+        var responseError: Error?
+
+        var response: (data: Data, response: URLResponse, urlRequest: URLRequest)?
+        response = try? await requestInterceptor(request: request)
+
+        guard let data = try? request.serializer.serialize(
+            requestData: response?.data,
+            response: response?.response,
+            error: responseError,
+            request: request
+        ) else {
+            return false
+        }
+
+        if let token = data.accessToken {
+            KeychainJWTProvider.shared.save(.accessToken, token)
+        }
+
+        if let token = data.refreshToken {
+            KeychainJWTProvider.shared.save(.refreshToken, token)
+        }
+
+        return true
+    }
+
     private func extractCookies(from response: URLResponse) -> [HTTPCookie] {
         guard
             let httpResponse = response as? HTTPURLResponse,
@@ -143,5 +184,21 @@ public class NetworkManager: NetworkManagerProtocol {
         else { return [] }
 
         return HTTPCookie.cookies(withResponseHeaderFields: headers, for: url)
+    }
+}
+
+
+
+// MARK: - VoidEncoderForMo class
+
+public class VoidEncoderForMo: NetEncoderProtocol {
+
+    //  MARK: Init
+
+    public init() {}
+
+    // MARK: - NTEncoderProtocol implementation
+
+    public func encode<T>(_ value: T, request: inout URLRequest) throws {
     }
 }

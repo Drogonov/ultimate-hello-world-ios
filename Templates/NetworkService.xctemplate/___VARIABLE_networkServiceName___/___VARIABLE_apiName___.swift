@@ -21,12 +21,12 @@ public protocol ___VARIABLE_productName___APIProtocol {
 struct ___VARIABLE_productName___API: BaseAPI {
 
     // MARK: Implementations BaseApiMap
-    var networkClient: NTNetworkManagerProtocol
-    var errorHandler: NTErrorHandler
+    var networkClient: NetworkManagerProtocol
+    var errorHandler: NetErrorHandler
 
     init(
-        networkClient: NTNetworkManagerProtocol,
-        errorHandler: NTErrorHandler
+        networkClient: NetworkManagerProtocol,
+        errorHandler: NetErrorHandler
     ) {
         self.networkClient = networkClient
         self.errorHandler = errorHandler

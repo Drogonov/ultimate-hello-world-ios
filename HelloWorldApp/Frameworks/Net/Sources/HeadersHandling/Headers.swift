@@ -10,6 +10,7 @@ import Foundation
 public class Headers {
     public static let xtime = "X-Time"
     public static let xdeviceToken = "X-DeviceToken"
+    public static let authorization = "Authorization"
 
     static public func defaultHTTPHeaders() -> [String: String] {
         var headers = [String: String]()
@@ -20,10 +21,15 @@ public class Headers {
         return headers
     }
 
+    static public func defaultAuthorizationHeader(with token: String) -> String {
+        Constants.authorisationPrefix + token
+    }
+
     // MARK: Constants
 
     private enum Constants {
         static let targetChar = "-"
         static let replacementChar = ""
+        static let authorisationPrefix = "Bearer "
     }
 }

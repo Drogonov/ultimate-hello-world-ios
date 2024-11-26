@@ -31,8 +31,6 @@ public protocol DefaultErrorHandlerProtocol: NetErrorHandler, MCToastViewProtoco
 
 extension DefaultErrorHandlerProtocol {
 
-    public func defaultLogoutAction() {}
-
     public func handle(error: Error?) throws {
         try defaultHandle(error: error)
     }
@@ -165,7 +163,6 @@ fileprivate extension DefaultErrorHandlerProtocol {
                 defaultLogoutAction()
 
             case .forbidden:
-
                 let message = messageWithTraceId(
                     ResourcesStrings.forbiddenErrorDefaultMessage(),
                     responseInfo: responseInfo
@@ -176,7 +173,6 @@ fileprivate extension DefaultErrorHandlerProtocol {
                 )
 
             case .notFound, .precondition, .internalServerError, .badGateway:
-
                 let message = messageWithTraceId(
                     ResourcesStrings.serverInaccessibleMessage(),
                     responseInfo: responseInfo
@@ -211,6 +207,8 @@ fileprivate extension DefaultErrorHandlerProtocol {
         throw error
     }
 
+    func defaultLogoutAction() {}
+
     func handleTop(error: Error, reason: TopErrorReason) throws {
         /// use self custom ErrorHandler
         throw error
@@ -229,3 +227,4 @@ fileprivate enum Constants {
     static let trackIdKey: String = "trackId"
     static let constantAppStoreUrlPart: String = "itms-apps://itunes.apple.com/app/id"
 }
+
