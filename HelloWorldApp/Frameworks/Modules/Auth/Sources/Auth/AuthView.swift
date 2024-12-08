@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 // MARK: - AuthView
 
@@ -7,89 +8,54 @@ struct AuthView: View {
     // MARK: Properties
 
     @ObservedObject var model: AuthViewModel
-    var buttonTapped: (AuthMode) -> Void
-
-    @State private var authMode: AuthMode = .login
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var confirmPassword: String = ""
+    var buttonTapped: () -> Void
 
     @FocusState private var focusedField: FocusableField?
-
-    @State private var keyboardOffset: CGFloat = 0 // For keyboard handling
-
-    enum FocusableField: Hashable {
-        case email
-        case password
-        case confirmPassword
-    }
 
     // MARK: Construction
 
     var body: some View {
         ScrollView {
             VStack {
-                Picker("Auth Mode", selection: $authMode) {
-                    Text("Login").tag(AuthMode.login)
-                    Text("Sign Up").tag(AuthMode.register)
+                Picker(Constants.pickerName, selection: $model.authMode) {
+                    Text(model.loginPlaceholder).tag(AuthMode.login)
+                    Text(model.registerPlaceholder).tag(AuthMode.register)
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
 
-                TextField("Email", text: $email)
+                TextField(model.emailPlaceholder, text: $model.email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .focused($focusedField, equals: .email)
                     .padding()
                     .onSubmit { focusedField = .password }
 
-                TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .focused($focusedField, equals: .email)
-                    .padding()
-                    .onSubmit { focusedField = .password }
-
-                TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .focused($focusedField, equals: .email)
-                    .padding()
-                    .onSubmit { focusedField = .password }
-
-                TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .focused($focusedField, equals: .email)
-                    .padding()
-                    .onSubmit { focusedField = .password }
-
-                TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .focused($focusedField, equals: .email)
-                    .padding()
-                    .onSubmit { focusedField = .password }
-
-                SecureField("Password", text: $password)
+                SecureField(model.passwordPlaceholder, text: $model.password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .focused($focusedField, equals: .password)
                     .padding()
                     .onSubmit {
-                        if authMode == .register {
+                        if model.authMode == .register {
                             focusedField = .confirmPassword
                         } else {
                             focusedField = nil
                         }
                     }
 
-                if authMode == .register {
-                    SecureField("Confirm Password", text: $confirmPassword)
+                if model.authMode == .register {
+                    SecureField(model.confirmPasswordPlaceholder, text: $model.confirmPassword)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .focused($focusedField, equals: .confirmPassword)
                         .padding()
                         .onSubmit { focusedField = nil }
                 }
 
+                Spacer()
+
                 Button(action: {
-                    buttonTapped(authMode)
+                    buttonTapped()
                 }) {
-                    Text(authMode == .login ? "Login" : "Register")
+                    Text(model.buttonText)
                         .bold()
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -101,31 +67,26 @@ struct AuthView: View {
 
                 Spacer()
             }
-            .padding()
-            .padding(.bottom, keyboardOffset) // Apply keyboard offset
-            .onAppear {
-                DispatchQueue.main.async {
-                    self.focusedField = .email
-                }
-            }
         }
     }
+}
 
-    // MARK: Keyboard Handling Method
+// MARK: - Inner Types
 
-    func adjustForKeyboard(offset: CGFloat) {
-        withAnimation {
-            keyboardOffset = offset
-        }
+fileprivate extension AuthView {
+    enum FocusableField: Hashable {
+        case email
+        case password
+        case confirmPassword
     }
 }
 
 // MARK: - Constants
 
 fileprivate extension AuthView {
-
-    // delete if not needed
-    // enum Constants {}
+    enum Constants {
+        static let pickerName = "Auth Mode"
+    }
 }
 
 // MARK: - AuthView_Previews
@@ -133,11 +94,10 @@ fileprivate extension AuthView {
 struct AuthView_Previews: PreviewProvider {
     static var previews: some View {
         let model = AuthViewModel()
-        model.text = "Hello World"
 
         return AuthView(
             model: model,
-            buttonTapped: { _ in }
+            buttonTapped: { }
         )
     }
 }

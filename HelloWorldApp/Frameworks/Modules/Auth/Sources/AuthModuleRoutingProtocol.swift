@@ -6,9 +6,7 @@
 //  Copyright © 2024 Smart Lads Software. All rights reserved.
 //
 
-import DI
+import UIKit
 
 // sourcery: AutoMockable
-public protocol AuthModuleRoutingProtocol {
-    func getHelloWorldModuleFactory() -> MVPModuleFactory
-}
+public protocol AuthModuleRoutingProtocol {}

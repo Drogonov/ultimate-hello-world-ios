@@ -15,4 +15,13 @@ struct AuthModel: Equatable {
     // MARK: Public Properties
 
     let title: String?
+
+    let loginPlaceholder: String?
+    let registerPlaceholder: String?
+
+    let emailPlaceholder: String?
+    let passwordPlaceholder: String?
+    let confirmPasswordPlaceholder: String?
+
+    let buttonText: String?
 }

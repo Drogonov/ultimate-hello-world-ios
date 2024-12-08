@@ -256,6 +256,7 @@ extension BaseRouter: BaseRouterInput {
             return
         }
 
+        NavigationStackProvider.shared.set(isNavigationBarHidden: true)
         NavigationStackProvider.shared.setNewRootViewController(mainTabController)
     }
 }

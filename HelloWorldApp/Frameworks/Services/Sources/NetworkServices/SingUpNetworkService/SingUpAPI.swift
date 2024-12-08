@@ -18,13 +18,13 @@ public protocol SingUpAPIProtocol {
 
 // MARK: - SingUpAPI
 
-struct SingUpAPI: BaseAPI {
+public struct SingUpAPI: BaseAPI {
 
     // MARK: Implementations BaseApiMap
-    var networkClient: NetworkManagerProtocol
-    var errorHandler: NetErrorHandler
+    public var networkClient: NetworkManagerProtocol
+    public var errorHandler: NetErrorHandler
 
-    init(
+    public init(
         networkClient: NetworkManagerProtocol,
         errorHandler: NetErrorHandler
     ) {
@@ -37,7 +37,7 @@ struct SingUpAPI: BaseAPI {
 
 extension SingUpAPI: SingUpAPIProtocol {
 
-    func singupData(
+    public func singupData(
         request: SingUpRequestMo
     ) async throws -> SingUpResponseMo {
         try await performRequest(

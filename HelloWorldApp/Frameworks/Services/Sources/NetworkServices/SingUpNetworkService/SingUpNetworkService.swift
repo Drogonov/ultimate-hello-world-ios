@@ -23,7 +23,7 @@ public protocol SingUpNetworkServiceProtocol {
 
 // MARK: - SingUpService
 
-final class SingUpNetworkService {
+public final class SingUpNetworkService {
 
     // MARK: Private properties
 
@@ -32,7 +32,7 @@ final class SingUpNetworkService {
 
     // MARK: Init
 
-    init(
+    public init(
         api: SingUpAPIProtocol,
         shortCacher: CacheProtocol?
     ) {
@@ -44,7 +44,7 @@ final class SingUpNetworkService {
 // MARK: - SingUpNetworkServiceProtocol
 
 extension SingUpNetworkService: SingUpNetworkServiceProtocol {
-    func singupData(
+    public func singupData(
         request: SingUpRequestMo,
         forceRequest: Bool
     ) async throws -> SingUpResponseMo {

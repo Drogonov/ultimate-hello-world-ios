@@ -9,6 +9,11 @@
 import Foundation
 import SwiftUI
 import DI
+import Services
+import CommonNet
+import Net
+import MasterComponents
+import Resources
 
 // MARK: - AuthPresenter
 
@@ -24,6 +29,9 @@ class AuthPresenter {
 
     private var router: AuthRouterInput
     private var dataStorage: AuthDataStorage?
+
+    @DelayedImmutable var singInNetworkService: SingInNetworkServiceProtocol?
+    @DelayedImmutable var singUpNetworkService: SingUpNetworkServiceProtocol?
 
     @ObservedObject var viewModel = AuthViewModel()
 
@@ -42,10 +50,27 @@ class AuthPresenter {
 
 extension AuthPresenter: AuthPresenterInput {
     func viewIsReady() {
-        let model = AuthModel(title: dataStorage?.response)
+        let model = AuthModel(
+            title: "Auth",
+            loginPlaceholder: "Login",
+            registerPlaceholder: "Register",
+            emailPlaceholder: "Email",
+            passwordPlaceholder: "Password",
+            confirmPasswordPlaceholder: "Confirm Password",
+            buttonText: "Login"
+        )
 
         viewModel.navigationTitle = model.title ?? .empty
-        viewModel.text = model.title ?? .empty
+        viewModel.authMode = .login
+
+        viewModel.loginPlaceholder = model.loginPlaceholder ?? .empty
+        viewModel.registerPlaceholder = model.registerPlaceholder ?? .empty
+
+        viewModel.emailPlaceholder = model.emailPlaceholder ?? .empty
+        viewModel.passwordPlaceholder = model.passwordPlaceholder ?? .empty
+        viewModel.confirmPasswordPlaceholder = model.confirmPasswordPlaceholder ?? .empty
+
+        viewModel.buttonText = model.buttonText ?? .empty
 
         self.view?.setView(with: viewModel)
     }
@@ -54,7 +79,23 @@ extension AuthPresenter: AuthPresenterInput {
 
     func viewWillDissapear() {}
 
-    func viewButtonTapped() {}
+    func viewButtonTapped() {
+        guard viewModel.email.isNotEmpty,
+              viewModel.password.isNotEmpty else {
+            return
+        }
+
+        let request = SingInRequestMo(email: viewModel.email.lowercased(), password: viewModel.password)
+
+        Task {
+            do {
+                let response = try await singInNetworkService?.singInData(request: request, forceRequest: false)
+                handleSuccess(response: response)
+            } catch {
+                handleFailure(error: error.getTopLayerErrorResponse())
+            }
+        }
+    }
 
     func getEmptyModel() -> AuthViewModel {
         viewModel
@@ -79,7 +120,48 @@ extension AuthPresenter: AuthModuleOutput {}
 
 // MARK: - Private Methods
 
-fileprivate extension AuthPresenter {}
+fileprivate extension AuthPresenter {
+    @MainActor
+    func handleSuccess(response: TokensResponseMo?) {
+        guard let response = response else {
+            return
+        }
+
+        if let token = response.accessToken {
+            KeychainJWTProvider.shared.save(.accessToken, token)
+        }
+
+        if let token = response.refreshToken {
+            KeychainJWTProvider.shared.save(.refreshToken, token)
+        }
+
+        router.goToMainTabBar()
+    }
+
+    @MainActor
+    func handleFailure(error: ErrorResponseMo?) {
+        guard let error = error else {
+            return
+        }
+
+        let body = NativeAlertViewModel.Body(
+            title: error.errorCodeValue,
+            message: error.errorMsg
+        )
+
+        let buttons = NativeAlertViewModel.Buttons(
+            firstTitle: ResourcesStrings.ok(),
+            firstAction: {}
+        )
+
+        let viewModel = NativeAlertViewModel(
+            body: body,
+            buttons: buttons
+        )
+
+        showNativeAlert(viewModel: viewModel)
+    }
+}
 
 // MARK: - Constants
 

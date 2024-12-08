@@ -24,7 +24,7 @@ public class KeychainJWTProvider {
 
     // MARK: Properties
 
-    static let shared: KeychainJWTProvider = KeychainJWTProvider()
+    static public let shared: KeychainJWTProvider = KeychainJWTProvider()
 
     // MARK: Private Properties
 

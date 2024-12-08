@@ -30,7 +30,7 @@ protocol AuthViewInput: AnyObject {
 // MARK: - Presenter Protocols
 
 // sourcery: AutoMockable
-protocol AuthPresenterInput: AnyObject {
+protocol AuthPresenterInput: NativeAlertProtocol {
     func viewIsReady()
     func viewWillAppear()
     func viewWillDissapear()
@@ -43,4 +43,6 @@ protocol AuthPresenterInput: AnyObject {
 // MARK: - Router Protocols
 
 // sourcery: AutoMockable
-protocol AuthRouterInput: BaseRouterInput {}
+protocol AuthRouterInput: BaseRouterInput {
+    func goToMainTabBar()
+}

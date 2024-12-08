@@ -12,13 +12,18 @@ import Net
 
 open class SingInRequestMo: BaseRequest {
 
-    /// Some Text
-    public private(set) var code: String?
+    /// Email
+    public private(set) var email: String?
+
+    /// Password
+    public private(set) var password: String?
 
     public init(
-        code: String?
+        email: String?,
+        password: String?
     ) {
-        self.code = code
+        self.email = email
+        self.password = password
 
         super.init()
     }
@@ -28,7 +33,8 @@ open class SingInRequestMo: BaseRequest {
     }
 
     open override func mapping(map: Map) {
-        code <- map[Constants.code]
+        email <- map[Constants.email]
+        password <- map[Constants.password]
     }
 }
 
@@ -36,6 +42,7 @@ open class SingInRequestMo: BaseRequest {
 
 fileprivate extension SingInRequestMo {
     enum Constants {
-        static let code = "code"
+        static let email = "email"
+        static let password = "password"
     }
 }

@@ -15,8 +15,8 @@ struct SingInRequestData: NetRequestResponseProtocol {
     var paramsEncoder: NetEncoderProtocol = FormURLEncoderForMo()
     var params: [String: Any]? = nil
     var timeout: NetTimeoutProtocol = NetTimeout.normal
-    var urlPath: String = "/singIn"
-    var headers: NetHeaders = .defaultHeaders()
+    var urlPath: String = "/auth/local/signin"
+    var headers: NetHeaders = .defaultHeaders(nil)
     var serializer = UniversalMappableSerializer<TokensResponseMo>()
     var stringUrl: String?
 

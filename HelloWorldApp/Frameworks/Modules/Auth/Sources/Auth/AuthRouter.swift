@@ -16,18 +16,7 @@ final class AuthRouter: BaseRouter {}
 // MARK: - AuthRouterInput
 
 extension AuthRouter: AuthRouterInput {
-//    // Example code to call new module
-//    func goToTestModule(
-//        dataStorage: TestDataStorage,
-//        moduleOutput: TestModuleOutput
-//    ) {
-//        let configurator = MVPModuleConfigurator(FlowModuleFactory.testModule())
-//        let viewController = configurator.getViewController()
-//        configurator.configure { (input: TestModuleInput?) in
-//            input?.set(dataStorage: dataStorage)
-//            input?.setModuleOutput(moduleOutput)
-//        }
-//
-//        show(viewController, animated: true)
-//    }
+    func goToMainTabBar() {
+        openMainTabBarAsFirsNavigationController()
+    }
 }

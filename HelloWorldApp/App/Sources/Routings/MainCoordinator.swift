@@ -14,6 +14,7 @@ import Magic
 import Auth
 import Persistence
 import Resources
+import Net
 
 // MARK: Coordinator
 
@@ -41,15 +42,19 @@ class MainCoordinator: CoordinatorProtocol {
     }
 
     func start() {
-//        if isUserSawOnboarding() {
-//            showMainTabBar()
-//        } else {
-//            showOnboarding()
-//        }
-        showAuth()
+        switch (isUserSignedIn(), isUserSawOnboarding()) {
+        case (true, true):
+            showMainTabBar()
+
+        case (true, false):
+            showOnboarding()
+
+        case (false, _):
+            showAuth()
+        }
 
         NavigationStackProvider.shared.navigationStack = window.rootViewController as? UINavigationController
-        NavigationStackProvider.shared.set(isNavigationBarHidden: false)
+        NavigationStackProvider.shared.set(isNavigationBarHidden: isUserSignedIn() && isUserSawOnboarding() )
     }
 }
 
@@ -60,6 +65,10 @@ fileprivate extension MainCoordinator {
         self.sessionCache?.read(Bool.self, withKey: CommonCacheKey.isUserSawOnboarding) ?? false
     }
 
+    func isUserSignedIn() -> Bool {
+        KeychainJWTProvider.shared.get(.refreshToken) != nil
+    }
+
     func showOnboarding() {
         let navController = createOnboardingModule()
         window.rootViewController = navController
@@ -68,7 +77,8 @@ fileprivate extension MainCoordinator {
 
     func showMainTabBar() {
         if let tabBarController = mainTabBarProvider?.provideMainTabBar() {
-            window.rootViewController =  UINavigationController(rootViewController: tabBarController)
+            let navController = UINavigationController(rootViewController: tabBarController)
+            window.rootViewController =  navController
         }
     }
 

@@ -18,13 +18,13 @@ public protocol SingInAPIProtocol {
 
 // MARK: - SingInAPI
 
-struct SingInAPI: BaseAPI {
+public struct SingInAPI: BaseAPI {
 
     // MARK: Implementations BaseApiMap
-    var networkClient: NetworkManagerProtocol
-    var errorHandler: NetErrorHandler
+    public var networkClient: NetworkManagerProtocol
+    public var errorHandler: NetErrorHandler
 
-    init(
+    public init(
         networkClient: NetworkManagerProtocol,
         errorHandler: NetErrorHandler
     ) {
@@ -37,7 +37,7 @@ struct SingInAPI: BaseAPI {
 
 extension SingInAPI: SingInAPIProtocol {
 
-    func singInData(
+    public func singInData(
         request: SingInRequestMo
     ) async throws -> TokensResponseMo {
         try await performRequest(

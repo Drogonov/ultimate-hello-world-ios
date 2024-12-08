@@ -23,7 +23,7 @@ public protocol SingInNetworkServiceProtocol {
 
 // MARK: - SingInService
 
-final class SingInNetworkService {
+public final class SingInNetworkService {
 
     // MARK: Private properties
 
@@ -32,7 +32,7 @@ final class SingInNetworkService {
 
     // MARK: Init
 
-    init(
+    public init(
         api: SingInAPIProtocol,
         shortCacher: CacheProtocol?
     ) {
@@ -44,7 +44,7 @@ final class SingInNetworkService {
 // MARK: - SingInNetworkServiceProtocol
 
 extension SingInNetworkService: SingInNetworkServiceProtocol {
-    func singInData(
+    public func singInData(
         request: SingInRequestMo,
         forceRequest: Bool
     ) async throws -> TokensResponseMo {

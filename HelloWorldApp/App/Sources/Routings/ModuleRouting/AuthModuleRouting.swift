@@ -10,9 +10,5 @@ import DI
 import Auth
 import HelloWorld
 
-class AuthModuleRouting: AuthModuleRoutingProtocol {
-    func getHelloWorldModuleFactory() -> MVPModuleFactory {
-        HelloWorldFlowModuleFactory.helloWorldModule()
-    }
-}
+class AuthModuleRouting: AuthModuleRoutingProtocol {}
 

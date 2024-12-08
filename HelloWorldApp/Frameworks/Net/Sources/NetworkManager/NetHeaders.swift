@@ -34,13 +34,14 @@ public struct NetHeaders {
 
 public extension NetHeaders {
 
-    static func defaultHeaders(_ tokenType: JWTType = .accessToken) -> Self {
+    static func defaultHeaders(_ tokenType: JWTType? = .accessToken) -> Self {
         let dateString = AppConfiguration.sharedInstance.getDateString(from: Date())
 
         var headers = NetHeaders()
             .modify(key: Headers.xtime, value: dateString)
 
-        if let token = KeychainJWTProvider.shared.get(tokenType) {
+        if let tokenType = tokenType,
+            let token = KeychainJWTProvider.shared.get(tokenType) {
             headers = headers.modify(
                 key: Headers.authorization,
                 value: Headers.defaultAuthorizationHeader(with: token)
