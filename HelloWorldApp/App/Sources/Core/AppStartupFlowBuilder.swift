@@ -1,6 +1,6 @@
 //
 //  AppStartupFlowBuilder.swift
-//  HelloWorldApp
+//  App
 //
 //  Created by Anton Vlezko on 26/07/2024.
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.

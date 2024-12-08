@@ -1,6 +1,6 @@
 //
 //  AppRoutingConfigurator.swift
-//  HelloWorldApp
+//  App
 //
 //  Created by Anton Vlezko on 11/10/24.
 //  Copyright © 2024 Smart Lads Software. All rights reserved.
@@ -9,6 +9,7 @@
 import DI
 import Swinject
 import HelloWorld
+import Auth
 import CommonApplication
 
 final class AppRoutingConfigurator: Assembly {
@@ -16,6 +17,7 @@ final class AppRoutingConfigurator: Assembly {
     func assemble(container: Container) {
         registerMainTabBarProvider(in: container)
         registerHelloWorldModuleRouting(in: container)
+        registerAuthModuleRouting(in: container)
     }
 }
 
@@ -33,5 +35,12 @@ fileprivate extension AppRoutingConfigurator {
             HelloWorldModuleRouting()
         }
         .implements(HelloWorldModuleRoutingProtocol.self)
+    }
+
+    func registerAuthModuleRouting(in container: Container) {
+        container.register(AuthModuleRoutingProtocol.self) { _ in
+            AuthModuleRouting()
+        }
+        .implements(AuthModuleRoutingProtocol.self)
     }
 }

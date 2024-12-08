@@ -51,4 +51,3 @@ public extension BaseViewControllerProtocol where Self: UIViewController {
         }
     }
 }
-

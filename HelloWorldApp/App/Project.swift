@@ -28,6 +28,7 @@ let project = Project(
                 generateDependency(name: .Deeplinks),
                 generateDependency(name: .HelloWorld),
                 generateDependency(name: .Magic),
+                generateDependency(name: .Auth),
                 generateDependency(name: .Common),
                 generateDependency(name: .CommonNet),
                 generateDependency(name: .CommonApplication),

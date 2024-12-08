@@ -18,7 +18,8 @@ let customFrameworkScheme: Scheme = .scheme(
             .Deeplinks,
             .Services,
             .HelloWorld,
-            .Magic
+            .Magic,
+            .Auth
         ])
     ),
     runAction: .runAction(

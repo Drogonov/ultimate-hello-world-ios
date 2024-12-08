@@ -22,6 +22,7 @@ public enum ProjectName: String, Codable, CaseIterable {
     case MasterComponents
     case HelloWorld
     case Magic
+    case Auth
     case Net
     case Persistence
     case Resources
@@ -66,6 +67,9 @@ public enum ProjectName: String, Codable, CaseIterable {
 
         case .Magic:
             return "Frameworks/Modules/Magic"
+
+        case .Auth:
+            return "Frameworks/Modules/Auth"
 
         case .Net:
             return "Frameworks/Net"

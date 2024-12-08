@@ -1,6 +1,6 @@
 //
 //  MainCoordinator.swift
-//  HelloWorldApp
+//  App
 //
 //  Created by Anton Vlezko on 11/10/24.
 //  Copyright © 2024 Smart Lads Software. All rights reserved.
@@ -11,6 +11,7 @@ import DI
 import Deeplinks
 import CommonApplication
 import Magic
+import Auth
 import Persistence
 import Resources
 
@@ -40,14 +41,15 @@ class MainCoordinator: CoordinatorProtocol {
     }
 
     func start() {
-        if isUserSawOnboarding() {
-            showMainTabBar()
-        } else {
-            showOnboarding()
-        }
+//        if isUserSawOnboarding() {
+//            showMainTabBar()
+//        } else {
+//            showOnboarding()
+//        }
+        showAuth()
 
         NavigationStackProvider.shared.navigationStack = window.rootViewController as? UINavigationController
-        NavigationStackProvider.shared.set(isNavigationBarHidden: true)
+        NavigationStackProvider.shared.set(isNavigationBarHidden: false)
     }
 }
 
@@ -70,6 +72,11 @@ fileprivate extension MainCoordinator {
         }
     }
 
+    func showAuth() {
+        let navController = createAuthModule()
+        window.rootViewController = navController
+    }
+
     func createOnboardingModule() -> UINavigationController {
         let configurator = MVPModuleConfigurator(MagicFlowModuleFactory.onboardingModule())
         let viewController = configurator.getViewController()
@@ -78,6 +85,17 @@ fileprivate extension MainCoordinator {
                 onboardingText: ResourcesStrings.onboardingText(),
                 onboardingButtonText: ResourcesStrings.onboardingButtonText()
             ))
+        }
+
+        let navigationController = UINavigationController(rootViewController: viewController)
+        return navigationController
+    }
+
+    func createAuthModule() -> UINavigationController {
+        let configurator = MVPModuleConfigurator(AuthFlowModuleFactory.authModule())
+        let viewController = configurator.getViewController()
+        configurator.configure { (input: AuthModuleInput?) in
+            input?.set(dataStorage: AuthDataStorage())
         }
 
         let navigationController = UINavigationController(rootViewController: viewController)
