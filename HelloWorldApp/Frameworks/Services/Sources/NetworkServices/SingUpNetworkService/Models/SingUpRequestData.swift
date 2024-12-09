@@ -15,8 +15,8 @@ struct SingUpRequestData: NetRequestResponseProtocol {
     var paramsEncoder: NetEncoderProtocol = FormURLEncoderForMo()
     var params: [String: Any]? = nil
     var timeout: NetTimeoutProtocol = NetTimeout.normal
-    var urlPath: String = "/singup"
-    var headers: NetHeaders = .defaultHeaders()
+    var urlPath: String = "/auth/local/signup"
+    var headers: NetHeaders = .defaultHeaders(nil)
     var serializer = UniversalMappableSerializer<SingUpResponseMo>()
     var stringUrl: String?
 

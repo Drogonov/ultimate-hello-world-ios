@@ -94,13 +94,6 @@ extension AuthPresenter: AuthViewModelDelegate {
     
     func textFieldDidChange() {
         viewModel.isButtonEnabled = isRequestEnabled()
-
-//        if viewModel.authMode == .register,
-//           arePasswordsNotEqual() {
-//            viewModel.confirmPasswordTextField.subtitle = "Пароли не совпадают"
-//        } else {
-//            viewModel.confirmPasswordTextField.subtitle = .empty
-//        }
     }
 }
 
@@ -138,6 +131,13 @@ fileprivate extension AuthPresenter {
     func handleSingUpFlow() {
         let email = viewModel.emailTextField.text
         let password = viewModel.passwordTextField.text
+
+        if arePasswordsNotEqual() {
+            viewModel.confirmPasswordTextField.subtitle = "Пароли не совпадают"
+            return
+        } else {
+            viewModel.confirmPasswordTextField.subtitle = .empty
+        }
 
         guard email.isNotEmpty,
               password.isNotEmpty else {
@@ -182,7 +182,8 @@ fileprivate extension AuthPresenter {
             return
         }
 
-        if let status = SingUpStatus(rawValue: response?.status ?? .empty) {
+        if let status = SingUpStatus(rawValue: response?.status ?? .empty),
+            status  == .success {
             router.goToOTPModule(dataStorage: OTPDataStorage())
         } else {
             handleAlert(
@@ -240,6 +241,7 @@ fileprivate extension AuthPresenter {
         case .login:
             viewModel.emailTextField.text.isNotEmpty
             && viewModel.passwordTextField.text.isNotEmpty
+
         case .register:
             viewModel.emailTextField.text.isNotEmpty
             && viewModel.passwordTextField.text.isNotEmpty
@@ -268,14 +270,17 @@ fileprivate extension AuthPresenter {
         viewModel.loginPlaceholder = model.loginPlaceholder ?? .empty
         viewModel.registerPlaceholder = model.registerPlaceholder ?? .empty
 
-        viewModel.emailTextField = .init()
+        viewModel.emailTextField.text = .empty
         viewModel.emailTextField.placeholder = model.emailPlaceholder ?? .empty
+        viewModel.emailTextField.subtitle = .empty
 
-        viewModel.passwordTextField = .init()
+        viewModel.passwordTextField.text = .empty
         viewModel.passwordTextField.placeholder = model.passwordPlaceholder ?? .empty
+        viewModel.passwordTextField.subtitle = .empty
 
-        viewModel.confirmPasswordTextField = .init()
+        viewModel.confirmPasswordTextField.text = .empty
         viewModel.confirmPasswordTextField.placeholder = model.confirmPasswordPlaceholder ?? .empty
+        viewModel.confirmPasswordTextField.subtitle = .empty
 
         viewModel.buttonText = model.buttonText ?? .empty
     }

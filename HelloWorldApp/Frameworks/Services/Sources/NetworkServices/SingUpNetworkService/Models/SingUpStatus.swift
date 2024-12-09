@@ -9,7 +9,7 @@
 import Foundation
 
 public enum SingUpStatus: String, Codable {
-    case successful
+    case success
     case otpProblem
 }
 
