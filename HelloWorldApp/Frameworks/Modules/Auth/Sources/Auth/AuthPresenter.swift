@@ -43,6 +43,7 @@ class AuthPresenter {
         router: AuthRouterInput
     ) {
         self.router = router
+        viewModel.delegate = self
     }
 }
 
@@ -50,29 +51,9 @@ class AuthPresenter {
 
 extension AuthPresenter: AuthPresenterInput {
     func viewIsReady() {
-        let model = AuthModel(
-            title: "Auth",
-            loginPlaceholder: "Login",
-            registerPlaceholder: "Register",
-            emailPlaceholder: "Email",
-            passwordPlaceholder: "Password",
-            confirmPasswordPlaceholder: "Confirm Password",
-            buttonText: "Login"
-        )
-
-        viewModel.navigationTitle = model.title ?? .empty
         viewModel.authMode = .login
-
-        viewModel.loginPlaceholder = model.loginPlaceholder ?? .empty
-        viewModel.registerPlaceholder = model.registerPlaceholder ?? .empty
-
-        viewModel.emailPlaceholder = model.emailPlaceholder ?? .empty
-        viewModel.passwordPlaceholder = model.passwordPlaceholder ?? .empty
-        viewModel.confirmPasswordPlaceholder = model.confirmPasswordPlaceholder ?? .empty
-
-        viewModel.buttonText = model.buttonText ?? .empty
-
-        self.view?.setView(with: viewModel)
+        updateViewModel()
+        view?.setView(with: viewModel)
     }
 
     func viewWillAppear() {}
@@ -80,20 +61,12 @@ extension AuthPresenter: AuthPresenterInput {
     func viewWillDissapear() {}
 
     func viewButtonTapped() {
-        guard viewModel.email.isNotEmpty,
-              viewModel.password.isNotEmpty else {
-            return
-        }
+        switch viewModel.authMode {
+        case .login:
+            handleSingInFlow()
 
-        let request = SingInRequestMo(email: viewModel.email.lowercased(), password: viewModel.password)
-
-        Task {
-            do {
-                let response = try await singInNetworkService?.singInData(request: request, forceRequest: false)
-                handleSuccess(response: response)
-            } catch {
-                handleFailure(error: error.getTopLayerErrorResponse())
-            }
+        case .register:
+            handleSingUpFlow()
         }
     }
 
@@ -114,6 +87,23 @@ extension AuthPresenter: AuthModuleInput {
     }
 }
 
+extension AuthPresenter: AuthViewModelDelegate {
+    func authModeDidChange() {
+        updateViewModel()
+    }
+    
+    func textFieldDidChange() {
+        viewModel.isButtonEnabled = isRequestEnabled()
+
+//        if viewModel.authMode == .register,
+//           arePasswordsNotEqual() {
+//            viewModel.confirmPasswordTextField.subtitle = "Пароли не совпадают"
+//        } else {
+//            viewModel.confirmPasswordTextField.subtitle = .empty
+//        }
+    }
+}
+
 // MARK: - AuthModuleOutput
 
 extension AuthPresenter: AuthModuleOutput {}
@@ -121,8 +111,56 @@ extension AuthPresenter: AuthModuleOutput {}
 // MARK: - Private Methods
 
 fileprivate extension AuthPresenter {
+    func handleSingInFlow() {
+        let email = viewModel.emailTextField.text
+        let password = viewModel.passwordTextField.text
+
+        guard email.isNotEmpty,
+              password.isNotEmpty else {
+            return
+        }
+
+        let request = SingInRequestMo(email: email, password: password)
+        viewModel.isButtonLoading = true
+
+        Task {
+            do {
+                let response = try await singInNetworkService?.singInData(request: request, forceRequest: false)
+                viewModel.isButtonLoading = false
+                handleSingInSuccess(response: response)
+            } catch {
+                viewModel.isButtonLoading = false
+                handleFailure(error: error.getTopLayerErrorResponse())
+            }
+        }
+    }
+
+    func handleSingUpFlow() {
+        let email = viewModel.emailTextField.text
+        let password = viewModel.passwordTextField.text
+
+        guard email.isNotEmpty,
+              password.isNotEmpty else {
+            return
+        }
+
+        let request = SingUpRequestMo(email: email, password: password)
+        viewModel.isButtonLoading = true
+
+        Task {
+            do {
+                let response = try await singUpNetworkService?.singupData(request: request, forceRequest: false)
+                viewModel.isButtonLoading = false
+                handleSingUpSuccess(response: response)
+            } catch {
+                viewModel.isButtonLoading = false
+                handleFailure(error: error.getTopLayerErrorResponse())
+            }
+        }
+    }
+
     @MainActor
-    func handleSuccess(response: TokensResponseMo?) {
+    func handleSingInSuccess(response: TokensResponseMo?) {
         guard let response = response else {
             return
         }
@@ -139,14 +177,49 @@ fileprivate extension AuthPresenter {
     }
 
     @MainActor
+    func handleSingUpSuccess(response: SingUpResponseMo??) {
+        guard let response = response else {
+            return
+        }
+
+        if let status = SingUpStatus(rawValue: response?.status ?? .empty) {
+            router.goToOTPModule(dataStorage: OTPDataStorage())
+        } else {
+            handleAlert(
+                title: "Cant show OTP",
+                message: "Some problems happend"
+            )
+        }
+    }
+
+    @MainActor
     func handleFailure(error: ErrorResponseMo?) {
         guard let error = error else {
             return
         }
 
+        if let errorMsg = singInNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .email) {
+            viewModel.emailTextField.subtitle = errorMsg
+            viewModel.emailTextField.subtitleColor = .red
+            return
+        }
+
+        if let errorMsg = singInNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .password) {
+            viewModel.passwordTextField.subtitle = errorMsg
+            viewModel.passwordTextField.subtitleColor = .red
+            return
+        }
+
+        handleAlert(
+            title: error.errorSubCodeValue,
+            message: error.errorFields?.first?.errorMsg
+        )
+    }
+
+    func handleAlert(title: String?, message: String?) {
         let body = NativeAlertViewModel.Body(
-            title: error.errorCodeValue,
-            message: error.errorMsg
+            title: title,
+            message: message
         )
 
         let buttons = NativeAlertViewModel.Buttons(
@@ -160,6 +233,51 @@ fileprivate extension AuthPresenter {
         )
 
         showNativeAlert(viewModel: viewModel)
+    }
+
+    func isRequestEnabled() -> Bool {
+        switch viewModel.authMode {
+        case .login:
+            viewModel.emailTextField.text.isNotEmpty
+            && viewModel.passwordTextField.text.isNotEmpty
+        case .register:
+            viewModel.emailTextField.text.isNotEmpty
+            && viewModel.passwordTextField.text.isNotEmpty
+            && viewModel.confirmPasswordTextField.text.isNotEmpty
+            && !arePasswordsNotEqual()
+        }
+    }
+
+    func arePasswordsNotEqual() -> Bool {
+        viewModel.passwordTextField.text != viewModel.confirmPasswordTextField.text
+    }
+
+    func updateViewModel() {
+        let model = AuthModel(
+            title: "Auth",
+            loginPlaceholder: "Login",
+            registerPlaceholder: "Register",
+            emailPlaceholder: "Email",
+            passwordPlaceholder: "Password",
+            confirmPasswordPlaceholder: "Confirm Password",
+            buttonText: "Login"
+        )
+
+        viewModel.navigationTitle = model.title ?? .empty
+
+        viewModel.loginPlaceholder = model.loginPlaceholder ?? .empty
+        viewModel.registerPlaceholder = model.registerPlaceholder ?? .empty
+
+        viewModel.emailTextField = .init()
+        viewModel.emailTextField.placeholder = model.emailPlaceholder ?? .empty
+
+        viewModel.passwordTextField = .init()
+        viewModel.passwordTextField.placeholder = model.passwordPlaceholder ?? .empty
+
+        viewModel.confirmPasswordTextField = .init()
+        viewModel.confirmPasswordTextField.placeholder = model.confirmPasswordPlaceholder ?? .empty
+
+        viewModel.buttonText = model.buttonText ?? .empty
     }
 }
 

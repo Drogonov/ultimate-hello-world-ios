@@ -7,6 +7,9 @@
 //
 
 import Foundation
+import SwiftUI
+import MasterComponents
+
 
 // MARK: - AuthMode
 
@@ -21,19 +24,44 @@ class AuthViewModel: ObservableObject {
 
     // MARK: Public Properties
 
+    var delegate: AuthViewModelDelegate?
+
     var navigationTitle: String = .empty
 
-    @Published var authMode: AuthMode = .login
+    @Published var authMode: AuthMode = .login {
+        didSet {
+            delegate?.authModeDidChange()
+        }
+    }
     @Published var loginPlaceholder: String = .empty
     @Published var registerPlaceholder: String = .empty
 
-    @Published var emailPlaceholder: String = .empty
-    @Published var passwordPlaceholder: String = .empty
-    @Published var confirmPasswordPlaceholder: String = .empty
-
-    @Published var email: String = .empty
-    @Published var password: String = .empty
-    @Published var confirmPassword: String = .empty
+    @Published var emailTextField: TextFieldViewModel = .init() {
+        didSet {
+            delegate?.textFieldDidChange()
+        }
+    }
+    @Published var passwordTextField: TextFieldViewModel = .init() {
+        didSet {
+            delegate?.textFieldDidChange()
+        }
+    }
+    @Published var confirmPasswordTextField: TextFieldViewModel = .init() {
+        didSet {
+            delegate?.textFieldDidChange()
+        }
+    }
 
     @Published var buttonText: String = .empty
+    @Published var isButtonEnabled: Bool = false
+    @Published var isButtonLoading: Bool = false
+}
+
+// MARK: - TextFieldViewModel
+
+struct TextFieldViewModel: Equatable {
+    var text: String = .empty
+    var placeholder: String = .empty
+    var subtitle: String = .empty
+    var subtitleColor: Color = .textSecondaryColor
 }

@@ -138,7 +138,7 @@ fileprivate extension ChangeLanguagePresenter {
         }
 
         let body = NativeAlertViewModel.Body(
-            title: error.errorCodeValue,
+            title: error.errorSubCodeValue,
             message: error.errorMsg
         )
 

@@ -8,6 +8,7 @@
 
 import Foundation
 import CommonApplication
+import DI
 
 // MARK: - AuthRouter
 
@@ -18,5 +19,15 @@ final class AuthRouter: BaseRouter {}
 extension AuthRouter: AuthRouterInput {
     func goToMainTabBar() {
         openMainTabBarAsFirsNavigationController()
+    }
+
+    func goToOTPModule(dataStorage: OTPDataStorage) {
+        let configurator = MVPModuleConfigurator(AuthFlowModuleFactory.otpModule())
+        let viewController = configurator.getViewController()
+        configurator.configure { (input: OTPModuleInput?) in
+            input?.set(dataStorage: dataStorage)
+        }
+
+        show(viewController, animated: true)
     }
 }

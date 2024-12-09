@@ -44,10 +44,8 @@ class SerializeErrorFactory {
         arguments: Set<SerializerType>
     ) throws {
 
-        guard
-            let statusCode = statusCode,
-            let httpCode = HttpCode(rawValue: statusCode)
-        else {
+        guard let statusCode = statusCode,
+              let httpCode = HttpCode(rawValue: statusCode) else {
             throw ApiError.applicationLayerError(
                 .unknownError(statusCode: statusCode, error: error),
                 responseInfo: responseInfo
@@ -57,6 +55,15 @@ class SerializeErrorFactory {
         let json = try? JSONSerialization.jsonObject(with: data)
         let errorResponse: AbstractPollingResponseMo? = Mapper<AbstractPollingResponseMo>().map(JSONObject: json)
 
+        // Those Errors are not Acceptable but should be shown at Top Level
+        if httpCode.isTopLevel(),
+           let errorResponseMo = errorResponse?.errorResponse {
+            throw ApiError.topLayerError(
+                .business(error: errorResponseMo)
+            )
+        }
+
+        // Not Acceptable application layer Errors
         if !httpCode.isAcceptable() {
             throw ApiError.applicationLayerError(
                 .response(statusCode: httpCode, error: errorResponse?.errorResponse),
@@ -68,11 +75,13 @@ class SerializeErrorFactory {
             return
         }
 
+        // Timeout error
         if let _ = errorResponse.timeout, arguments.contains(.pooling) {
             throw ApiError.applicationLayerError(
                 .timeout(error: errorResponse),
                 responseInfo: responseInfo
             )
+        // Top layes business errors
         } else if let errorResponseMo = errorResponse.errorResponse {
             throw ApiError.topLayerError(.business(error: errorResponseMo))
         }

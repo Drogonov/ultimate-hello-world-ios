@@ -155,50 +155,69 @@ fileprivate extension DefaultErrorHandlerProtocol {
     func handleApplication(error: Error, reason: ApplicationErrorReason, responseInfo: ResponseInfo?) throws {
         if case let .response(statusCode, errorReason) = reason {
 
-            switch statusCode {
-            case .movedTemporary:
-                return
+            let message = messageWithTraceId(
+                ResourcesStrings.forbiddenErrorDefaultMessage(),
+                responseInfo: responseInfo
+            )
+            show(
+                criticalMessage: "\(message) \(reason.errorResponse()?.errorFields?.first?.errorMsg ?? .empty)",
+                title: ResourcesStrings.attention()
+            )
 
-            case .unauthorized:
-                defaultLogoutAction()
-
-            case .forbidden:
-                let message = messageWithTraceId(
-                    ResourcesStrings.forbiddenErrorDefaultMessage(),
-                    responseInfo: responseInfo
-                )
-                show(
-                    criticalMessage: message,
-                    title: ResourcesStrings.attention()
-                )
-
-            case .notFound, .precondition, .internalServerError, .badGateway:
-                let message = messageWithTraceId(
-                    ResourcesStrings.serverInaccessibleMessage(),
-                    responseInfo: responseInfo
-                )
-                show(
-                    criticalMessage: message,
-                    title: ResourcesStrings.serverInaccessibleTitle()
-                )
-
-            case .notImplemented:
-                if let errorResponse = errorReason as? ErrorResponseMo,
-                    errorResponse.errorCode == .unsupported {
-                    let storage = DialogDataStorage(
-                        title: ResourcesStrings.attention(),
-                        description: ResourcesStrings.appOutdated(),
-                        defaultTitle: ResourcesStrings.refresh(),
-                        defaultAction: {
-                            self.appOutdate()
-                        }
-                    )
-                    show(dialog: storage)
-                }
-
-            default:
-                break
-            }
+//            switch statusCode {
+//            case .movedTemporary:
+//                let message = messageWithTraceId(
+//                    ResourcesStrings.forbiddenErrorDefaultMessage(),
+//                    responseInfo: responseInfo
+//                )
+//                show(
+//                    criticalMessage: message,
+//                    title: ResourcesStrings.attention()
+//                )
+//
+//            case .unauthorized:
+//                defaultLogoutAction()
+//
+//            case .forbidden:
+//                let message = messageWithTraceId(
+//                    ResourcesStrings.forbiddenErrorDefaultMessage(),
+//                    responseInfo: responseInfo
+//                )
+//                show(
+//                    criticalMessage: message,
+//                    title: ResourcesStrings.attention()
+//                )
+//
+//            case .notFound, .precondition, .internalServerError, .badGateway:
+//                let message = messageWithTraceId(
+//                    ResourcesStrings.serverInaccessibleMessage(),
+//                    responseInfo: responseInfo
+//                )
+//                show(
+//                    criticalMessage: message,
+//                    title: ResourcesStrings.serverInaccessibleTitle()
+//                )
+//
+//            case .notImplemented:
+//                if let errorResponse = errorReason as? ErrorResponseMo {
+//                    debugPrint("\(errorResponse.errorSubCode)")
+//                }
+////                if let errorResponse = errorReason as? ErrorResponseMo,
+////                    errorResponse.errorCode == .unsupported {
+////                    let storage = DialogDataStorage(
+////                        title: ResourcesStrings.attention(),
+////                        description: ResourcesStrings.appOutdated(),
+////                        defaultTitle: ResourcesStrings.refresh(),
+////                        defaultAction: {
+////                            self.appOutdate()
+////                        }
+////                    )
+////                    show(dialog: storage)
+////                }
+//
+//            default:
+//                break
+//            }
         } else if case let .conversion(reason, _, _) = reason {
             #if DEBUG
             show(message: reason)

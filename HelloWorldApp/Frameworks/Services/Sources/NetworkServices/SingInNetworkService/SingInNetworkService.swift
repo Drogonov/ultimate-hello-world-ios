@@ -19,6 +19,8 @@ public protocol SingInNetworkServiceProtocol {
         request: SingInRequestMo,
         forceRequest: Bool
     ) async throws -> TokensResponseMo
+
+    func doesErrorFieldsContainsText(errorFields: [ErrorDetailMo]?, field: SingInErrorFields) -> String?
 }
 
 // MARK: - SingInService
@@ -59,5 +61,18 @@ extension SingInNetworkService: SingInNetworkServiceProtocol {
 
         return response
     }
+
+    public func doesErrorFieldsContainsText(errorFields: [ErrorDetailMo]?, field: SingInErrorFields) -> String? {
+        errorFields?.first(where: { error in
+            findServerError(from: error.fieldCode) == field
+        })?.errorMsg
+    }
 }
 
+// MARK: - Private Methods
+
+private extension SingInNetworkService {
+    func findServerError(from errorSubCode: String) -> SingInErrorFields? {
+        SingInErrorFields(rawValue: errorSubCode)
+    }
+}

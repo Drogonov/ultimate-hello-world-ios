@@ -11,13 +11,8 @@ import ObjectMapper
 public class ErrorResponseMo: BaseResponse, @unchecked Sendable {
 
     public private(set) var errorMsg: String?
-    public private(set) var errorCodeValue: String
     public private(set) var errorSubCodeValue: String?
     public private(set) var errorFields: [ErrorDetailMo]?
-
-    public var errorCode: APIErrorCode {
-        APIErrorCode(mandatory: errorCodeValue)
-    }
 
     public var errorSubCode: APIErrorSubCode? {
         APIErrorSubCode(optional: errorSubCodeValue)
@@ -25,7 +20,6 @@ public class ErrorResponseMo: BaseResponse, @unchecked Sendable {
 
     required public init(map: Map) throws {
         errorMsg = try? map.value(Constants.strings.errorMsg)
-        errorCodeValue = try map.value(Constants.strings.errorCode)
         errorSubCodeValue = try? map.value(Constants.strings.errorSubCode)
         errorFields = try? map.value(Constants.strings.errorFields)
 
@@ -36,7 +30,6 @@ public class ErrorResponseMo: BaseResponse, @unchecked Sendable {
         super.mapping(map: map)
 
         errorMsg >>> map[Constants.strings.errorMsg]
-        errorCodeValue >>> map[Constants.strings.errorCode]
         errorSubCodeValue >>> map[Constants.strings.errorSubCode]
         errorFields >>> map[Constants.strings.errorFields]
     }
@@ -46,7 +39,6 @@ public class ErrorResponseMo: BaseResponse, @unchecked Sendable {
     private enum Constants {
         enum strings {
             static let errorMsg = "errorMsg"
-            static let errorCode = "errorCode"
             static let errorSubCode = "errorSubCode"
             static let errorFields = "errorFields"
         }
@@ -54,11 +46,8 @@ public class ErrorResponseMo: BaseResponse, @unchecked Sendable {
 }
 
 extension ErrorResponseMo {
-
     public convenience init(errorMsg: String? = nil, errorCode: String, errorSubCode: String? = nil, errorFields: [ErrorDetailMo]? = nil) throws {
-        var JSON: [String: Any] = [
-            Constants.strings.errorCode: errorCode
-        ]
+        var JSON: [String: Any] = [:]
 
         if let errorMsg = errorMsg {
             JSON[Constants.strings.errorMsg] = errorMsg
@@ -77,7 +66,6 @@ extension ErrorResponseMo {
 }
 
 extension ErrorResponseMo {
-
     public func convertToTopLayerError() -> TopLayerError {
         TopLayerError(error: self)
     }

@@ -14,6 +14,7 @@ public enum HttpCode: Hashable {
     case badRequest
     case unauthorized
     case forbidden
+    case unprocessableEntity
     case notFound
     case precondition
     case internalServerError
@@ -60,6 +61,9 @@ extension HttpCode: RawRepresentable {
 
         case .precondition:
             return 412
+
+        case .unprocessableEntity:
+            return 422
 
         case .internalServerError:
             return 500
@@ -110,6 +114,9 @@ extension HttpCode: RawRepresentable {
         case 412:
             self = .precondition
 
+        case 422:
+            self = .unprocessableEntity
+
         case 500:
             self = .internalServerError
 
@@ -143,7 +150,14 @@ extension HttpCode: RawRepresentable {
     }
 
     public func isAcceptable() -> Bool {
-        let acceptableStatusCodes = 200..<300
+        var acceptableStatusCodes: Set<Int> = Set(200..<300)
+        return acceptableStatusCodes.contains(self.rawValue)
+    }
+
+    public func isTopLevel() -> Bool {
+        var acceptableStatusCodes = Set<Int>()
+        acceptableStatusCodes.insert(400)
+        acceptableStatusCodes.insert(422)
         return acceptableStatusCodes.contains(self.rawValue)
     }
 }

@@ -89,6 +89,9 @@ extension MagicPresenter: MagicPresenterInput {
     }
 
     func getEmptyModel() -> MagicViewModel {
+//        KeychainJWTProvider.shared.deleteToken(.accessToken)
+//        KeychainJWTProvider.shared.deleteToken(.refreshToken)
+
         getMagicResponse = dataStorage?.response
 
         guard let response = getMagicResponse else {
@@ -139,7 +142,7 @@ fileprivate extension MagicPresenter {
         }
 
         let body = NativeAlertViewModel.Body(
-            title: error.errorCodeValue,
+            title: error.errorSubCodeValue,
             message: error.errorMsg
         )
 

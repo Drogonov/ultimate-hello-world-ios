@@ -34,6 +34,7 @@ public enum APIErrorCode: String, BusinessLogicCode, UnknownCaseRepresantable {
 
 public enum APIErrorSubCode: String, BusinessLogicCode, UnknownCaseRepresantable {
     case emptyResult = "EMPTY_RESULT"
+    case userDoesntExist = "USER_DOESNT_EXIST"
     case invalid
 
     // MARK: Properties

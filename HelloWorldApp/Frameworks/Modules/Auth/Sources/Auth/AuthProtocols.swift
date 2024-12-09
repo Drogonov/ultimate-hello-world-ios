@@ -40,9 +40,16 @@ protocol AuthPresenterInput: NativeAlertProtocol {
     func getEmptyModel() -> AuthViewModel
 }
 
+// sourcery: AutoMockable
+protocol AuthViewModelDelegate {
+    func textFieldDidChange()
+    func authModeDidChange()
+}
+
 // MARK: - Router Protocols
 
 // sourcery: AutoMockable
 protocol AuthRouterInput: BaseRouterInput {
     func goToMainTabBar()
+    func goToOTPModule(dataStorage: OTPDataStorage)
 }

@@ -83,8 +83,7 @@ public extension NativeAlertViewModel {
         NativeAlertViewModel.oneButtonAlert(
             title: title,
             message: message,
-//            buttonTitle: R.string.localizable.ok(),
-            buttonTitle: "R.string.localizable.ok()",
+            buttonTitle: ResourcesStrings.ok(),
             buttonAction: action
         )
     }
@@ -97,8 +96,7 @@ public extension NativeAlertViewModel {
         NativeAlertViewModel.oneButtonAlert(
             title: title,
             message: message,
-//            buttonTitle: R.string.localizable.clear(),
-            buttonTitle: "R.string.localizable.clear()",
+            buttonTitle: ResourcesStrings.clear(),
             buttonAction: action
         )
     }
@@ -185,8 +183,8 @@ public extension NativeAlertViewModel {
     ) -> NativeAlertViewModel {
         let body = NativeAlertViewModel.Body(title: title, message: message)
         let buttons = NativeAlertViewModel.Buttons(
-            firstTitle: "R.string.localizable.cancel()",
-            secondTitle: "R.string.localizable.change()",
+            firstTitle: ResourcesStrings.cancel(),
+            secondTitle: ResourcesStrings.change(),
             secondAction: action
         )
         return NativeAlertViewModel(body: body, buttons: buttons)

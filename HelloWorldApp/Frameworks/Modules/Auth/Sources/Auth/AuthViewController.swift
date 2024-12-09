@@ -65,7 +65,7 @@ extension AuthViewController: AuthViewInput {
 
     func setView(with viewModel: AuthViewModel) {
         setNavigationBarTitle(with: viewModel.navigationTitle)
-        configureView(with: viewModel)
+//        configureView(with: viewModel)
     }
 }
 

@@ -1,5 +1,14 @@
+//
+//  AuthView.swift
+//  Auth
+//
+//  Created by Anton Vlezko on 8/12/24.
+//  Copyright (c) 2024 Smart Lads Software. All rights reserved.
+//
+
 import SwiftUI
 import Combine
+import MasterComponents
 
 // MARK: - AuthView
 
@@ -24,46 +33,72 @@ struct AuthView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
 
-                TextField(model.emailPlaceholder, text: $model.email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .focused($focusedField, equals: .email)
-                    .padding()
-                    .onSubmit { focusedField = .password }
+                LabeledContent {
+                    TextField(
+                        model.emailTextField.placeholder,
+                        text: $model.emailTextField.text
+                    )
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .textCase(.lowercase)
+                        .focused($focusedField, equals: .email)
+                        .padding()
+                        .onSubmit { focusedField = .password }
+                } label: {
+                    Text(model.emailTextField.subtitle)
+                        .padding(.horizontal, MCSpacing.spacing2XL)
+                        .foregroundStyle(model.emailTextField.subtitleColor)
+                }
+                .labeledContentStyle(BottomLabeledTextFieldStyleConfig())
 
-                SecureField(model.passwordPlaceholder, text: $model.password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .focused($focusedField, equals: .password)
-                    .padding()
-                    .onSubmit {
-                        if model.authMode == .register {
-                            focusedField = .confirmPassword
-                        } else {
-                            focusedField = nil
+                LabeledContent {
+                    SecureField(
+                        model.passwordTextField.placeholder,
+                        text: $model.passwordTextField.text
+                    )
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .focused($focusedField, equals: .password)
+                        .padding()
+                        .onSubmit {
+                            if model.authMode == .register {
+                                focusedField = .confirmPassword
+                            } else {
+                                focusedField = nil
+                            }
                         }
-                    }
+                } label: {
+                    Text(model.passwordTextField.subtitle)
+                        .padding(.horizontal, MCSpacing.spacing2XL)
+                        .foregroundStyle(model.passwordTextField.subtitleColor)
+                }
+                .labeledContentStyle(BottomLabeledTextFieldStyleConfig())
 
                 if model.authMode == .register {
-                    SecureField(model.confirmPasswordPlaceholder, text: $model.confirmPassword)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .focused($focusedField, equals: .confirmPassword)
-                        .padding()
-                        .onSubmit { focusedField = nil }
+                    LabeledContent {
+                        SecureField(
+                            model.confirmPasswordTextField.placeholder,
+                            text: $model.confirmPasswordTextField.text
+                        )
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .focused($focusedField, equals: .confirmPassword)
+                            .padding()
+                            .onSubmit { focusedField = nil }
+                    } label: {
+                        Text(model.confirmPasswordTextField.subtitle)
+                            .padding(.horizontal, MCSpacing.spacing2XL)
+                            .foregroundStyle(model.confirmPasswordTextField.subtitleColor)
+                    }
+                    .labeledContentStyle(BottomLabeledTextFieldStyleConfig())
                 }
 
                 Spacer()
 
-                Button(action: {
+                Button(model.buttonText) {
                     buttonTapped()
-                }) {
-                    Text(model.buttonText)
-                        .bold()
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Color.blue)
-                        .cornerRadius(8)
                 }
-                .padding()
+//                .loading(model.isButtonLoading)
+                .disabled(!model.isButtonEnabled)
+                .buttonStyle(.main)
+                .padding(.horizontal, MCSpacing.spacingL)
 
                 Spacer()
             }
@@ -93,10 +128,30 @@ fileprivate extension AuthView {
 
 struct AuthView_Previews: PreviewProvider {
     static var previews: some View {
-        let model = AuthViewModel()
+        let viewModel = AuthViewModel()
+        let model = AuthModel(
+            title: "Auth",
+            loginPlaceholder: "Login",
+            registerPlaceholder: "Register",
+            emailPlaceholder: "Email",
+            passwordPlaceholder: "Password",
+            confirmPasswordPlaceholder: "Confirm Password",
+            buttonText: "Login"
+        )
+
+        viewModel.navigationTitle = model.title ?? .empty
+        viewModel.authMode = .login
+        viewModel.loginPlaceholder = model.loginPlaceholder ?? .empty
+        viewModel.registerPlaceholder = model.registerPlaceholder ?? .empty
+        viewModel.emailTextField.placeholder = model.emailPlaceholder ?? .empty
+        viewModel.emailTextField.subtitle = "Error"
+        viewModel.emailTextField.subtitleColor = .red
+        viewModel.passwordTextField.placeholder = model.passwordPlaceholder ?? .empty
+        viewModel.confirmPasswordTextField.placeholder = model.confirmPasswordPlaceholder ?? .empty
+        viewModel.buttonText = model.buttonText ?? .empty
 
         return AuthView(
-            model: model,
+            model: viewModel,
             buttonTapped: { }
         )
     }
