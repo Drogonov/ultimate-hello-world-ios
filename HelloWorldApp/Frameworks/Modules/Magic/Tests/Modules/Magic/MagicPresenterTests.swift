@@ -18,7 +18,7 @@ class MagicPresenterTests: XCTestCase {
     var presenter: MagicPresenter!
     var router: MagicRouterInputMock!
     var view: MagicViewInputMock!
-    var getMagicNetworkService: GetMagicNetworkServiceProtocolMock!
+    var appNetworkService: AppNetworkServiceProtocolMock!
     var languageService: LanguageChangeServiceProtocolMock!
     var viewModel: MagicViewModel!
     // sourcery:end
@@ -28,7 +28,7 @@ class MagicPresenterTests: XCTestCase {
         // sourcery:inline:MagicPresenterTests.TestsSetupTemplate
         router = .init()
         view = .init()
-        getMagicNetworkService = .init()
+        appNetworkService = .init()
         languageService = .init()
         viewModel = .init()
 
@@ -36,7 +36,7 @@ class MagicPresenterTests: XCTestCase {
             router: router
         )
         presenter.view = view
-        presenter.getMagicNetworkService = getMagicNetworkService
+        presenter.appNetworkService = appNetworkService
         presenter.languageService = languageService
         presenter.viewModel = viewModel
         // sourcery:end
@@ -47,7 +47,7 @@ class MagicPresenterTests: XCTestCase {
         presenter = nil
         router = nil
         view = nil
-        getMagicNetworkService = nil
+        appNetworkService = nil
         languageService = nil
         viewModel = nil
         super.tearDown()

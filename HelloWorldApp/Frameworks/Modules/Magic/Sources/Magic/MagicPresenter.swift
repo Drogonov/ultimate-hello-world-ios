@@ -33,7 +33,7 @@ class MagicPresenter {
 
     private var getMagicResponse: GetMagicResponseMo?
 
-    @DelayedImmutable var getMagicNetworkService: GetMagicNetworkServiceProtocol?
+    @DelayedImmutable var appNetworkService: AppNetworkServiceProtocol?
     @DelayedImmutable var languageService: LanguageChangeServiceProtocol?
 
     @ObservedObject var viewModel = MagicViewModel()
@@ -58,7 +58,7 @@ extension MagicPresenter: MagicPresenterInput {
 
         Task {
             do {
-                let response = try await getMagicNetworkService?.getMagicData(request: request, forceRequest: false)
+                let response = try await appNetworkService?.getMagicData(request: request, forceRequest: false)
                 handleSuccess(response: response)
             } catch {
                 handleFailure(error: error.getTopLayerErrorResponse())
@@ -80,7 +80,7 @@ extension MagicPresenter: MagicPresenterInput {
 
         Task {
             do {
-                let response = try await getMagicNetworkService?.getMagicData(request: request, forceRequest: false)
+                let response = try await appNetworkService?.getMagicData(request: request, forceRequest: false)
                 handleSuccess(response: response)
             } catch {
                 handleFailure(error: error.getTopLayerErrorResponse())

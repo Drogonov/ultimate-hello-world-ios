@@ -59,8 +59,8 @@ fileprivate extension HelloWorldConfigurator {
         .initCompleted { resolver, instance in
             instance.view = resolver.resolveSafe(HelloWorldViewInput.self)
             instance.languageService = resolver.resolve(LanguageChangeServiceProtocol.self)
-            instance.getHelloNetworkService = GetHelloNetworkService(
-                api: GetHelloAPI(
+            instance.appNetworkService = AppNetworkService(
+                api: AppAPI(
                     networkClient: resolver.resolveSafe(
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main

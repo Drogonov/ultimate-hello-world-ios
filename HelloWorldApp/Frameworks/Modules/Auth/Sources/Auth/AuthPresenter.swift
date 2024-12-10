@@ -31,8 +31,7 @@ class AuthPresenter {
     private var router: AuthRouterInput
     private var dataStorage: AuthDataStorage?
 
-    @DelayedImmutable var singInNetworkService: SingInNetworkServiceProtocol?
-    @DelayedImmutable var singUpNetworkService: SingUpNetworkServiceProtocol?
+    @DelayedImmutable var authNetworkService: AuthNetworkServiceProtocol?
 
     @ObservedObject var viewModel = AuthViewModel()
 
@@ -119,7 +118,7 @@ fileprivate extension AuthPresenter {
 
         Task {
             do {
-                let response = try await singInNetworkService?.singInData(request: request, forceRequest: false)
+                let response = try await authNetworkService?.singInData(request: request, forceRequest: false)
                 viewModel.isButtonLoading = false
                 handleSingInSuccess(response: response)
             } catch {
@@ -150,7 +149,7 @@ fileprivate extension AuthPresenter {
 
         Task {
             do {
-                let response = try await singUpNetworkService?.singupData(request: request, forceRequest: false)
+                let response = try await authNetworkService?.singupData(request: request, forceRequest: false)
                 viewModel.isButtonLoading = false
                 handleSingUpSuccess(response: response)
             } catch {
@@ -241,13 +240,13 @@ fileprivate extension AuthPresenter {
     }
 
     func updateFields(error: ErrorResponseMo) {
-        if let errorMsg = singInNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .email) {
+        if let errorMsg = authNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .email) {
             viewModel.emailTextField.subtitle = errorMsg
             viewModel.emailTextField.subtitleColor = .red
             return
         }
 
-        if let errorMsg = singInNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .password) {
+        if let errorMsg = authNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .password) {
             viewModel.passwordTextField.subtitle = errorMsg
             viewModel.passwordTextField.subtitleColor = .red
             return

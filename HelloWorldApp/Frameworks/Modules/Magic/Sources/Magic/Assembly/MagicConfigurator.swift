@@ -59,8 +59,8 @@ fileprivate extension MagicConfigurator {
         .initCompleted { resolver, instance in
             instance.view = resolver.resolveSafe(MagicViewInput.self)
             instance.languageService = resolver.resolve(LanguageChangeServiceProtocol.self)
-            instance.getMagicNetworkService = GetMagicNetworkService(
-                api: GetMagicAPI(
+            instance.appNetworkService = AppNetworkService(
+                api: AppAPI(
                     networkClient: resolver.resolveSafe(
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main

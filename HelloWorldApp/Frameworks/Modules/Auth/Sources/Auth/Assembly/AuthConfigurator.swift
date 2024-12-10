@@ -58,18 +58,8 @@ fileprivate extension AuthConfigurator {
         }
         .initCompleted { resolver, instance in
             instance.view = resolver.resolveSafe(AuthViewInput.self)
-            instance.singInNetworkService = SingInNetworkService(
-                api: SingInAPI(
-                    networkClient: resolver.resolveSafe(
-                        NetworkManagerProtocol.self,
-                        name: NetworkManagerType.main
-                    ),
-                    errorHandler: NetworkServiceErrorHandler()
-                ),
-                shortCacher: nil
-            )
-            instance.singUpNetworkService = SingUpNetworkService(
-                api: SingUpAPI(
+            instance.authNetworkService = AuthNetworkService(
+                api: AuthAPI(
                     networkClient: resolver.resolveSafe(
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main

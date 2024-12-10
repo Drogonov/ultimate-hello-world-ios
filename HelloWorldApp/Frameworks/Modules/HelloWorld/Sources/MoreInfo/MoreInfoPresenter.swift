@@ -36,7 +36,7 @@ class MoreInfoPresenter {
 
     // MARK: Services
 
-    @DelayedImmutable var getMoreInfoNetworkService: GetMoreInfoNetworkServiceProtocol?
+    @DelayedImmutable var appNetworkService: AppNetworkServiceProtocol?
     @DelayedImmutable var languageService: LanguageChangeServiceProtocol?
     @DelayedImmutable var deeplinksService: DeeplinksServiceProtocol?
 
@@ -62,7 +62,7 @@ extension MoreInfoPresenter: MoreInfoPresenterInput {
 
         Task {
             do {
-                let response = try await getMoreInfoNetworkService?.getMoreInfoData(request: request, forceRequest: false)
+                let response = try await appNetworkService?.getMoreInfoData(request: request, forceRequest: false)
                 handleSuccess(response: response)
             } catch {
                 handleFailure(error: error.getTopLayerErrorResponse())

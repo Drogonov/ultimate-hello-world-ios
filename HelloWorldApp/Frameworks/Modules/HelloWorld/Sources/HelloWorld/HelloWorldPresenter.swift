@@ -33,7 +33,7 @@ class HelloWorldPresenter {
 
     private var getHelloResponse: GetHelloResponseMo?
 
-    @DelayedImmutable var getHelloNetworkService: GetHelloNetworkServiceProtocol?
+    @DelayedImmutable var appNetworkService: AppNetworkServiceProtocol?
     @DelayedImmutable var languageService: LanguageChangeServiceProtocol?
 
     @ObservedObject private var viewModel = HelloWorldViewModel()
@@ -60,7 +60,7 @@ extension HelloWorldPresenter: HelloWorldPresenterInput {
 
         Task {
             do {
-                let response = try await getHelloNetworkService?.getHelloData(request: request, forceRequest: false)
+                let response = try await appNetworkService?.getHelloData(request: request, forceRequest: false)
                 handleSuccess(response: response)
             } catch {
                 handleFailure(error: error.getTopLayerErrorResponse())
@@ -74,7 +74,7 @@ extension HelloWorldPresenter: HelloWorldPresenterInput {
 
         Task {
             do {
-                let response = try await getHelloNetworkService?.getHelloData(request: request, forceRequest: false)
+                let response = try await appNetworkService?.getHelloData(request: request, forceRequest: false)
                 handleSuccess(response: response)
             } catch {
                 handleFailure(error: error.getTopLayerErrorResponse())

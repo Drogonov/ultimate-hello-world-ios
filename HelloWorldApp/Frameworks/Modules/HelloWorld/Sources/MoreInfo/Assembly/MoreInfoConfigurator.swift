@@ -62,8 +62,8 @@ fileprivate extension MoreInfoConfigurator {
         .initCompleted { resolver, instance in
             instance.view = resolver.resolveSafe(MoreInfoViewInput.self)
             instance.languageService = resolver.resolve(LanguageChangeServiceProtocol.self)
-            instance.getMoreInfoNetworkService = GetMoreInfoNetworkService(
-                api: GetMoreInfoAPI(
+            instance.appNetworkService = AppNetworkService(
+                api: AppAPI(
                     networkClient: resolver.resolveSafe(
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main

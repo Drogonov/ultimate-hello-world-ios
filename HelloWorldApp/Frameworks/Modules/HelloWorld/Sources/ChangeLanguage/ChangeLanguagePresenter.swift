@@ -33,7 +33,7 @@ class ChangeLanguagePresenter {
 
     private var getCountriesResponse: GetCountriesResponseMo?
 
-    @DelayedImmutable var getCountriesService: GetCountriesNetworkServiceProtocol?
+    @DelayedImmutable var appNetworkService: AppNetworkServiceProtocol?
     @DelayedImmutable var languageService: LanguageChangeServiceProtocol?
 
     @ObservedObject var viewModel = ChangeLanguageViewModel()
@@ -108,7 +108,7 @@ fileprivate extension ChangeLanguagePresenter {
 
         Task {
             do {
-                let response = try await getCountriesService?.getCountriesData(request: request, forceRequest: false)
+                let response = try await appNetworkService?.getCountriesData(request: request, forceRequest: false)
                 handleSuccess(response: response)
             } catch {
                 handleFailure(error: error.getTopLayerErrorResponse())

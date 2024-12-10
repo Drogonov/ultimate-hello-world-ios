@@ -58,8 +58,8 @@ fileprivate extension ChangeLanguageConfigurator {
         .initCompleted { resolver, instance in
             instance.view = resolver.resolveSafe(ChangeLanguageViewInput.self)
             instance.languageService = resolver.resolve(LanguageChangeServiceProtocol.self)
-            instance.getCountriesService = GetCountriesNetworkService(
-                api: GetCountriesAPI(
+            instance.appNetworkService = AppNetworkService(
+                api: AppAPI(
                     networkClient: resolver.resolveSafe(
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main
