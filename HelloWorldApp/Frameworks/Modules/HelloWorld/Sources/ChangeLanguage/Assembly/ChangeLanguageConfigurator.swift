@@ -34,6 +34,7 @@ fileprivate extension ChangeLanguageConfigurator {
         }
         .initCompleted { resolver, instance in
             instance.sourceViewController = resolver.resolveSafe(ChangeLanguageViewController.self)
+            instance.routing = resolver.resolveSafe(HelloWorldModuleRoutingProtocol.self)
         }
         .implements(ChangeLanguageRouterInput.self)
     }
@@ -64,11 +65,24 @@ fileprivate extension ChangeLanguageConfigurator {
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main
                     ),
-                    errorHandler: NetworkServiceErrorHandler()
+                    errorHandler: NetworkServiceErrorHandler(
+                        router: resolver.resolveSafe(ChangeLanguageRouterInput.self)
+                    )
                 ),
                 shortCacher: nil
             )
-
+            instance.authNetworkService = AuthNetworkService(
+                api: AuthAPI(
+                    networkClient: resolver.resolveSafe(
+                        NetworkManagerProtocol.self,
+                        name: NetworkManagerType.main
+                    ),
+                    errorHandler: NetworkServiceErrorHandler(
+                        router: resolver.resolveSafe(ChangeLanguageRouterInput.self)
+                    )
+                ),
+                shortCacher: nil
+            )
         }
         .implements(
             ChangeLanguagePresenterInput.self,

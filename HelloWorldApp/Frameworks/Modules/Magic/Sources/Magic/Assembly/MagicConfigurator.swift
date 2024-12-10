@@ -65,7 +65,9 @@ fileprivate extension MagicConfigurator {
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main
                     ),
-                    errorHandler: NetworkServiceErrorHandler()
+                    errorHandler: NetworkServiceErrorHandler(
+                        router: resolver.resolveSafe(MagicRouterInput.self)
+                    )
                 ),
                 shortCacher: nil
             )

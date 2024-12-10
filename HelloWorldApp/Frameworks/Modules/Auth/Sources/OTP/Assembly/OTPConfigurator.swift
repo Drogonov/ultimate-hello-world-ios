@@ -7,6 +7,7 @@
 //
 
 import Swinject
+import CommonApplication
 
 // MARK: - LoanConfigurator
 

@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import DI
+import CommonApplication
 
 // MARK: - OTPPresenter
 
@@ -63,13 +64,13 @@ extension OTPPresenter: OTPPresenterInput {
 
 // MARK: - OTPModuleInput
 
-extension OTPPresenter: OTPModuleInput {
-    func setModuleOutput(_ moduleOutput: MVPModuleOutputProtocol) {
-        self.moduleOutput = moduleOutput as? OTPModuleOutput
-    }
-
+extension OTPPresenter: OTPModuleInput {    
     func set(dataStorage: OTPDataStorage) {
         self.dataStorage = dataStorage
+    }
+    
+    func setModuleOutput(_ moduleOutput: MVPModuleOutputProtocol) {
+        self.moduleOutput = moduleOutput as? OTPModuleOutput
     }
 }
 

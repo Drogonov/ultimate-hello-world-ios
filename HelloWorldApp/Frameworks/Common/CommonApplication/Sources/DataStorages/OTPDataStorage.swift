@@ -7,6 +7,11 @@
 //
 
 import Foundation
+import DI
+
+public protocol OTPModuleInput: MVPModuleInputProtocol {
+    func set(dataStorage: OTPDataStorage)
+}
 
 // MARK: - OTPDataStorage
 

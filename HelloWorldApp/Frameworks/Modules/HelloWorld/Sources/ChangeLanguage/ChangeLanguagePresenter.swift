@@ -34,6 +34,7 @@ class ChangeLanguagePresenter {
     private var getCountriesResponse: GetCountriesResponseMo?
 
     @DelayedImmutable var appNetworkService: AppNetworkServiceProtocol?
+    @DelayedImmutable var authNetworkService: AuthNetworkServiceProtocol?
     @DelayedImmutable var languageService: LanguageChangeServiceProtocol?
 
     @ObservedObject var viewModel = ChangeLanguageViewModel()
@@ -70,6 +71,9 @@ extension ChangeLanguagePresenter: ChangeLanguagePresenterInput {
     }
 
     func getEmptyModel() -> ChangeLanguageViewModel {
+        KeychainJWTProvider.shared.deleteToken(.accessToken)
+        KeychainJWTProvider.shared.deleteToken(.refreshToken)
+        
         getCountriesResponse = dataStorage?.response
 
         guard let response = getCountriesResponse else {
@@ -80,6 +84,10 @@ extension ChangeLanguagePresenter: ChangeLanguagePresenterInput {
         setViewModel(with: model)
 
         return viewModel
+    }
+
+    func viewButtonTapped() {
+        logout()
     }
 }
 
@@ -113,6 +121,16 @@ fileprivate extension ChangeLanguagePresenter {
             } catch {
                 handleFailure(error: error.getTopLayerErrorResponse())
             }
+        }
+    }
+
+    func logout() {
+        Task {
+            _ = try? await authNetworkService?.logoutData(forceRequest: false)
+
+            KeychainJWTProvider.shared.deleteToken(.accessToken)
+            KeychainJWTProvider.shared.deleteToken(.refreshToken)
+            router.gotToAuth()
         }
     }
 
@@ -180,6 +198,7 @@ fileprivate extension ChangeLanguagePresenter {
         viewModel.languages = model.languages.compactMap({
             LanguageViewModel(title: $0.title, isSelected: $0.isSelected)
         })
+        viewModel.buttonText = "Logout"
     }
 
     func getTitle(from model: CountryMo) -> String? {

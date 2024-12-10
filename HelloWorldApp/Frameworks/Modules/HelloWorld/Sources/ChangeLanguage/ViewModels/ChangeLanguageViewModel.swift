@@ -16,6 +16,10 @@ class ChangeLanguageViewModel: ObservableObject {
 
     var navigationTitle: String = .empty
     @Published var languages: [LanguageViewModel] = []
+
+    @Published var buttonText: String = .empty
+    @Published var isButtonLoading: Bool = false
+    @Published var isButtonEnabled: Bool = true
 }
 
 // MARK: - LanguageViewModel

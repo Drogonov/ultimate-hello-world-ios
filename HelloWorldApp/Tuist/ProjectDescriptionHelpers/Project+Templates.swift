@@ -146,6 +146,10 @@ private func getSourceryYamlArgs(name: ProjectName) -> (argsTestableImports: Str
         argsTestableImports = "[MasterComponents]"
         argsImports = "[UIKit, Common, Resources]"
 
+    case .Auth:
+        argsTestableImports = "[Auth]"
+        argsImports = "[Common, CommonApplicationMocks, CommonApplication, DI]"
+
     case .HelloWorld:
         argsTestableImports = "[HelloWorld]"
         argsImports = "[Common, CommonApplicationMocks, CommonApplication, DI]"

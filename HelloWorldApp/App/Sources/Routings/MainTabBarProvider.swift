@@ -10,6 +10,9 @@ import UIKit
 import HelloWorld
 import DI
 import CommonApplication
+import Auth
+import Magic
+import Resources
 
 class MainTabBarProvider: MainTabBarProviderProtocol {
     func provideMainTabBar() -> UITabBarController {
@@ -23,6 +26,14 @@ class MainTabBarProvider: MainTabBarProviderProtocol {
         tabBarController.viewControllers = controllers
 
         return tabBarController
+    }
+
+    func provideAuth() -> UIViewController {
+        createAuthModule()
+    }
+
+    func provideOnboarding() -> UIViewController {
+        createOnboardingModule()
     }
 }
 
@@ -59,5 +70,28 @@ extension MainTabBarProvider {
         )
 
         return navigationController
+    }
+
+    func createOnboardingModule() -> UIViewController {
+        let configurator = MVPModuleConfigurator(MagicFlowModuleFactory.onboardingModule())
+        let viewController = configurator.getViewController()
+        configurator.configure { (input: OnboardingModuleInput?) in
+            input?.set(dataStorage: OnboardingDataStorage(
+                onboardingText: ResourcesStrings.onboardingText(),
+                onboardingButtonText: ResourcesStrings.onboardingButtonText()
+            ))
+        }
+
+        return viewController
+    }
+
+    func createAuthModule() -> UIViewController {
+        let configurator = MVPModuleConfigurator(AuthFlowModuleFactory.authModule())
+        let viewController = configurator.getViewController()
+        configurator.configure { (input: AuthModuleInput?) in
+            input?.set(dataStorage: AuthDataStorage())
+        }
+
+        return viewController
     }
 }

@@ -36,6 +36,7 @@ protocol ChangeLanguagePresenterInput: NativeAlertProtocol {
     func viewWillDissapear()
 
     func switchToggled(on index: Int)
+    func viewButtonTapped()
 
     func getEmptyModel() -> ChangeLanguageViewModel
 }
@@ -43,4 +44,6 @@ protocol ChangeLanguagePresenterInput: NativeAlertProtocol {
 // MARK: - Router Protocols
 
 // sourcery: AutoMockable
-protocol ChangeLanguageRouterInput: BaseRouterInput {}
+protocol ChangeLanguageRouterInput: BaseRouterInput {
+    func gotToAuth()
+}

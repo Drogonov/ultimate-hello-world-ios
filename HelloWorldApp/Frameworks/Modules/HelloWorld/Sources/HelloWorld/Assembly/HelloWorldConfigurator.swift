@@ -65,7 +65,9 @@ fileprivate extension HelloWorldConfigurator {
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main
                     ),
-                    errorHandler: NetworkServiceErrorHandler()
+                    errorHandler: NetworkServiceErrorHandler(
+                        router: resolver.resolveSafe(HelloWorldRouterInput.self)
+                    )
                 ),
                 shortCacher: nil
             )

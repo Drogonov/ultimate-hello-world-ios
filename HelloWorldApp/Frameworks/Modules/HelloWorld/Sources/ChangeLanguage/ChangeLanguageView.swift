@@ -6,6 +6,7 @@
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.
 
 import SwiftUI
+import MasterComponents
 
 // MARK: - ChangeLanguageView
 
@@ -15,23 +16,39 @@ struct ChangeLanguageView: View {
 
     @ObservedObject var model: ChangeLanguageViewModel
     var switchToggled: ((Int) -> Void)
+    var buttonTapped: () -> Void
 
     // MARK: Construction
 
     var body: some View {
         List {
-            ForEach($model.languages) { $language in
-                Toggle(isOn: $language.isSelected) {
-                    Text(language.title)
-                }
-                .onChange(of: language.isSelected) {
-                    guard let index = model.languages.firstIndex(where: {
-                        $0.id == language.id
-                    }) else {
-                        return
+            Section() {
+                ForEach($model.languages) { $language in
+                    Toggle(isOn: $language.isSelected) {
+                        Text(language.title)
                     }
+                    .onChange(of: language.isSelected) {
+                        guard let index = model.languages.firstIndex(where: {
+                            $0.id == language.id
+                        }) else {
+                            return
+                        }
 
-                    switchToggled(index)
+                        switchToggled(index)
+                    }
+                }
+            }
+
+            Section() {
+                HStack(alignment: .center) {
+                    Spacer()
+
+                    Button(model.buttonText) {
+                        buttonTapped()
+                    }
+                    .foregroundStyle(.red)
+
+                    Spacer()
                 }
             }
         }

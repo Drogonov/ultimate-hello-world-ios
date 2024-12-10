@@ -31,7 +31,6 @@ public protocol AuthNetworkServiceProtocol {
     ) async throws -> TokensResponseMo
 
     func logoutData(
-        request: LogoutRequestMo,
         forceRequest: Bool
     ) async throws -> LogoutResponseMo
 
@@ -110,7 +109,6 @@ extension AuthNetworkService: AuthNetworkServiceProtocol {
     }
 
     public func logoutData(
-        request: LogoutRequestMo,
         forceRequest: Bool
     ) async throws -> LogoutResponseMo {
         let metaInfo = MetaInfo(
@@ -119,7 +117,7 @@ extension AuthNetworkService: AuthNetworkServiceProtocol {
         )
 
         let response = try await NetworkCoordinator.proceed(metaInfo: metaInfo) {
-            try await api.logoutData(request: request)
+            try await api.logoutData()
         }
 
         return response

@@ -13,10 +13,6 @@ import CommonApplication
 
 // MARK: - Module Protocols
 
-public protocol OTPModuleInput: MVPModuleInputProtocol {
-    func set(dataStorage: OTPDataStorage)
-}
-
 // sourcery: AutoMockable
 public protocol OTPModuleOutput: MVPModuleOutputProtocol {}
 

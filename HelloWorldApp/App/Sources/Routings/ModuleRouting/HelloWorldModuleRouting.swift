@@ -9,9 +9,14 @@
 import DI
 import Magic
 import HelloWorld
+import Auth
 
 class HelloWorldModuleRouting: HelloWorldModuleRoutingProtocol {
     func getMagicModuleFactory() -> MVPModuleFactory {
         MagicFlowModuleFactory.magicModule()
+    }
+
+    func getAuthModuleFactory() -> MVPModuleFactory {
+        AuthFlowModuleFactory.authModule()
     }
 }

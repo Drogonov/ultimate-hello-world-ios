@@ -13,10 +13,6 @@ import CommonApplication
 
 // MARK: - Module Protocols
 
-public protocol AuthModuleInput: MVPModuleInputProtocol {
-    func set(dataStorage: AuthDataStorage)
-}
-
 // sourcery: AutoMockable
 public protocol AuthModuleOutput: MVPModuleOutputProtocol {}
 

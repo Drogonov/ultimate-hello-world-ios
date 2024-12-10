@@ -10,4 +10,6 @@ import UIKit
 
 public protocol MainTabBarProviderProtocol: AnyObject {
     func provideMainTabBar() -> UITabBarController
+    func provideAuth() -> UIViewController
+    func provideOnboarding() -> UIViewController
 }

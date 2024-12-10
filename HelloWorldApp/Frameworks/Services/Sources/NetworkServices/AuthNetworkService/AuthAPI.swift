@@ -24,9 +24,7 @@ public protocol AuthAPIProtocol {
         request: SingInRequestMo
     ) async throws -> TokensResponseMo
 
-    func logoutData(
-        request: LogoutRequestMo
-    ) async throws -> LogoutResponseMo
+    func logoutData() async throws -> LogoutResponseMo
 }
 
 // MARK: - AuthAPI
@@ -74,11 +72,9 @@ extension AuthAPI: AuthAPIProtocol {
         )
     }
 
-    public func logoutData(
-        request: LogoutRequestMo
-    ) async throws -> LogoutResponseMo {
+    public func logoutData() async throws -> LogoutResponseMo {
         try await performRequest(
-            request: LogoutRequestData(request: request)
+            request: LogoutRequestData()
         )
     }
 }

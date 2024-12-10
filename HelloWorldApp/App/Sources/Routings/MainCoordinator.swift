@@ -69,12 +69,6 @@ fileprivate extension MainCoordinator {
         KeychainJWTProvider.shared.get(.refreshToken) != nil
     }
 
-    func showOnboarding() {
-        let navController = createOnboardingModule()
-        window.rootViewController = navController
-        self.sessionCache?.write(true, withKey: CommonCacheKey.isUserSawOnboarding)
-    }
-
     func showMainTabBar() {
         if let tabBarController = mainTabBarProvider?.provideMainTabBar() {
             let navController = UINavigationController(rootViewController: tabBarController)
@@ -83,32 +77,17 @@ fileprivate extension MainCoordinator {
     }
 
     func showAuth() {
-        let navController = createAuthModule()
-        window.rootViewController = navController
+        if let vc = mainTabBarProvider?.provideAuth() {
+            let navController = UINavigationController(rootViewController: vc)
+            window.rootViewController = navController
+        }
     }
 
-    func createOnboardingModule() -> UINavigationController {
-        let configurator = MVPModuleConfigurator(MagicFlowModuleFactory.onboardingModule())
-        let viewController = configurator.getViewController()
-        configurator.configure { (input: OnboardingModuleInput?) in
-            input?.set(dataStorage: OnboardingDataStorage(
-                onboardingText: ResourcesStrings.onboardingText(),
-                onboardingButtonText: ResourcesStrings.onboardingButtonText()
-            ))
+    func showOnboarding() {
+        if let vc = mainTabBarProvider?.provideOnboarding() {
+            let navController = UINavigationController(rootViewController: vc)
+            window.rootViewController = navController
+            self.sessionCache?.write(true, withKey: CommonCacheKey.isUserSawOnboarding)
         }
-
-        let navigationController = UINavigationController(rootViewController: viewController)
-        return navigationController
-    }
-
-    func createAuthModule() -> UINavigationController {
-        let configurator = MVPModuleConfigurator(AuthFlowModuleFactory.authModule())
-        let viewController = configurator.getViewController()
-        configurator.configure { (input: AuthModuleInput?) in
-            input?.set(dataStorage: AuthDataStorage())
-        }
-
-        let navigationController = UINavigationController(rootViewController: viewController)
-        return navigationController
     }
 }

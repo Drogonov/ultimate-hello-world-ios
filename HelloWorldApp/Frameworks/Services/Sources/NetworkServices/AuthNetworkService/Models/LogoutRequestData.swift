@@ -12,15 +12,11 @@ import CommonNet
 
 struct LogoutRequestData: NetRequestResponseProtocol {
     var method: NetMethod = .post
-    var paramsEncoder: NetEncoderProtocol = FormURLEncoderForMo()
-    var params: [String: Any]? = nil
+    var paramsEncoder: NetEncoderProtocol = VoidEncoderForMo()
+    var params: Codable? = nil
     var timeout: NetTimeoutProtocol = NetTimeout.normal
-    var urlPath: String = "/logout"
-    var headers: NetHeaders = .defaultHeaders()
+    var urlPath: String = "/auth/logout"
+    var headers: NetHeaders = .defaultHeaders(.refreshToken)
     var serializer = UniversalMappableSerializer<LogoutResponseMo>()
     var stringUrl: String?
-
-    init(request: LogoutRequestMo) {
-        self.params = request.toJSON()
-    }
 }

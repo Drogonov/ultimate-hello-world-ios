@@ -106,7 +106,7 @@ public class NetworkManager: NetworkManagerProtocol {
         let urlRequest: URLRequest
         do {
             guard
-                let createdRequest = try request.createRequest(with: defaultHeaders, baseUrlString: baseUrl ?? "", cookies: cookies)
+                let createdRequest = try request.createRequest(with: request.headers, baseUrlString: baseUrl ?? "", cookies: cookies)
             else { throw NetworkErrors.nilUrl }
             urlRequest = createdRequest
         } catch {

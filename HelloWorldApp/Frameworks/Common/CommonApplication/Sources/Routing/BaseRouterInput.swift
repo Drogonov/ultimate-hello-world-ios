@@ -64,6 +64,10 @@ public protocol BaseRouterInput: AnyObject {
     func presentActionSheet(title: String?, message: String?, actions: [UIAlertAction])
 
     func openMainTabBarAsFirsNavigationController()
+
+    func openOnboardingAsFirsNavigationController()
+
+    func openAuthAsFirsNavigationController()
 }
 
 /// Provide default value for parameters
@@ -258,6 +262,24 @@ extension BaseRouter: BaseRouterInput {
 
         NavigationStackProvider.shared.set(isNavigationBarHidden: true)
         NavigationStackProvider.shared.setNewRootViewController(mainTabController)
+    }
+
+    public final func openOnboardingAsFirsNavigationController() {
+        guard let navController = mainTabBarProvider?.provideOnboarding() else {
+            return
+        }
+
+        NavigationStackProvider.shared.set(isNavigationBarHidden: false)
+        NavigationStackProvider.shared.setNewRootViewController(navController)
+    }
+
+    public final func openAuthAsFirsNavigationController() {
+        guard let navController = mainTabBarProvider?.provideAuth() else {
+            return
+        }
+
+        NavigationStackProvider.shared.set(isNavigationBarHidden: false)
+        NavigationStackProvider.shared.setNewRootViewController(navController)
     }
 }
 

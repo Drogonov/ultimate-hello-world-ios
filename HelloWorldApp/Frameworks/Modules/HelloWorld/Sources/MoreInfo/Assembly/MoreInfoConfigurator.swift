@@ -68,7 +68,9 @@ fileprivate extension MoreInfoConfigurator {
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main
                     ),
-                    errorHandler: NetworkServiceErrorHandler()
+                    errorHandler: NetworkServiceErrorHandler(
+                        router: resolver.resolveSafe(MoreInfoRouterInput.self)
+                    )
                 ),
                 shortCacher: nil
             )

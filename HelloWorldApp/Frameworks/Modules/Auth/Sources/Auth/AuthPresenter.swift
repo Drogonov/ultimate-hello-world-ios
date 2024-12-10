@@ -15,6 +15,7 @@ import Net
 import MasterComponents
 import Resources
 import Common
+import CommonApplication
 
 // MARK: - AuthPresenter
 
@@ -78,12 +79,13 @@ extension AuthPresenter: AuthPresenterInput {
 // MARK: - AuthModuleInput
 
 extension AuthPresenter: AuthModuleInput {
-    func setModuleOutput(_ moduleOutput: MVPModuleOutputProtocol) {
-        self.moduleOutput = moduleOutput as? AuthModuleOutput
-    }
-
     func set(dataStorage: AuthDataStorage) {
         self.dataStorage = dataStorage
+
+    }
+    
+    func setModuleOutput(_ moduleOutput: MVPModuleOutputProtocol) {
+        self.moduleOutput = moduleOutput as? AuthModuleOutput
     }
 }
 

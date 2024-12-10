@@ -10,6 +10,7 @@ import Swinject
 import DI
 import Services
 import Net
+import CommonApplication
 
 // MARK: - LoanConfigurator
 
@@ -64,7 +65,9 @@ fileprivate extension AuthConfigurator {
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main
                     ),
-                    errorHandler: NetworkServiceErrorHandler()
+                    errorHandler: NetworkServiceErrorHandler(
+                        router: resolver.resolveSafe(AuthRouterInput.self)
+                    )
                 ),
                 shortCacher: nil
             )

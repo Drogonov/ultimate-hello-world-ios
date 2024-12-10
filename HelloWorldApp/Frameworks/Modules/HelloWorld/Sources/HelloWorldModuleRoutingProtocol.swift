@@ -11,4 +11,5 @@ import DI
 // sourcery: AutoMockable
 public protocol HelloWorldModuleRoutingProtocol {
     func getMagicModuleFactory() -> MVPModuleFactory
+    func getAuthModuleFactory() -> MVPModuleFactory
 }

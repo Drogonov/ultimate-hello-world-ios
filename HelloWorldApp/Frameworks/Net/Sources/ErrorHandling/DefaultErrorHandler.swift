@@ -8,10 +8,14 @@
 import Foundation
 import DI
 import Persistence
+import CommonApplication
 
 class DefaultErrorHandler: DefaultErrorHandlerProtocol {
     var errorReportingType: ErrorReportingType = .none
     var sessionCache: CacheProtocol? = resolveDependency(CacheProtocol.self, name: CacherType.session)
+    var router: BaseRouterInput?
 
-    init() {}
+    init(router: BaseRouterInput?) {
+        self.router = router
+    }
 }

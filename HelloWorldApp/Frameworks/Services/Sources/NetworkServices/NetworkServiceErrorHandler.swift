@@ -9,10 +9,14 @@ import Foundation
 import DI
 import Net
 import Persistence
+import CommonApplication
 
 public class NetworkServiceErrorHandler: DefaultErrorHandlerProtocol {
     public var errorReportingType: ErrorReportingType = .alert
     public var sessionCache: CacheProtocol? = resolveDependency(CacheProtocol.self, name: CacherType.session)
+    public var router: BaseRouterInput?
 
-    public init() {}
+    public init(router: BaseRouterInput?) {
+        self.router = router
+    }
 }

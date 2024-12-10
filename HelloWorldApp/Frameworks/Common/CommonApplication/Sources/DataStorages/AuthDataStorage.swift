@@ -7,21 +7,18 @@
 //
 
 import Foundation
+import DI
+
+public protocol AuthModuleInput: MVPModuleInputProtocol {
+    func set(dataStorage: AuthDataStorage)
+}
 
 // MARK: - AuthDataStorage
 
 public struct AuthDataStorage {
 
-    // MARK: Public Properties
-
-    public let response: String
-
     // MARK: Init
     // Move to CommonApplication if you want to use it with deeplinks 
 
-    public init(
-        response: String = "Hello World!"
-    ) {
-        self.response = response
-    }
+    public init() {}
 }

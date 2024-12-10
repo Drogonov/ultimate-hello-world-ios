@@ -29,6 +29,9 @@ final class ChangeLanguageViewController: UIViewController, MVPModuleProtocol, B
             model: self.presenter.getEmptyModel(),
             switchToggled: { index in 
                 self.presenter.switchToggled(on: index)
+            },
+            buttonTapped: {
+                self.presenter.viewButtonTapped()
             }
         )
     }()

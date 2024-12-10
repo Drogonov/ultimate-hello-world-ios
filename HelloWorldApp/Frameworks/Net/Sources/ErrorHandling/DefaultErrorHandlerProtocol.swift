@@ -27,6 +27,7 @@ public enum ErrorHandlerType {
 public protocol DefaultErrorHandlerProtocol: NetErrorHandler, MCToastViewProtocol, NativeAlertProtocol {
     var errorReportingType: ErrorReportingType { get }
     var sessionCache: CacheProtocol? { get }
+    var router: BaseRouterInput? { get }
 }
 
 extension DefaultErrorHandlerProtocol {
@@ -154,70 +155,39 @@ extension DefaultErrorHandlerProtocol {
 fileprivate extension DefaultErrorHandlerProtocol {
     func handleApplication(error: Error, reason: ApplicationErrorReason, responseInfo: ResponseInfo?) throws {
         if case let .response(statusCode, errorReason) = reason {
+            switch statusCode {
+            case .unauthorized:
+                let storage = DialogDataStorage(
+                    title: "Вы не авторизованы",
+                    description: "Войдите пожалуйста в приложение",
+                    defaultTitle: ResourcesStrings.ok(),
+                    defaultAction: {
+                        self.defaultLogoutAction()
+                    }
+                )
 
-            let message = messageWithTraceId(
-                ResourcesStrings.forbiddenErrorDefaultMessage(),
-                responseInfo: responseInfo
-            )
-            show(
-                criticalMessage: "\(message) \(reason.errorResponse()?.errorFields?.first?.errorMsg ?? .empty)",
-                title: ResourcesStrings.attention()
-            )
+                show(dialog: storage)
 
-//            switch statusCode {
-//            case .movedTemporary:
-//                let message = messageWithTraceId(
-//                    ResourcesStrings.forbiddenErrorDefaultMessage(),
-//                    responseInfo: responseInfo
-//                )
-//                show(
-//                    criticalMessage: message,
-//                    title: ResourcesStrings.attention()
-//                )
-//
-//            case .unauthorized:
-//                defaultLogoutAction()
-//
-//            case .forbidden:
-//                let message = messageWithTraceId(
-//                    ResourcesStrings.forbiddenErrorDefaultMessage(),
-//                    responseInfo: responseInfo
-//                )
-//                show(
-//                    criticalMessage: message,
-//                    title: ResourcesStrings.attention()
-//                )
-//
-//            case .notFound, .precondition, .internalServerError, .badGateway:
-//                let message = messageWithTraceId(
-//                    ResourcesStrings.serverInaccessibleMessage(),
-//                    responseInfo: responseInfo
-//                )
-//                show(
-//                    criticalMessage: message,
-//                    title: ResourcesStrings.serverInaccessibleTitle()
-//                )
-//
-//            case .notImplemented:
-//                if let errorResponse = errorReason as? ErrorResponseMo {
-//                    debugPrint("\(errorResponse.errorSubCode)")
-//                }
-////                if let errorResponse = errorReason as? ErrorResponseMo,
-////                    errorResponse.errorCode == .unsupported {
-////                    let storage = DialogDataStorage(
-////                        title: ResourcesStrings.attention(),
-////                        description: ResourcesStrings.appOutdated(),
-////                        defaultTitle: ResourcesStrings.refresh(),
-////                        defaultAction: {
-////                            self.appOutdate()
-////                        }
-////                    )
-////                    show(dialog: storage)
-////                }
-//
-//            default:
-//                break
-//            }
+            case .notFound, .precondition, .internalServerError, .badGateway:
+                let message = messageWithTraceId(
+                    ResourcesStrings.serverInaccessibleMessage(),
+                    responseInfo: responseInfo
+                )
+                show(
+                    criticalMessage: message,
+                    title: ResourcesStrings.serverInaccessibleTitle()
+                )
+
+            default:
+                let message = messageWithTraceId(
+                    ResourcesStrings.forbiddenErrorDefaultMessage(),
+                    responseInfo: responseInfo
+                )
+                show(
+                    criticalMessage: "\(message) \(reason.errorResponse()?.errorFields?.first?.errorMsg ?? .empty)",
+                    title: ResourcesStrings.attention()
+                )
+            }
         } else if case let .conversion(reason, _, _) = reason {
             #if DEBUG
             show(message: reason)
@@ -226,7 +196,14 @@ fileprivate extension DefaultErrorHandlerProtocol {
         throw error
     }
 
-    func defaultLogoutAction() {}
+    func defaultLogoutAction() {
+        KeychainJWTProvider.shared.deleteToken(.accessToken)
+        KeychainJWTProvider.shared.deleteToken(.refreshToken)
+
+        DispatchQueue.performOnMainThread {
+            self.router?.openAuthAsFirsNavigationController()
+        }
+    }
 
     func handleTop(error: Error, reason: TopErrorReason) throws {
         /// use self custom ErrorHandler
