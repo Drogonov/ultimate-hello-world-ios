@@ -14,14 +14,14 @@ public struct OTPDataStorage {
 
     // MARK: Public Properties
 
-    public let response: String
+    public let email: String
 
     // MARK: Init
     // Move to CommonApplication if you want to use it with deeplinks 
 
     public init(
-        response: String = "Hello World!"
+        email: String
     ) {
-        self.response = response
+        self.email = email
     }
 }

@@ -42,7 +42,7 @@ class OTPPresenter {
 
 extension OTPPresenter: OTPPresenterInput {
     func viewIsReady() {
-        let model = OTPModel(title: dataStorage?.response)
+        let model = OTPModel(title: dataStorage?.email)
 
         viewModel.navigationTitle = model.title ?? .empty
         viewModel.text = model.title ?? .empty

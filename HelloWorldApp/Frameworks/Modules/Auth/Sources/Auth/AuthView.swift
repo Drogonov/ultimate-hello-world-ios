@@ -38,11 +38,16 @@ struct AuthView: View {
                         model.emailTextField.placeholder,
                         text: $model.emailTextField.text
                     )
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .textCase(.lowercase)
-                        .focused($focusedField, equals: .email)
-                        .padding()
-                        .onSubmit { focusedField = .password }
+                    .textFieldStyle(.roundedBorder)
+                    .focused($focusedField, equals: .email)
+                    .padding()
+                    .onSubmit {
+                        focusedField = .password
+                    }
+                    .disabled(model.isButtonLoading)
+                    .textCase(.lowercase)
+                    .textInputAutocapitalization(.never)
+                    .keyboardType(.emailAddress)
                 } label: {
                     Text(model.emailTextField.subtitle)
                         .padding(.horizontal, MCSpacing.spacing2XL)
@@ -55,16 +60,18 @@ struct AuthView: View {
                         model.passwordTextField.placeholder,
                         text: $model.passwordTextField.text
                     )
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .focused($focusedField, equals: .password)
-                        .padding()
-                        .onSubmit {
-                            if model.authMode == .register {
-                                focusedField = .confirmPassword
-                            } else {
-                                focusedField = nil
-                            }
+                    .textFieldStyle(.roundedBorder)
+                    .focused($focusedField, equals: .password)
+                    .padding()
+                    .onSubmit {
+                        if model.authMode == .register {
+                            focusedField = .confirmPassword
+                        } else {
+                            focusedField = nil
                         }
+                    }
+                    .textInputAutocapitalization(.never)
+                    .disabled(model.isButtonLoading)
                 } label: {
                     Text(model.passwordTextField.subtitle)
                         .padding(.horizontal, MCSpacing.spacing2XL)
@@ -78,10 +85,14 @@ struct AuthView: View {
                             model.confirmPasswordTextField.placeholder,
                             text: $model.confirmPasswordTextField.text
                         )
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .focused($focusedField, equals: .confirmPassword)
-                            .padding()
-                            .onSubmit { focusedField = nil }
+                        .textFieldStyle(.roundedBorder)
+                        .focused($focusedField, equals: .confirmPassword)
+                        .padding()
+                        .onSubmit {
+                            focusedField = nil
+                        }
+                        .disabled(model.isButtonLoading)
+                        .textInputAutocapitalization(.never)
                     } label: {
                         Text(model.confirmPasswordTextField.subtitle)
                             .padding(.horizontal, MCSpacing.spacing2XL)
@@ -95,7 +106,7 @@ struct AuthView: View {
                 Button(model.buttonText) {
                     buttonTapped()
                 }
-//                .loading(model.isButtonLoading)
+                .loading(model.isButtonLoading)
                 .disabled(!model.isButtonEnabled)
                 .buttonStyle(.main)
                 .padding(.horizontal, MCSpacing.spacingL)
@@ -149,6 +160,8 @@ struct AuthView_Previews: PreviewProvider {
         viewModel.passwordTextField.placeholder = model.passwordPlaceholder ?? .empty
         viewModel.confirmPasswordTextField.placeholder = model.confirmPasswordPlaceholder ?? .empty
         viewModel.buttonText = model.buttonText ?? .empty
+        viewModel.isButtonEnabled = true
+        viewModel.isButtonLoading = true
 
         return AuthView(
             model: viewModel,

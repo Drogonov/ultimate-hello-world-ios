@@ -14,6 +14,7 @@ import CommonNet
 import Net
 import MasterComponents
 import Resources
+import Common
 
 // MARK: - AuthPresenter
 
@@ -123,7 +124,7 @@ fileprivate extension AuthPresenter {
                 handleSingInSuccess(response: response)
             } catch {
                 viewModel.isButtonLoading = false
-                handleFailure(error: error.getTopLayerErrorResponse())
+                handleSingInFailure(error: error.getTopLayerErrorResponse())
             }
         }
     }
@@ -154,7 +155,7 @@ fileprivate extension AuthPresenter {
                 handleSingUpSuccess(response: response)
             } catch {
                 viewModel.isButtonLoading = false
-                handleFailure(error: error.getTopLayerErrorResponse())
+                handleSingUpFailure(error: error.getTopLayerErrorResponse())
             }
         }
     }
@@ -184,7 +185,9 @@ fileprivate extension AuthPresenter {
 
         if let status = SingUpStatus(rawValue: response?.status ?? .empty),
             status  == .success {
-            router.goToOTPModule(dataStorage: OTPDataStorage())
+            router.goToOTPModule(dataStorage: OTPDataStorage(
+                email: viewModel.emailTextField.text
+            ))
         } else {
             handleAlert(
                 title: "Cant show OTP",
@@ -194,11 +197,50 @@ fileprivate extension AuthPresenter {
     }
 
     @MainActor
-    func handleFailure(error: ErrorResponseMo?) {
+    func handleSingInFailure(error: ErrorResponseMo?) {
         guard let error = error else {
             return
         }
 
+        switch error.errorSubCode {
+        case .userDoesntExist, .incorrectPassword, .incorrectEmail:
+            updateFields(error: error)
+
+        case .userNotVerified:
+            handleAlert(
+                title: "Нужно пройти верификацию",
+                message: "Мы уже выслали на вашу почту номер для подтреждения аккаунта, пожалуйста введите его далее",
+                firstAction: {
+                    self.router.goToOTPModule(dataStorage: OTPDataStorage(
+                        email: self.viewModel.emailTextField.text
+                    ))
+                }
+            )
+
+        default:
+            handleAlert(title: "Error", message: error.errorMsg)
+        }
+    }
+
+    @MainActor
+    func handleSingUpFailure(error: ErrorResponseMo?) {
+        guard let error = error else {
+            return
+        }
+
+        switch error.errorSubCode {
+        case .incorrectEmail, .incorrectPassword:
+            updateFields(error: error)
+
+        case .cantDeliverVerificationEmail:
+            handleAlert(title: "Проблема с верификацией", message: error.errorMsg)
+
+        default:
+            handleAlert(title: "Error", message: error.errorMsg)
+        }
+    }
+
+    func updateFields(error: ErrorResponseMo) {
         if let errorMsg = singInNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .email) {
             viewModel.emailTextField.subtitle = errorMsg
             viewModel.emailTextField.subtitleColor = .red
@@ -210,14 +252,13 @@ fileprivate extension AuthPresenter {
             viewModel.passwordTextField.subtitleColor = .red
             return
         }
-
-        handleAlert(
-            title: error.errorSubCodeValue,
-            message: error.errorFields?.first?.errorMsg
-        )
     }
 
-    func handleAlert(title: String?, message: String?) {
+    func handleAlert(
+        title: String?,
+        message: String?,
+        firstAction: VoidBlock? = nil
+    ) {
         let body = NativeAlertViewModel.Body(
             title: title,
             message: message
@@ -225,7 +266,7 @@ fileprivate extension AuthPresenter {
 
         let buttons = NativeAlertViewModel.Buttons(
             firstTitle: ResourcesStrings.ok(),
-            firstAction: {}
+            firstAction: firstAction
         )
 
         let viewModel = NativeAlertViewModel(
@@ -262,7 +303,7 @@ fileprivate extension AuthPresenter {
             emailPlaceholder: "Email",
             passwordPlaceholder: "Password",
             confirmPasswordPlaceholder: "Confirm Password",
-            buttonText: "Login"
+            buttonText: "Submit"
         )
 
         viewModel.navigationTitle = model.title ?? .empty
