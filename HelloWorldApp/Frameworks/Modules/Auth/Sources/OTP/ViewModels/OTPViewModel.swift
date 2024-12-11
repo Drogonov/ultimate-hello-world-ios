@@ -16,4 +16,9 @@ class OTPViewModel: ObservableObject {
 
     var navigationTitle: String = "OTP Verification"
     @Published var text: String = .empty
+
+    @Published var verifyButtonText: String = .empty
+    @Published var isVerifyButtonLoading: Bool = false
+
+    @Published var resendButtonText: String = .empty
 }

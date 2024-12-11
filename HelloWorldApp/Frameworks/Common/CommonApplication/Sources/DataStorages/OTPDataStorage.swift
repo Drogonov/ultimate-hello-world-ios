@@ -20,13 +20,16 @@ public struct OTPDataStorage {
     // MARK: Public Properties
 
     public let email: String
+    public let password: String
 
     // MARK: Init
     // Move to CommonApplication if you want to use it with deeplinks 
 
     public init(
-        email: String
+        email: String,
+        password: String
     ) {
         self.email = email
+        self.password = password
     }
 }

@@ -1,5 +1,5 @@
 //
-//  SingUpStatus.swift
+//  StatusType.swift
 //  Services
 //
 //  Created by Anton Vlezko on 9/12/24.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SingUpStatus: String, Codable {
+public enum StatusType: String, Codable {
     case success
     case otpProblem
 }

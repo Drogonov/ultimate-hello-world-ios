@@ -8,6 +8,8 @@
 
 import Swinject
 import CommonApplication
+import Services
+import Net
 
 // MARK: - LoanConfigurator
 
@@ -56,6 +58,18 @@ fileprivate extension OTPConfigurator {
         }
         .initCompleted { resolver, instance in
             instance.view = resolver.resolveSafe(OTPViewInput.self)
+            instance.authNetworkService = AuthNetworkService(
+                api: AuthAPI(
+                    networkClient: resolver.resolveSafe(
+                        NetworkManagerProtocol.self,
+                        name: NetworkManagerType.main
+                    ),
+                    errorHandler: NetworkServiceErrorHandler(
+                        router: resolver.resolveSafe(AuthRouterInput.self)
+                    )
+                ),
+                shortCacher: nil
+            )
         }
         .implements(
             OTPPresenterInput.self,

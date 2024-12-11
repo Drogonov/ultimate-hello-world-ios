@@ -1,5 +1,5 @@
 //
-//  SingInRequestMo.swift
+//  AuthRequestMo.swift
 //  Services
 //
 //  Created by Anton Vlezko on 26/11/24.
@@ -10,7 +10,7 @@ import Foundation
 import ObjectMapper
 import Net
 
-open class SingInRequestMo: BaseRequest {
+open class AuthRequestMo: BaseRequest {
 
     /// Email
     public private(set) var email: String?
@@ -40,7 +40,7 @@ open class SingInRequestMo: BaseRequest {
 
 // MARK: - Constants
 
-fileprivate extension SingInRequestMo {
+fileprivate extension AuthRequestMo {
     enum Constants {
         static let email = "email"
         static let password = "password"

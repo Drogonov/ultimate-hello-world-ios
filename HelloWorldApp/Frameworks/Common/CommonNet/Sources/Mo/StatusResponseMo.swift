@@ -1,5 +1,5 @@
 //
-//  SingUpResponseMo.swift
+//  StatusResponseMo.swift
 //  CommonNet
 //
 //  Created by Anton Vlezko on 26/11/24.
@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 
-public class SingUpResponseMo: BaseResponse {
+public class StatusResponseMo: BaseResponse {
 
     /// Status of response
     public private(set) var status: String?
@@ -28,7 +28,7 @@ public class SingUpResponseMo: BaseResponse {
 
 // MARK: - Constants
 
-fileprivate extension SingUpResponseMo {
+fileprivate extension StatusResponseMo {
     enum Constants {
         static let status = "status"
     }

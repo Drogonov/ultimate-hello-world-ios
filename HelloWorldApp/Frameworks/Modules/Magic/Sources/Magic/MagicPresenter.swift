@@ -89,9 +89,6 @@ extension MagicPresenter: MagicPresenterInput {
     }
 
     func getEmptyModel() -> MagicViewModel {
-//        KeychainJWTProvider.shared.deleteToken(.accessToken)
-//        KeychainJWTProvider.shared.deleteToken(.refreshToken)
-
         getMagicResponse = dataStorage?.response
 
         guard let response = getMagicResponse else {

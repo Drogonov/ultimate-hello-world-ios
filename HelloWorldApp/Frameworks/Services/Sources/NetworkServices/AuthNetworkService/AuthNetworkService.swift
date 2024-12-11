@@ -16,23 +16,28 @@ import CommonNet
 // sourcery: AutoMockable
 public protocol AuthNetworkServiceProtocol {
     func verifyOTPData(
-        request: VerifyOTPRequestMo,
+        request: AuthRequestMo,
         forceRequest: Bool
     ) async throws -> TokensResponseMo
 
-    func singupData(
-        request: SingUpRequestMo,
+    func resendOTPData(
+        request: AuthRequestMo,
         forceRequest: Bool
-    ) async throws -> SingUpResponseMo
+    ) async throws -> TokensResponseMo
+
+    func singUpData(
+        request: AuthRequestMo,
+        forceRequest: Bool
+    ) async throws -> StatusResponseMo
 
     func singInData(
-        request: SingInRequestMo,
+        request: AuthRequestMo,
         forceRequest: Bool
     ) async throws -> TokensResponseMo
 
     func logoutData(
         forceRequest: Bool
-    ) async throws -> LogoutResponseMo
+    ) async throws -> StatusResponseMo
 
     func doesErrorFieldsContainsText(errorFields: [ErrorDetailMo]?, field: SingInErrorFields) -> String?
 }
@@ -61,7 +66,7 @@ public final class AuthNetworkService {
 
 extension AuthNetworkService: AuthNetworkServiceProtocol {
     public func verifyOTPData(
-        request: VerifyOTPRequestMo,
+        request: AuthRequestMo,
         forceRequest: Bool
     ) async throws -> TokensResponseMo {
         let metaInfo = MetaInfo(
@@ -76,28 +81,44 @@ extension AuthNetworkService: AuthNetworkServiceProtocol {
         return response
     }
 
-    public func singupData(
-        request: SingUpRequestMo,
+    public func resendOTPData(
+        request: AuthRequestMo,
         forceRequest: Bool
-    ) async throws -> SingUpResponseMo {
+    ) async throws -> TokensResponseMo {
         let metaInfo = MetaInfo(
-            cacheKey: NetworkServiceCacheKey.singup,
+            cacheKey: NetworkServiceCacheKey.resendOTP,
             forceRequest: true
         )
 
         let response = try await NetworkCoordinator.proceed(metaInfo: metaInfo) {
-            try await api.singupData(request: request)
+            try await api.resendOTPData(request: request)
+        }
+
+        return response
+    }
+
+    public func singUpData(
+        request: AuthRequestMo,
+        forceRequest: Bool
+    ) async throws -> StatusResponseMo {
+        let metaInfo = MetaInfo(
+            cacheKey: NetworkServiceCacheKey.singUp,
+            forceRequest: true
+        )
+
+        let response = try await NetworkCoordinator.proceed(metaInfo: metaInfo) {
+            try await api.singUpData(request: request)
         }
 
         return response
     }
 
     public func singInData(
-        request: SingInRequestMo,
+        request: AuthRequestMo,
         forceRequest: Bool
     ) async throws -> TokensResponseMo {
         let metaInfo = MetaInfo(
-            cacheKey: NetworkServiceCacheKey.singin,
+            cacheKey: NetworkServiceCacheKey.singIn,
             forceRequest: true
         )
 
@@ -110,7 +131,7 @@ extension AuthNetworkService: AuthNetworkServiceProtocol {
 
     public func logoutData(
         forceRequest: Bool
-    ) async throws -> LogoutResponseMo {
+    ) async throws -> StatusResponseMo {
         let metaInfo = MetaInfo(
             cacheKey: NetworkServiceCacheKey.logout,
             forceRequest: true

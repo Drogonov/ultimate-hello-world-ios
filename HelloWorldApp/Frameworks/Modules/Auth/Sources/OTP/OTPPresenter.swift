@@ -10,6 +10,12 @@ import Foundation
 import SwiftUI
 import DI
 import CommonApplication
+import Services
+import CommonNet
+import Net
+import Common
+import MasterComponents
+import Resources
 
 // MARK: - OTPPresenter
 
@@ -25,6 +31,8 @@ class OTPPresenter {
 
     private var router: OTPRouterInput
     private var dataStorage: OTPDataStorage?
+
+    @DelayedImmutable var authNetworkService: AuthNetworkServiceProtocol?
 
     @ObservedObject var viewModel = OTPViewModel()
 
@@ -48,6 +56,8 @@ extension OTPPresenter: OTPPresenterInput {
         viewModel.navigationTitle = model.title ?? .empty
         viewModel.text = model.title ?? .empty
 
+        updateViewModel()
+
         self.view?.setView(with: viewModel)
     }
 
@@ -55,7 +65,13 @@ extension OTPPresenter: OTPPresenterInput {
 
     func viewWillDissapear() {}
 
-    func viewButtonTapped() {}
+    func verifyButtonTapped(otp: String) {
+        handleVerifyOTP(otp: otp)
+    }
+
+    func resendButtonTapped() {
+        handleResendOTP()
+    }
 
     func getEmptyModel() -> OTPViewModel {
         viewModel
@@ -78,9 +94,118 @@ extension OTPPresenter: OTPModuleInput {
 
 extension OTPPresenter: OTPModuleOutput {}
 
+// MARK: - Task
+
+fileprivate extension OTPPresenter {
+    func handleVerifyOTP(otp: String) {
+        guard let dataStorage else {
+            return
+        }
+
+        let request = AuthRequestMo(email: dataStorage.email, password: otp)
+        viewModel.isVerifyButtonLoading = true
+
+        Task {
+            do {
+                let response = try await authNetworkService?.verifyOTPData(request: request, forceRequest: false)
+                viewModel.isVerifyButtonLoading = false
+                handleVerifyOTPSuccess(response: response)
+            } catch {
+                viewModel.isVerifyButtonLoading = false
+                handleFailure(error: error.getTopLayerErrorResponse())
+            }
+        }
+    }
+
+    func handleResendOTP() {
+        guard let dataStorage else {
+            return
+        }
+
+        let request = AuthRequestMo(email: dataStorage.email, password: dataStorage.password)
+
+        Task {
+            do {
+                let response = try await authNetworkService?.resendOTPData(request: request, forceRequest: false)
+                handleResendOTPSuccess(response: response)
+            } catch {
+                handleFailure(error: error.getTopLayerErrorResponse())
+            }
+        }
+    }
+}
+
+// MARK: - @MainActor Handle
+
+fileprivate extension OTPPresenter {
+    @MainActor
+    func handleVerifyOTPSuccess(response: TokensResponseMo?) {
+        guard let response = response else {
+            return
+        }
+
+        if let token = response.accessToken {
+            KeychainJWTProvider.shared.save(.accessToken, token)
+        }
+
+        if let token = response.refreshToken {
+            KeychainJWTProvider.shared.save(.refreshToken, token)
+        }
+
+        router.goToMainTabBar()
+    }
+
+    @MainActor
+    func handleResendOTPSuccess(response: TokensResponseMo?) {
+        guard let response = response else {
+            return
+        }
+
+        handleAlert(title: "OTP send", message: "Please check your email and come back to type your new otp")
+    }
+
+    @MainActor
+    func handleFailure(error: ErrorResponseMo?) {
+        guard let error = error else {
+            return
+        }
+
+        handleAlert(title: "Error", message: error.errorMsg)
+    }
+}
+
 // MARK: - Private Methods
 
-fileprivate extension OTPPresenter {}
+fileprivate extension OTPPresenter {
+    func updateViewModel() {
+        viewModel.navigationTitle = "Enter OTP"
+        viewModel.resendButtonText = "Resend OTP"
+        viewModel.verifyButtonText = "Verify"
+    }
+
+    func handleAlert(
+        title: String?,
+        message: String?,
+        firstAction: VoidBlock? = nil
+    ) {
+        let body = NativeAlertViewModel.Body(
+            title: title,
+            message: message
+        )
+
+        let buttons = NativeAlertViewModel.Buttons(
+            firstTitle: ResourcesStrings.ok(),
+            firstAction: firstAction
+        )
+
+        let viewModel = NativeAlertViewModel(
+            body: body,
+            buttons: buttons
+        )
+
+        showNativeAlert(viewModel: viewModel)
+    }
+}
 
 // MARK: - Constants
 

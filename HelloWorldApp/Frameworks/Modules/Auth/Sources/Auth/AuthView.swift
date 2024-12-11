@@ -161,7 +161,7 @@ struct AuthView_Previews: PreviewProvider {
         viewModel.confirmPasswordTextField.placeholder = model.confirmPasswordPlaceholder ?? .empty
         viewModel.buttonText = model.buttonText ?? .empty
         viewModel.isButtonEnabled = true
-        viewModel.isButtonLoading = true
+        viewModel.isButtonLoading = false
 
         return AuthView(
             model: viewModel,

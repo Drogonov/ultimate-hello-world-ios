@@ -26,12 +26,13 @@ protocol OTPViewInput: AnyObject {
 // MARK: - Presenter Protocols
 
 // sourcery: AutoMockable
-protocol OTPPresenterInput: AnyObject {
+protocol OTPPresenterInput: NativeAlertProtocol {
     func viewIsReady()
     func viewWillAppear()
     func viewWillDissapear()
 
-    func viewButtonTapped()
+    func verifyButtonTapped(otp: String)
+    func resendButtonTapped()
 
     func getEmptyModel() -> OTPViewModel
 }
@@ -39,4 +40,6 @@ protocol OTPPresenterInput: AnyObject {
 // MARK: - Router Protocols
 
 // sourcery: AutoMockable
-protocol OTPRouterInput: BaseRouterInput {}
+protocol OTPRouterInput: BaseRouterInput {
+    func goToMainTabBar()
+}

@@ -70,10 +70,7 @@ extension ChangeLanguagePresenter: ChangeLanguagePresenterInput {
         getCountries(languageCode: code)
     }
 
-    func getEmptyModel() -> ChangeLanguageViewModel {
-        KeychainJWTProvider.shared.deleteToken(.accessToken)
-        KeychainJWTProvider.shared.deleteToken(.refreshToken)
-        
+    func getEmptyModel() -> ChangeLanguageViewModel {        
         getCountriesResponse = dataStorage?.response
 
         guard let response = getCountriesResponse else {

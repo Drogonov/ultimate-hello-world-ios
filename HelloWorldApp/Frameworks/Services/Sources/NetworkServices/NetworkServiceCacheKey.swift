@@ -13,10 +13,11 @@ enum NetworkServiceCacheKey: String, CacheKeyable {
     case getCountries
     case getInfo
     case getMagic
-    case singup
-    case singin
+    case singUp
+    case singIn
     case logout
     case verifyOTP
+    case resendOTP
 
     public var value: String {
         self.rawValue

@@ -13,18 +13,22 @@ import CommonNet
 // sourcery: AutoMockable
 public protocol AuthAPIProtocol {
     func verifyOTPData(
-        request: VerifyOTPRequestMo
+        request: AuthRequestMo
     ) async throws -> TokensResponseMo
 
-    func singupData(
-        request: SingUpRequestMo
-    ) async throws -> SingUpResponseMo
+    func resendOTPData(
+        request: AuthRequestMo
+    ) async throws -> TokensResponseMo
+
+    func singUpData(
+        request: AuthRequestMo
+    ) async throws -> StatusResponseMo
 
     func singInData(
-        request: SingInRequestMo
+        request: AuthRequestMo
     ) async throws -> TokensResponseMo
 
-    func logoutData() async throws -> LogoutResponseMo
+    func logoutData() async throws -> StatusResponseMo
 }
 
 // MARK: - AuthAPI
@@ -49,30 +53,38 @@ public struct AuthAPI: BaseAPI {
 
 extension AuthAPI: AuthAPIProtocol {
     public func verifyOTPData(
-        request: VerifyOTPRequestMo
+        request: AuthRequestMo
     ) async throws -> TokensResponseMo {
         try await performRequest(
             request: VerifyOTPRequestData(request: request)
         )
     }
 
-    public func singupData(
-        request: SingUpRequestMo
-    ) async throws -> SingUpResponseMo {
+    public func resendOTPData(
+        request: AuthRequestMo
+    ) async throws -> TokensResponseMo {
+        try await performRequest(
+            request: ResendOTPRequestData(request: request)
+        )
+    }
+
+    public func singUpData(
+        request: AuthRequestMo
+    ) async throws -> StatusResponseMo {
         try await performRequest(
             request: SingUpRequestData(request: request)
         )
     }
 
     public func singInData(
-        request: SingInRequestMo
+        request: AuthRequestMo
     ) async throws -> TokensResponseMo {
         try await performRequest(
             request: SingInRequestData(request: request)
         )
     }
 
-    public func logoutData() async throws -> LogoutResponseMo {
+    public func logoutData() async throws -> StatusResponseMo {
         try await performRequest(
             request: LogoutRequestData()
         )

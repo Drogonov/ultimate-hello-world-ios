@@ -17,6 +17,6 @@ struct LogoutRequestData: NetRequestResponseProtocol {
     var timeout: NetTimeoutProtocol = NetTimeout.normal
     var urlPath: String = "/auth/logout"
     var headers: NetHeaders = .defaultHeaders(.refreshToken)
-    var serializer = UniversalMappableSerializer<LogoutResponseMo>()
+    var serializer = UniversalMappableSerializer<StatusResponseMo>()
     var stringUrl: String?
 }

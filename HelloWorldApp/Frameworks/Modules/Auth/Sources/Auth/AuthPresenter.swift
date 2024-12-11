@@ -99,11 +99,12 @@ extension AuthPresenter: AuthViewModelDelegate {
     }
 }
 
+
 // MARK: - AuthModuleOutput
 
 extension AuthPresenter: AuthModuleOutput {}
 
-// MARK: - Private Methods
+// MARK: - Task
 
 fileprivate extension AuthPresenter {
     func handleSingInFlow() {
@@ -115,7 +116,7 @@ fileprivate extension AuthPresenter {
             return
         }
 
-        let request = SingInRequestMo(email: email, password: password)
+        let request = AuthRequestMo(email: email, password: password)
         viewModel.isButtonLoading = true
 
         Task {
@@ -146,12 +147,12 @@ fileprivate extension AuthPresenter {
             return
         }
 
-        let request = SingUpRequestMo(email: email, password: password)
+        let request = AuthRequestMo(email: email, password: password)
         viewModel.isButtonLoading = true
 
         Task {
             do {
-                let response = try await authNetworkService?.singupData(request: request, forceRequest: false)
+                let response = try await authNetworkService?.singUpData(request: request, forceRequest: false)
                 viewModel.isButtonLoading = false
                 handleSingUpSuccess(response: response)
             } catch {
@@ -160,7 +161,11 @@ fileprivate extension AuthPresenter {
             }
         }
     }
+}
 
+// MARK: - @MainActor Handle
+
+fileprivate extension AuthPresenter {
     @MainActor
     func handleSingInSuccess(response: TokensResponseMo?) {
         guard let response = response else {
@@ -179,15 +184,16 @@ fileprivate extension AuthPresenter {
     }
 
     @MainActor
-    func handleSingUpSuccess(response: SingUpResponseMo??) {
+    func handleSingUpSuccess(response: StatusResponseMo??) {
         guard let response = response else {
             return
         }
 
-        if let status = SingUpStatus(rawValue: response?.status ?? .empty),
+        if let status = StatusType(rawValue: response?.status ?? .empty),
             status  == .success {
             router.goToOTPModule(dataStorage: OTPDataStorage(
-                email: viewModel.emailTextField.text
+                email: viewModel.emailTextField.text,
+                password: viewModel.passwordTextField.text
             ))
         } else {
             handleAlert(
@@ -213,7 +219,8 @@ fileprivate extension AuthPresenter {
                 message: "Мы уже выслали на вашу почту номер для подтреждения аккаунта, пожалуйста введите его далее",
                 firstAction: {
                     self.router.goToOTPModule(dataStorage: OTPDataStorage(
-                        email: self.viewModel.emailTextField.text
+                        email: self.viewModel.emailTextField.text,
+                        password: self.viewModel.passwordTextField.text
                     ))
                 }
             )
@@ -240,7 +247,12 @@ fileprivate extension AuthPresenter {
             handleAlert(title: "Error", message: error.errorMsg)
         }
     }
+}
 
+
+// MARK: - Private Methods
+
+fileprivate extension AuthPresenter {
     func updateFields(error: ErrorResponseMo) {
         if let errorMsg = authNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .email) {
             viewModel.emailTextField.subtitle = errorMsg
