@@ -31,7 +31,7 @@ protocol OTPPresenterInput: NativeAlertProtocol {
     func viewWillAppear()
     func viewWillDissapear()
 
-    func verifyButtonTapped(otp: String)
+    func verifyButtonTapped()
     func resendButtonTapped()
 
     func getEmptyModel() -> OTPViewModel

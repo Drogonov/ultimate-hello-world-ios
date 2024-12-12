@@ -44,6 +44,7 @@ class OTPPresenter {
         router: OTPRouterInput
     ) {
         self.router = router
+        self.viewModel.delegate = self
     }
 }
 
@@ -54,8 +55,6 @@ extension OTPPresenter: OTPPresenterInput {
         let model = OTPModel(title: dataStorage?.email)
 
         viewModel.navigationTitle = model.title ?? .empty
-        viewModel.text = model.title ?? .empty
-
         updateViewModel()
 
         self.view?.setView(with: viewModel)
@@ -65,8 +64,11 @@ extension OTPPresenter: OTPPresenterInput {
 
     func viewWillDissapear() {}
 
-    func verifyButtonTapped(otp: String) {
-        handleVerifyOTP(otp: otp)
+    func verifyButtonTapped() {
+        let otp = getOTP()
+        if otp.count == 6 {
+            handleVerifyOTP(otp: otp)
+        }
     }
 
     func resendButtonTapped() {
@@ -87,6 +89,14 @@ extension OTPPresenter: OTPModuleInput {
     
     func setModuleOutput(_ moduleOutput: MVPModuleOutputProtocol) {
         self.moduleOutput = moduleOutput as? OTPModuleOutput
+    }
+}
+
+// MARK: - OTPViewModelDelegate
+
+extension OTPPresenter: OTPViewModelDelegate {
+    func otpTextFieldsDidChange() {
+        viewModel.isVerifyButtonEnabled = getOTP().count == 6
     }
 }
 
@@ -181,6 +191,23 @@ fileprivate extension OTPPresenter {
         viewModel.navigationTitle = "Enter OTP"
         viewModel.resendButtonText = "Resend OTP"
         viewModel.verifyButtonText = "Verify"
+
+        clearOtpTextField()
+    }
+
+    func clearOtpTextField() {
+        viewModel.otpTextFields = [
+            0: .empty, 1: .empty, 2: .empty, 3: .empty, 4: .empty, 5: .empty
+        ]
+    }
+
+    func getOTP() -> String {
+        var otp: String = ""
+        for index in 0...5 {
+            otp += viewModel.otpTextFields[index] ?? .empty
+        }
+
+        return otp.trim()
     }
 
     func handleAlert(

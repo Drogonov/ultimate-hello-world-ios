@@ -62,13 +62,17 @@ extension AuthPresenter: AuthPresenterInput {
     func viewWillDissapear() {}
 
     func viewButtonTapped() {
-        switch viewModel.authMode {
-        case .login:
-            handleSingInFlow()
-
-        case .register:
-            handleSingUpFlow()
-        }
+//        switch viewModel.authMode {
+//        case .login:
+//            handleSingInFlow()
+//
+//        case .register:
+//            handleSingUpFlow()
+//        }
+        router.goToOTPModule(dataStorage: OTPDataStorage(
+            email: "test@test.com",
+            password: "qqqqqqqq"
+        ))
     }
 
     func getEmptyModel() -> AuthViewModel {

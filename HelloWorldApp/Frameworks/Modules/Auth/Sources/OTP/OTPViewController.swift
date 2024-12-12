@@ -27,8 +27,8 @@ final class OTPViewController: UIViewController, MVPModuleProtocol, BaseViewCont
     lazy var testView: OTPView = {
         OTPView(
             model: self.presenter.getEmptyModel(),
-            verifyTapped: { otp in
-                self.presenter.verifyButtonTapped(otp: otp)
+            verifyTapped: {
+                self.presenter.verifyButtonTapped()
             },
             resendTapped: {
                 self.presenter.resendButtonTapped()
