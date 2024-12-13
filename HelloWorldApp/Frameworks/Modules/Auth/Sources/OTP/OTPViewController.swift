@@ -8,6 +8,7 @@
 
 import DI
 import UIKit
+import SwiftUI
 import SnapKit
 import Common
 import MasterComponents
@@ -21,19 +22,12 @@ final class OTPViewController: UIViewController, MVPModuleProtocol, BaseViewCont
     var moduleInput: MVPModuleInputProtocol?
 
     @DelayedImmutable var presenter: OTPPresenterInput
+    @ObservedObject var viewStore = OTPViewStore()
 
     // MARK: UI Properties
 
-    lazy var testView: OTPView = {
-        OTPView(
-            model: self.presenter.getEmptyModel(),
-            verifyTapped: {
-                self.presenter.verifyButtonTapped()
-            },
-            resendTapped: {
-                self.presenter.resendButtonTapped()
-            }
-        )
+    lazy var otpView: OTPView = {
+        OTPView(store: viewStore)
     }()
 
     // MARK: Inheritance
@@ -44,60 +38,46 @@ final class OTPViewController: UIViewController, MVPModuleProtocol, BaseViewCont
         configure()
         presenter.viewIsReady()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    // MARK: Selectors
-    // ...
 }
 
 // MARK: - OTPViewInput
 
 extension OTPViewController: OTPViewInput {
-
     func setView(with viewModel: OTPViewModel) {
         setNavigationBarTitle(with: viewModel.navigationTitle)
-        configureView(with: viewModel)
+        viewStore.update(with: viewModel)
     }
 }
 
 // MARK: - ViewConfigurable
 
 extension OTPViewController: ViewConfigurable {
-
     public func configureViews() {
         view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
+        viewStore.delegate = self
     }
 
     public func configureConstraints() {
-        addMainViewToViewController(testView)
+        addMainViewToViewController(otpView)
     }
 }
 
-// MARK: - Private Methods
-
-fileprivate extension OTPViewController {
-    private func configureView(with viewModel: OTPViewModel) {
-        self.testView.model = viewModel
+extension OTPViewController: OTPViewStoreDelegate {
+    func didChangeOTPTextField(with index: Int, text: String) {
+        presenter.viewDidChangeOTPTextField(with: index, text: text)
     }
-}
-
-// MARK: - Constants
-
-fileprivate extension OTPViewController {
-
-    // delete if not needed
-    // enum Constants {}
+    
+    func didTapOTPTextField(with index: Int) {
+        presenter.viewDidTapOTPTextField(with: index)
+    }
+    
+    func didTapVerifyButton() {
+        presenter.viewDidTapVerifyButton()
+    }
+    
+    func didTapResendButton() {
+        presenter.viewDidTapResendButton()
+    }
 }

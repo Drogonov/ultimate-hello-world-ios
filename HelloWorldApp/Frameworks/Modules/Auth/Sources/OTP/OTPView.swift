@@ -15,13 +15,11 @@ struct OTPView: View {
 
     // MARK: Properties
 
-    @ObservedObject var model: OTPViewModel
-    var verifyTapped: () -> Void
-    var resendTapped: () -> Void
+    @ObservedObject var store: OTPViewStore
 
-    // MARK: State
+    // MARK: - Private Properties
 
-    @FocusState private var focusedIndex: Int?
+    @FocusState private var otpFocusedTextFieldIndex: Int?
 
     // MARK: Construction
 
@@ -32,8 +30,8 @@ struct OTPView: View {
 
                 // OTP Input Fields
                 HStack(spacing: MCSpacing.spacingM) {
-                    ForEach(0..<model.otpTextFields.count, id: \.self) { index in
-                        TextField("", text: $model.otpTextFields[index].optionalBind)
+                    ForEach(0..<store.otpTextFields.count, id: \.self) { index in
+                        TextField("", text: $store.otpTextFields[index].optionalBind)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.center)
                             .frame(height: 64)
@@ -41,83 +39,44 @@ struct OTPView: View {
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(Color.gray, lineWidth: 1)
                             )
-                            .focused($focusedIndex, equals: index)
+                            .focused($otpFocusedTextFieldIndex, equals: index)
                             .simultaneousGesture(TapGesture().onEnded {
-                                focusedIndex = index
+                                store.didTapOTPTextField(with: index)
                             })
-                            .onChange(of: model.otpTextFields[index] ?? .empty, { oldValue, newValue in
-                                var value: String = .empty
-                                var indexToFocus: Int?
-
-                                switch (
-                                    newValue.rangeOfCharacter(from: CharacterSet.decimalDigits) != nil,
-                                    newValue.count <= 1
-                                ) {
-                                case (true, true):
-                                    value = newValue
-                                    indexToFocus = getIndexToFocus(index)
-
-                                case (true, false):
-                                    value = String(newValue.last ?? Character(""))
-                                    indexToFocus = getIndexToFocus(index)
-
-                                case (false, _):
-                                    value = .empty
-                                    indexToFocus = index
-                                }
-
-                                model.otpTextFields[index] = value
-                                focusedIndex = indexToFocus
+                            .onChange(of: store.otpTextFields[index] ?? .empty, { oldValue, newValue in
+                                store.didChangeOTPTextField(with: index, text: newValue)
                             })
+                            .onChange(of: store.otpFocusedTextFieldIndex) { oldValue, newValue in
+                                otpFocusedTextFieldIndex = newValue
+                            }
                     }
                 }
                 .padding(MCSpacing.spacingL)
 
                 Spacer()
 
-                Button(model.verifyButtonText) {
-                    verifyTapped()
+                Button(store.verifyButtonText) {
+                    store.didTapVerifyButton()
                 }
-                .loading(model.isVerifyButtonLoading)
-                .disabled(!model.isVerifyButtonEnabled)
+                .loading(store.isVerifyButtonLoading)
+                .disabled(!store.isVerifyButtonEnabled)
                 .buttonStyle(.main)
                 .padding(MCSpacing.spacingL)
 
-                // Resend OTP Button
                 Button(action: {
-                    resendTapped()
+                    store.didTapResendButton()
                 }) {
-                    Text(model.resendButtonText)
+                    Text(store.resendButtonText)
                         .foregroundStyle(.red)
                         .underline()
                 }
 
                 Spacer()
             }
+            .onAppear() {
+                otpFocusedTextFieldIndex = store.otpFocusedTextFieldIndex
+            }
         }
-        .onAppear {
-            focusedIndex = 0
-        }
-    }
-}
-
-// MARK: - Private Methods
-
-fileprivate extension OTPView {
-    func getIndexToFocus(_ currentIndex: Int) -> Int? {
-        var indexToFocus: Int?
-
-        if !ifAllSymbolsAdded(), currentIndex + 1 == 6 {
-            indexToFocus = nil
-        } else {
-            indexToFocus = currentIndex + 1
-        }
-
-        return indexToFocus
-    }
-
-    func ifAllSymbolsAdded() -> Bool {
-        model.otpTextFields.values.joined().trim().count == 6
     }
 }
 
@@ -125,21 +84,17 @@ fileprivate extension OTPView {
 
 struct OTPView_Previews: PreviewProvider {
     static var previews: some View {
-        let model = OTPViewModel()
+        let store = OTPViewStore()
 
-        model.verifyButtonText = "Verify"
-        model.isVerifyButtonLoading = false
-        model.resendButtonText = "Resend OTP"
-        model.isVerifyButtonEnabled = false
+        store.verifyButtonText = "Verify"
+        store.isVerifyButtonLoading = false
+        store.resendButtonText = "Resend OTP"
+        store.isVerifyButtonEnabled = false
 
-        model.otpTextFields = [
+        store.otpTextFields = [
             0: .empty, 1: .empty, 2: .empty, 3: .empty, 4: .empty, 5: .empty
         ]
 
-        return OTPView(
-            model: model,
-            verifyTapped: {},
-            resendTapped: {}
-        )
+        return OTPView(store: store)
     }
 }

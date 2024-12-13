@@ -31,12 +31,11 @@ class OTPPresenter {
 
     private var router: OTPRouterInput
     private var dataStorage: OTPDataStorage?
-
-    @DelayedImmutable var authNetworkService: AuthNetworkServiceProtocol?
-
-    @ObservedObject var viewModel = OTPViewModel()
+    private var viewModel: OTPViewModel?
 
     // MARK: Services
+
+    @DelayedImmutable var authNetworkService: AuthNetworkServiceProtocol?
 
     // MARK: Init
 
@@ -44,39 +43,65 @@ class OTPPresenter {
         router: OTPRouterInput
     ) {
         self.router = router
-        self.viewModel.delegate = self
     }
 }
 
 // MARK: - OTPPresenterInput
 
 extension OTPPresenter: OTPPresenterInput {
+
     func viewIsReady() {
-        let model = OTPModel(title: dataStorage?.email)
+        viewModel = getDefaultViewModel()
 
-        viewModel.navigationTitle = model.title ?? .empty
-        updateViewModel()
-
-        self.view?.setView(with: viewModel)
-    }
-
-    func viewWillAppear() {}
-
-    func viewWillDissapear() {}
-
-    func verifyButtonTapped() {
-        let otp = getOTP()
-        if otp.count == 6 {
-            handleVerifyOTP(otp: otp)
+        if let viewModel {
+            view?.setView(with: viewModel)
         }
     }
 
-    func resendButtonTapped() {
-        handleResendOTP()
+    func viewDidChangeOTPTextField(with index: Int, text: String) {
+        var value: String = .empty
+        var indexToFocus: Int?
+
+        switch (
+            text.rangeOfCharacter(from: CharacterSet.decimalDigits) != nil,
+            text.count <= 1
+        ) {
+        case (true, true):
+            value = text
+            indexToFocus = getIndexToFocus(index)
+
+        case (true, false):
+            value = String(text.last ?? Character(""))
+            indexToFocus = getIndexToFocus(index)
+
+        case (false, _):
+            value = .empty
+            indexToFocus = index
+        }
+
+        viewModel?.otpTextFieldData[index] = value
+        viewModel?.otpFocusedTextFieldIndex = indexToFocus
+        viewModel?.isVerifyButtonEnabled = ifAllSymbolsAdded()
+
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
     }
 
-    func getEmptyModel() -> OTPViewModel {
-        viewModel
+    func viewDidTapOTPTextField(with index: Int) {
+        viewModel?.otpFocusedTextFieldIndex = index
+
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
+    }
+
+    func viewDidTapVerifyButton() {
+        handleVerifyOTP(otp: getOTP())
+    }
+
+    func viewDidTapResendButton() {
+        handleResendOTP()
     }
 }
 
@@ -89,14 +114,6 @@ extension OTPPresenter: OTPModuleInput {
     
     func setModuleOutput(_ moduleOutput: MVPModuleOutputProtocol) {
         self.moduleOutput = moduleOutput as? OTPModuleOutput
-    }
-}
-
-// MARK: - OTPViewModelDelegate
-
-extension OTPPresenter: OTPViewModelDelegate {
-    func otpTextFieldsDidChange() {
-        viewModel.isVerifyButtonEnabled = getOTP().count == 6
     }
 }
 
@@ -113,16 +130,16 @@ fileprivate extension OTPPresenter {
         }
 
         let request = AuthRequestMo(email: dataStorage.email, password: otp)
-        viewModel.isVerifyButtonLoading = true
+        viewModel?.isVerifyButtonLoading = true
 
         Task {
             do {
                 let response = try await authNetworkService?.verifyOTPData(request: request, forceRequest: false)
-                viewModel.isVerifyButtonLoading = false
-                handleVerifyOTPSuccess(response: response)
+                viewModel?.isVerifyButtonLoading = false
+                await handleVerifyOTPSuccess(response: response)
             } catch {
-                viewModel.isVerifyButtonLoading = false
-                handleFailure(error: error.getTopLayerErrorResponse())
+                viewModel?.isVerifyButtonLoading = false
+                await handleFailure(error: error.getTopLayerErrorResponse())
             }
         }
     }
@@ -137,9 +154,9 @@ fileprivate extension OTPPresenter {
         Task {
             do {
                 let response = try await authNetworkService?.resendOTPData(request: request, forceRequest: false)
-                handleResendOTPSuccess(response: response)
+                await handleResendOTPSuccess(response: response)
             } catch {
-                handleFailure(error: error.getTopLayerErrorResponse())
+                await handleFailure(error: error.getTopLayerErrorResponse())
             }
         }
     }
@@ -187,27 +204,43 @@ fileprivate extension OTPPresenter {
 // MARK: - Private Methods
 
 fileprivate extension OTPPresenter {
-    func updateViewModel() {
-        viewModel.navigationTitle = "Enter OTP"
-        viewModel.resendButtonText = "Resend OTP"
-        viewModel.verifyButtonText = "Verify"
-
-        clearOtpTextField()
-    }
-
-    func clearOtpTextField() {
-        viewModel.otpTextFields = [
-            0: .empty, 1: .empty, 2: .empty, 3: .empty, 4: .empty, 5: .empty
-        ]
+    func getDefaultViewModel() -> OTPViewModel {
+        OTPViewModel(
+            navigationTitle: "Enter OTP",
+            otpTextFieldData: [
+                0: .empty, 1: .empty, 2: .empty, 3: .empty, 4: .empty, 5: .empty
+            ],
+            otpFocusedTextFieldIndex: 0,
+            verifyButtonText: "Verify",
+            isVerifyButtonLoading: false,
+            isVerifyButtonEnabled: false,
+            resendButtonText: "Resend OTP"
+        )
     }
 
     func getOTP() -> String {
         var otp: String = ""
         for index in 0...5 {
-            otp += viewModel.otpTextFields[index] ?? .empty
+            otp += viewModel?.otpTextFieldData[index] ?? .empty
         }
 
         return otp.trim()
+    }
+
+    func getIndexToFocus(_ currentIndex: Int) -> Int? {
+        var indexToFocus: Int?
+
+        if !ifAllSymbolsAdded(), currentIndex + 1 == Constants.maximumSymboldCount {
+            indexToFocus = nil
+        } else {
+            indexToFocus = currentIndex + 1
+        }
+
+        return indexToFocus
+    }
+
+    func ifAllSymbolsAdded() -> Bool {
+        getOTP().count == Constants.maximumSymboldCount
     }
 
     func handleAlert(
@@ -237,7 +270,7 @@ fileprivate extension OTPPresenter {
 // MARK: - Constants
 
 fileprivate extension OTPPresenter {
-
-    // delete if not needed
-    // enum Constants {}
+     enum Constants {
+         static let maximumSymboldCount: Int = 6
+     }
 }
