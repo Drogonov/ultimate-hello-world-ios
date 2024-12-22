@@ -14,35 +14,25 @@ struct HelloWorldView: View {
 
     // MARK: Properties
 
-    @ObservedObject var model: HelloWorldViewModel
+    @ObservedObject var store: HelloWorldViewStore
 
     // MARK: Construction
 
     var body: some View {
-        Text(model.text)
+        Text(store.text)
             .font(TextStyle.title.font)
             .padding()
 
     }
 }
 
-// MARK: - Constants
-
-fileprivate extension HelloWorldView {
-
-    // delete if not needed
-    // enum Constants {}
-}
-
 // MARK: - HelloWorldView_Previews
 
 struct HelloWorldView_Previews: PreviewProvider {
     static var previews: some View {
-        let model = HelloWorldViewModel()
-        model.text = "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Hello World"
+        let store = HelloWorldViewStore()
+        store.text = "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Hello World"
 
-        return HelloWorldView(
-            model: model
-        )
+        return HelloWorldView(store: store)
     }
 }

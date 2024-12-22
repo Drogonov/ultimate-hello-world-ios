@@ -27,17 +27,22 @@ protocol HelloWorldViewInput: AnyObject {
     func setView(with viewModel: HelloWorldViewModel)
 }
 
+// sourcery: AutoMockable
+protocol HelloWorldViewStoreInput: ObservableObject, HelloWorldViewActionProtocol {
+    var delegate: HelloWorldViewActionProtocol? { get set }
+    func update(with viewModel: HelloWorldViewModel)
+}
+
+// sourcery: AutoMockable
+protocol HelloWorldViewActionProtocol: AnyObject {
+    func viewMoreInfoTapped()
+}
+
 // MARK: - Presenter Protocols
 
 // sourcery: AutoMockable
-protocol HelloWorldPresenterInput: NativeAlertProtocol {
+protocol HelloWorldPresenterInput: NativeAlertProtocol, HelloWorldViewActionProtocol {
     func viewIsReady()
-    func viewWillAppear()
-    func viewWillDissapear()
-
-    func viewMoreInfoTapped()
-
-    func getEmptyModel() -> HelloWorldViewModel
 }
 
 // MARK: - Router Protocols

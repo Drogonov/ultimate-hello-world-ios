@@ -10,16 +10,12 @@ import Common
 
 // MARK: - ChangeLanguageViewModel
 
-class ChangeLanguageViewModel: ObservableObject {
-
-    // MARK: Public Properties
-
-    var navigationTitle: String = .empty
-    @Published var languages: [LanguageViewModel] = []
-
-    @Published var buttonText: String = .empty
-    @Published var isButtonLoading: Bool = false
-    @Published var isButtonEnabled: Bool = true
+struct ChangeLanguageViewModel {
+    var navigationTitle: String
+    var languages: [LanguageViewModel]
+    var buttonText: String
+    var isButtonLoading: Bool
+    var isButtonEnabled: Bool
 }
 
 // MARK: - LanguageViewModel
@@ -27,5 +23,5 @@ class ChangeLanguageViewModel: ObservableObject {
 struct LanguageViewModel: Identifiable {
     let id: UUID = UUID()
     var title: String
-    var isSelected: Bool = false
+    var isSelected: Bool
 }

@@ -10,12 +10,9 @@ import Common
 
 // MARK: - MoreInfoViewModel
 
-class MoreInfoViewModel: ObservableObject {
-
-    // MARK: Public Properties
-
-    var navigationTitle: String = .empty
-    @Published var imageUrl: URL? = nil
-    @Published var text: String = .empty
-    @Published var buttonTitle: String = .empty
+struct MoreInfoViewModel {
+    var navigationTitle: String
+    var imageUrl: URL?
+    var text: String
+    var buttonTitle: String
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 import DI
 import Common
 import Services
@@ -21,16 +22,12 @@ final class MoreInfoViewController: UIViewController, MVPModuleProtocol, BaseVie
     var moduleInput: MVPModuleInputProtocol?
 
     @DelayedImmutable var presenter: MoreInfoPresenterInput
+    @ObservedObject var viewStore = MoreInfoViewStore()
 
     // MARK: UI Properties
 
     lazy var moreInfo: MoreInfoView = {
-        MoreInfoView(
-            model: self.presenter.getEmptyModel(),
-            buttonTapped: { [weak self] in
-                self?.presenter.viewButtonTapped()
-            }
-        )
+        MoreInfoView(store: viewStore)
     }()
 
     // MARK: Inheritance
@@ -41,21 +38,6 @@ final class MoreInfoViewController: UIViewController, MVPModuleProtocol, BaseVie
         configure()
         presenter.viewIsReady()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    // MARK: Selectors
-    // ...
 }
 
 // MARK: - MoreInfoViewInput
@@ -64,7 +46,7 @@ extension MoreInfoViewController: MoreInfoViewInput {
 
     func setView(with viewModel: MoreInfoViewModel) {
         setNavigationBarTitle(with: viewModel.navigationTitle)
-        configureView(with: viewModel)
+        viewStore.update(with: viewModel)
     }
 }
 
@@ -76,6 +58,7 @@ extension MoreInfoViewController: ViewConfigurable {
         view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
+        viewStore.delegate = self
     }
 
     public func configureConstraints() {
@@ -83,18 +66,10 @@ extension MoreInfoViewController: ViewConfigurable {
     }
 }
 
-// MARK: - Private Methods
+// MARK: - MoreInfoViewActionProtocol
 
-fileprivate extension MoreInfoViewController {
-    private func configureView(with viewModel: MoreInfoViewModel) {
-        self.moreInfo.model = viewModel
+extension MoreInfoViewController: MoreInfoViewActionProtocol {
+    func viewButtonTapped() {
+        presenter.viewButtonTapped()
     }
-}
-
-// MARK: - Constants
-
-fileprivate extension MoreInfoViewController {
-
-    // delete if not needed
-    // enum Constants {}
 }

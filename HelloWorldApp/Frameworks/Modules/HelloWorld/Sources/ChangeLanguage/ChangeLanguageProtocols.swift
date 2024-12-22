@@ -27,18 +27,26 @@ protocol ChangeLanguageViewInput: AnyObject {
     func setView(with viewModel: ChangeLanguageViewModel)
 }
 
+// sourcery: AutoMockable
+protocol ChangeLanguageViewStoreInput: ObservableObject, ChangeLanguageViewActionProtocol {
+    var delegate: ChangeLanguageViewActionProtocol? { get set }
+    func update(with viewModel: ChangeLanguageViewModel)
+}
+
+// sourcery: AutoMockable
+protocol ChangeLanguageViewActionProtocol: AnyObject {
+    func switchToggled(on index: Int)
+    func viewButtonTapped()
+}
+
 // MARK: - Presenter Protocols
 
 // sourcery: AutoMockable
-protocol ChangeLanguagePresenterInput: NativeAlertProtocol {
+protocol ChangeLanguagePresenterInput: NativeAlertProtocol, ChangeLanguageViewActionProtocol {
     func viewIsReady()
-    func viewWillAppear()
-    func viewWillDissapear()
 
     func switchToggled(on index: Int)
     func viewButtonTapped()
-
-    func getEmptyModel() -> ChangeLanguageViewModel
 }
 
 // MARK: - Router Protocols

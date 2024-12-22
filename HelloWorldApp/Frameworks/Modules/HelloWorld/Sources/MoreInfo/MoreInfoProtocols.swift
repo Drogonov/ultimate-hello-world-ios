@@ -27,17 +27,22 @@ protocol MoreInfoViewInput: AnyObject {
     func setView(with viewModel: MoreInfoViewModel)
 }
 
+// sourcery: AutoMockable
+protocol MoreInfoViewStoreInput: ObservableObject, MoreInfoViewActionProtocol {
+    var delegate: MoreInfoViewActionProtocol? { get set }
+    func update(with viewModel: MoreInfoViewModel)
+}
+
+// sourcery: AutoMockable
+protocol MoreInfoViewActionProtocol: AnyObject {
+    func viewButtonTapped()
+}
+
 // MARK: - Presenter Protocols
 
 // sourcery: AutoMockable
-protocol MoreInfoPresenterInput: NativeAlertProtocol {
+protocol MoreInfoPresenterInput: NativeAlertProtocol, MoreInfoViewActionProtocol {
     func viewIsReady()
-    func viewWillAppear()
-    func viewWillDissapear()
-
-    func viewButtonTapped()
-
-    func getEmptyModel() -> MoreInfoViewModel
 }
 
 // MARK: - Router Protocols

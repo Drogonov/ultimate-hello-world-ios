@@ -31,8 +31,7 @@ class MoreInfoPresenter {
     private var router: MoreInfoRouterInput
     private var dataStorage: MoreInfoDataStorage?
     private var getMoreInfoResponse: GetMoreInfoResponseMo?
-
-    @ObservedObject var viewModel = MoreInfoViewModel()
+    private var viewModel: MoreInfoViewModel?
 
     // MARK: Services
 
@@ -53,8 +52,9 @@ class MoreInfoPresenter {
 
 extension MoreInfoPresenter: MoreInfoPresenterInput {
     func viewIsReady() {
-        guard dataStorage?.response.isNone ?? true else {
-            return
+        viewModel = getDefaultViewModel()
+        if let viewModel {
+            view?.setView(with: viewModel)
         }
 
         let code = languageService?.getCurrentLanguage() ?? Language.english
@@ -63,16 +63,12 @@ extension MoreInfoPresenter: MoreInfoPresenterInput {
         Task {
             do {
                 let response = try await appNetworkService?.getMoreInfoData(request: request, forceRequest: false)
-                handleSuccess(response: response)
+                await handleSuccess(response: response)
             } catch {
-                handleFailure(error: error.getTopLayerErrorResponse())
+                await handleFailure(error: error.getTopLayerErrorResponse())
             }
         }
     }
-
-    func viewWillAppear() {}
-
-    func viewWillDissapear() {}
 
     func viewButtonTapped() {
         guard let urlString = getMoreInfoResponse?.deeplink?.absoluteString,
@@ -85,19 +81,6 @@ extension MoreInfoPresenter: MoreInfoPresenterInput {
         }
 
         deeplinksService?.handleDeeplink(content: content, executeHandler: true)
-    }
-
-    func getEmptyModel() -> MoreInfoViewModel {
-        getMoreInfoResponse = dataStorage?.response
-
-        guard let response = getMoreInfoResponse else {
-            return viewModel
-        }
-
-        let model = getModel(from: response)
-        setViewModel(with: model)
-
-        return viewModel
     }
 }
 
@@ -129,10 +112,18 @@ fileprivate extension MoreInfoPresenter {
 
         getMoreInfoResponse = response
 
-        let model = getModel(from: response)
-        setViewModel(with: model)
+        viewModel?.navigationTitle = response.title ?? .empty
 
-        self.view?.setView(with: viewModel)
+        if let urlStr = response.imageUrl,
+           let imageUrl = URL(string: urlStr) {
+            viewModel?.imageUrl = imageUrl
+        }
+        viewModel?.text = response.text ?? .empty
+        viewModel?.buttonTitle = response.buttonTitle ?? .empty
+
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
     }
 
     @MainActor
@@ -159,31 +150,12 @@ fileprivate extension MoreInfoPresenter {
         showNativeAlert(viewModel: viewModel)
     }
 
-    func getModel(from response: GetMoreInfoResponseMo) -> MoreInfoModel {
-        let model = MoreInfoModel(
-            title: response.title ?? .empty,
-            imageUrl: response.imageUrl ?? .empty,
-            text: response.text ?? .empty,
-            buttonTitle: response.buttonTitle ?? .empty
+    func getDefaultViewModel() -> MoreInfoViewModel {
+        MoreInfoViewModel(
+            navigationTitle: .empty,
+            imageUrl: nil,
+            text: .empty,
+            buttonTitle: .empty
         )
-
-        return model
     }
-
-    func setViewModel(with model: MoreInfoModel) {
-        viewModel.navigationTitle = model.title
-        if let imageUrl = URL(string: model.imageUrl) {
-            viewModel.imageUrl = imageUrl
-        }
-        viewModel.text = model.text
-        viewModel.buttonTitle = model.buttonTitle
-    }
-}
-
-// MARK: - Constants
-
-fileprivate extension MoreInfoPresenter {
-
-    // delete if not needed
-    // enum Constants {}
 }

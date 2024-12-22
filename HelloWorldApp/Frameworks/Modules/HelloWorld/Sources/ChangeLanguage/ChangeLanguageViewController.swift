@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 import DI
 import Common
 import Services
@@ -21,19 +22,12 @@ final class ChangeLanguageViewController: UIViewController, MVPModuleProtocol, B
     var moduleInput: MVPModuleInputProtocol?
 
     @DelayedImmutable var presenter: ChangeLanguagePresenterInput
+    @ObservedObject var viewStore = ChangeLanguageViewStore()
 
     // MARK: UI Properties
 
-    lazy var testView: ChangeLanguageView = {
-        ChangeLanguageView(
-            model: self.presenter.getEmptyModel(),
-            switchToggled: { index in 
-                self.presenter.switchToggled(on: index)
-            },
-            buttonTapped: {
-                self.presenter.viewButtonTapped()
-            }
-        )
+    lazy var languageView: ChangeLanguageView = {
+        ChangeLanguageView(store: viewStore)
     }()
 
     // MARK: Inheritance
@@ -44,21 +38,6 @@ final class ChangeLanguageViewController: UIViewController, MVPModuleProtocol, B
         configure()
         presenter.viewIsReady()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    // MARK: Selectors
-    // ...
 }
 
 // MARK: - ChangeLanguageViewInput
@@ -67,7 +46,7 @@ extension ChangeLanguageViewController: ChangeLanguageViewInput {
 
     func setView(with viewModel: ChangeLanguageViewModel) {
         setNavigationBarTitle(with: viewModel.navigationTitle)
-        configureView(with: viewModel)
+        viewStore.update(with: viewModel)
     }
 }
 
@@ -79,25 +58,22 @@ extension ChangeLanguageViewController: ViewConfigurable {
         view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
+        viewStore.delegate = self
     }
 
     public func configureConstraints() {
-        addMainViewToViewController(testView)
+        addMainViewToViewController(languageView)
     }
 }
 
-// MARK: - Private Methods
+// MARK: - ChangeLanguageViewActionProtocol
 
-fileprivate extension ChangeLanguageViewController {
-    private func configureView(with viewModel: ChangeLanguageViewModel) {
-        self.testView.model = viewModel
+extension ChangeLanguageViewController: ChangeLanguageViewActionProtocol {
+    func switchToggled(on index: Int) {
+        presenter.switchToggled(on: index)
     }
-}
-
-// MARK: - Constants
-
-fileprivate extension ChangeLanguageViewController {
-
-    // delete if not needed
-    // enum Constants {}
+    
+    func viewButtonTapped() {
+        presenter.viewButtonTapped()
+    }
 }

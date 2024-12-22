@@ -10,11 +10,8 @@ import Common
 
 // MARK: - HelloWorldViewModel
 
-class HelloWorldViewModel: ObservableObject {
-
-    // MARK: Public Properties
-
-    var navigationTitle: String = .empty
-    var buttonTitle: String = .empty
-    @Published var text: String = .empty
+struct HelloWorldViewModel {
+    var navigationTitle: String
+    var buttonTitle: String
+    var text: String
 }

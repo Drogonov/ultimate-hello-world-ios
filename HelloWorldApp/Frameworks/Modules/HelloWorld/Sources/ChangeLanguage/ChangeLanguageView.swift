@@ -14,27 +14,25 @@ struct ChangeLanguageView: View {
 
     // MARK: Properties
 
-    @ObservedObject var model: ChangeLanguageViewModel
-    var switchToggled: ((Int) -> Void)
-    var buttonTapped: () -> Void
+    @ObservedObject var store: ChangeLanguageViewStore
 
     // MARK: Construction
 
     var body: some View {
         List {
             Section() {
-                ForEach($model.languages) { $language in
+                ForEach($store.languages) { $language in
                     Toggle(isOn: $language.isSelected) {
                         Text(language.title)
                     }
                     .onChange(of: language.isSelected) {
-                        guard let index = model.languages.firstIndex(where: {
+                        guard let index = store.languages.firstIndex(where: {
                             $0.id == language.id
                         }) else {
                             return
                         }
 
-                        switchToggled(index)
+                        store.switchToggled(on: index)
                     }
                 }
             }
@@ -43,8 +41,8 @@ struct ChangeLanguageView: View {
                 HStack(alignment: .center) {
                     Spacer()
 
-                    Button(model.buttonText) {
-                        buttonTapped()
+                    Button(store.buttonText) {
+                        store.viewButtonTapped()
                     }
                     .foregroundStyle(.red)
 
@@ -55,24 +53,13 @@ struct ChangeLanguageView: View {
     }
 }
 
-// MARK: - Constants
-
-fileprivate extension ChangeLanguageView {
-
-    // delete if not needed
-    // enum Constants {}
-}
-
 // MARK: - ChangeLanguageView_Previews
 
-//struct ChangeLanguageView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        let model = ChangeLanguageViewModel()
-//        model.title = "Hello World"
-//
-//        return ChangeLanguageView(
-//            model: model,
-//            buttonTapped: {}
-//        )
-//    }
-//}
+struct ChangeLanguageView_Previews: PreviewProvider {
+    static var previews: some View {
+        let store = ChangeLanguageViewStore()
+        store.buttonText = "Hello World"
+
+        return ChangeLanguageView(store: store)
+    }
+}

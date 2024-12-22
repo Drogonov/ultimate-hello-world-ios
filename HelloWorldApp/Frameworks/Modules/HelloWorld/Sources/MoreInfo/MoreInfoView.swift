@@ -14,8 +14,7 @@ struct MoreInfoView: View {
 
     // MARK: Properties
 
-    @ObservedObject var model: MoreInfoViewModel
-    var buttonTapped: () -> Void
+    @ObservedObject var store: MoreInfoViewStore
 
     // MARK: Construction
 
@@ -26,7 +25,7 @@ struct MoreInfoView: View {
                 HStack {
                     Spacer()
 
-                    AsyncImage(url: model.imageUrl) { image in
+                    AsyncImage(url: store.imageUrl) { image in
                         image.resizable()
                             .frame(width: 200, height: 200)
                             .clipped()
@@ -41,7 +40,7 @@ struct MoreInfoView: View {
                     Spacer()
                 }
 
-                Text(model.text)
+                Text(store.text)
                     .font(TextStyle.body.font)
                     .padding(.vertical, 8)
 
@@ -49,9 +48,9 @@ struct MoreInfoView: View {
                     Spacer()
 
                     Button {
-                        buttonTapped()
+                        store.viewButtonTapped()
                     } label: {
-                        Text(model.buttonTitle)
+                        Text(store.buttonTitle)
                             .font(TextStyle.body.font)
                             .padding(.vertical, 8)
                             .padding(.horizontal, 16)
@@ -71,26 +70,15 @@ struct MoreInfoView: View {
     }
 }
 
-// MARK: - Constants
-
-fileprivate extension MoreInfoView {
-
-    // delete if not needed
-    // enum Constants {}
-}
-
 // MARK: - MoreInfoView_Previews
 
 struct MoreInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        let model = MoreInfoViewModel()
-        model.imageUrl = URL(string: "https://picsum.photos/seed/picsum/200/300")
-        model.text = "Lorem Ipsum is simply dummy text of the printing and typesetting"
-        model.buttonTitle = "Open Magic Screen"
+        let store = MoreInfoViewStore()
+        store.imageUrl = URL(string: "https://picsum.photos/seed/picsum/200/300")
+        store.text = "Lorem Ipsum is simply dummy text of the printing and typesetting"
+        store.buttonTitle = "Open Magic Screen"
 
-        return MoreInfoView(
-            model: model,
-            buttonTapped: {}
-        )
+        return MoreInfoView(store: store)
     }
 }

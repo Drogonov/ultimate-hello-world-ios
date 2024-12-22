@@ -30,16 +30,14 @@ class ChangeLanguagePresenter {
 
     private var dataStorage: ChangeLanguageDataStorage?
     private weak var moduleOutput: ChangeLanguageModuleOutput?
-
+    private var viewModel: ChangeLanguageViewModel?
     private var getCountriesResponse: GetCountriesResponseMo?
+
+    // MARK: Services
 
     @DelayedImmutable var appNetworkService: AppNetworkServiceProtocol?
     @DelayedImmutable var authNetworkService: AuthNetworkServiceProtocol?
     @DelayedImmutable var languageService: LanguageChangeServiceProtocol?
-
-    @ObservedObject var viewModel = ChangeLanguageViewModel()
-
-    // MARK: Services
 
     // MARK: Init
 
@@ -54,13 +52,14 @@ class ChangeLanguagePresenter {
 
 extension ChangeLanguagePresenter: ChangeLanguagePresenterInput {
     func viewIsReady() {
+        viewModel = getDefaultViewModel()
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
+
         let code = languageService?.getCurrentLanguage() ?? Language.english
         getCountries(languageCode: code.rawValue)
     }
-
-    func viewWillAppear() {}
-
-    func viewWillDissapear() {}
 
     func switchToggled(on index: Int) {
         guard let code = getCountriesResponse?.countries?[index].languageCode else {
@@ -68,19 +67,6 @@ extension ChangeLanguagePresenter: ChangeLanguagePresenterInput {
         }
 
         getCountries(languageCode: code)
-    }
-
-    func getEmptyModel() -> ChangeLanguageViewModel {        
-        getCountriesResponse = dataStorage?.response
-
-        guard let response = getCountriesResponse else {
-            return viewModel
-        }
-
-        let model = getModel(from: response)
-        setViewModel(with: model)
-
-        return viewModel
     }
 
     func viewButtonTapped() {
@@ -114,9 +100,9 @@ fileprivate extension ChangeLanguagePresenter {
         Task {
             do {
                 let response = try await appNetworkService?.getCountriesData(request: request, forceRequest: false)
-                handleSuccess(response: response)
+                await handleSuccess(response: response)
             } catch {
-                handleFailure(error: error.getTopLayerErrorResponse())
+                await handleFailure(error: error.getTopLayerErrorResponse())
             }
         }
     }
@@ -140,10 +126,24 @@ fileprivate extension ChangeLanguagePresenter {
         getCountriesResponse = response
         setCurrentLanguage(from: response)
 
-        let model = getModel(from: response)
-        setViewModel(with: model)
+        let languages: [LanguageViewModel] = response.countries?.compactMap({
+            guard let title = getTitle(from: $0) else {
+                return nil
+            }
 
-        self.view?.setView(with: viewModel)
+            return LanguageViewModel(
+                title: title,
+                isSelected: $0.isCurrent ?? false
+            )
+        }) ?? []
+
+        viewModel?.navigationTitle = response.title ?? .empty
+        viewModel?.languages = languages
+        viewModel?.buttonText = "Logout"
+
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
     }
 
     @MainActor
@@ -170,34 +170,6 @@ fileprivate extension ChangeLanguagePresenter {
         showNativeAlert(viewModel: viewModel)
     }
 
-    func getModel(from response: GetCountriesResponseMo) -> ChangeLanguageModel {
-        let languages: [LanguageModel] = response.countries?.compactMap({
-            guard let title = getTitle(from: $0) else {
-                return nil
-            }
-
-            return LanguageModel(
-                title: title,
-                isSelected: $0.isCurrent ?? false
-            )
-        }) ?? []
-
-        let model = ChangeLanguageModel(
-            title: response.title ?? ResourcesStrings.changeLanguageTitle(),
-            languages: languages
-        )
-
-        return model
-    }
-
-    func setViewModel(with model: ChangeLanguageModel) {
-        viewModel.navigationTitle = model.title
-        viewModel.languages = model.languages.compactMap({
-            LanguageViewModel(title: $0.title, isSelected: $0.isSelected)
-        })
-        viewModel.buttonText = "Logout"
-    }
-
     func getTitle(from model: CountryMo) -> String? {
         var continuatedText: String?
         if let emojiText = model.emoji {
@@ -221,12 +193,14 @@ fileprivate extension ChangeLanguagePresenter {
 
         languageService?.setupAppWith(language: language)
     }
-}
 
-// MARK: - Constants
-
-fileprivate extension ChangeLanguagePresenter {
-
-    // delete if not needed
-    // enum Constants {}
+    func getDefaultViewModel() -> ChangeLanguageViewModel {
+        ChangeLanguageViewModel(
+            navigationTitle: .empty,
+            languages: [],
+            buttonText: .empty,
+            isButtonLoading: false,
+            isButtonEnabled: false
+        )
+    }
 }

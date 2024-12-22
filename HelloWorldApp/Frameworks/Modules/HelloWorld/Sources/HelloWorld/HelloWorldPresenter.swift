@@ -30,16 +30,13 @@ class HelloWorldPresenter {
 
     private var dataStorage: HelloWorldDataStorage?
     private weak var moduleOutput: HelloWorldModuleOutput?
-
     private var getHelloResponse: GetHelloResponseMo?
+    private var viewModel: HelloWorldViewModel?
+
+    // MARK: Services
 
     @DelayedImmutable var appNetworkService: AppNetworkServiceProtocol?
     @DelayedImmutable var languageService: LanguageChangeServiceProtocol?
-
-    @ObservedObject private var viewModel = HelloWorldViewModel()
-
-
-    // MARK: Services
 
     // MARK: Init
 
@@ -55,51 +52,27 @@ class HelloWorldPresenter {
 extension HelloWorldPresenter: HelloWorldPresenterInput {
 
     func viewIsReady() {
+        viewModel = getDefaultViewModel()
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
+
         let code = languageService?.getCurrentLanguage() ?? Language.english
         let request = GetHelloRequestMo(languageCode: code.rawValue)
 
         Task {
             do {
                 let response = try await appNetworkService?.getHelloData(request: request, forceRequest: false)
-                handleSuccess(response: response)
+                await handleSuccess(response: response)
             } catch {
-                handleFailure(error: error.getTopLayerErrorResponse())
+                await handleFailure(error: error.getTopLayerErrorResponse())
             }
         }
     }
-
-    func viewWillAppear() {
-        let code = languageService?.getCurrentLanguage() ?? Language.english
-        let request = GetHelloRequestMo(languageCode: code.rawValue)
-
-        Task {
-            do {
-                let response = try await appNetworkService?.getHelloData(request: request, forceRequest: false)
-                handleSuccess(response: response)
-            } catch {
-                handleFailure(error: error.getTopLayerErrorResponse())
-            }
-        }
-    }
-
-    func viewWillDissapear() {}
 
     func viewMoreInfoTapped() {
         let dataStorage = MoreInfoDataStorage()
         router.goToMoreInfoModule(dataStorage: dataStorage)
-    }
-
-    func getEmptyModel() -> HelloWorldViewModel {
-        getHelloResponse = dataStorage?.response
-
-        guard let response = getHelloResponse else {
-            return viewModel
-        }
-
-        let model = getModel(from: response)
-        setViewModel(with: model)
-
-        return viewModel
     }
 }
 
@@ -131,10 +104,25 @@ fileprivate extension HelloWorldPresenter {
 
         getHelloResponse = response
 
-        let model = getModel(from: response)
-        setViewModel(with: model)
+        var continuatedText: String?
+        if let emojiText = response.emoji {
+            continuatedText = emojiText
+        }
 
-        self.view?.setView(with: viewModel)
+        if let text = response.text {
+            continuatedText = continuatedText?.isNotBlank ?? false
+            ? "\(continuatedText ?? .empty) \(text)"
+            : text
+        }
+
+        viewModel?.navigationTitle = ResourcesStrings.helloWorldTitle()
+        viewModel?.buttonTitle = response.buttonTitle ?? ResourcesStrings.helloWorldButtonTitle()
+        viewModel?.text = continuatedText ?? ResourcesStrings.helloWorldText()
+
+        viewModel = getDefaultViewModel()
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
     }
 
     @MainActor
@@ -161,38 +149,11 @@ fileprivate extension HelloWorldPresenter {
         showNativeAlert(viewModel: viewModel)
     }
 
-    func getModel(from response: GetHelloResponseMo) -> HelloWorldModel {
-        var continuatedText: String?
-        if let emojiText = response.emoji {
-            continuatedText = emojiText
-        }
-
-        if let text = response.text {
-            continuatedText = continuatedText?.isNotBlank ?? false
-            ? "\(continuatedText ?? .empty) \(text)"
-            : text
-        }
-
-        let model = HelloWorldModel(
-            title: ResourcesStrings.helloWorldTitle(),
-            buttonTitle: response.buttonTitle ?? ResourcesStrings.helloWorldButtonTitle(),
-            text: continuatedText ?? ResourcesStrings.helloWorldText()
+    func getDefaultViewModel() -> HelloWorldViewModel {
+        HelloWorldViewModel(
+            navigationTitle: .empty,
+            buttonTitle: .empty,
+            text: .empty
         )
-
-        return model
     }
-
-    func setViewModel(with model: HelloWorldModel) {
-        viewModel.navigationTitle = model.title
-        viewModel.buttonTitle = model.buttonTitle
-        viewModel.text = model.text
-    }
-}
-
-// MARK: - Constants
-
-fileprivate extension HelloWorldPresenter {
-
-    // delete if not needed
-    // enum Constants {}
 }

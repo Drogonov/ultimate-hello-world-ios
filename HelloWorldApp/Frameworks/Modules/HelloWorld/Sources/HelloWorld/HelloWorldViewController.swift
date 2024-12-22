@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 import DI
 import Common
 import Services
@@ -22,13 +23,13 @@ final class HelloWorldViewController: UIViewController, MVPModuleProtocol, BaseV
     var moduleInput: MVPModuleInputProtocol?
 
     @DelayedImmutable var presenter: HelloWorldPresenterInput
+    @ObservedObject var viewStore = HelloWorldViewStore()
+
 
     // MARK: UI Properties
 
     lazy var helloWorldView: HelloWorldView = {
-        HelloWorldView(
-            model: self.presenter.getEmptyModel()
-        )
+        HelloWorldView(store: viewStore)
     }()
 
     // MARK: Inheritance
@@ -39,18 +40,6 @@ final class HelloWorldViewController: UIViewController, MVPModuleProtocol, BaseV
         configure()
         presenter.viewIsReady()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        presenter.viewWillAppear()
-    }
 }
 
 // MARK: - HelloWorldViewInput
@@ -59,8 +48,8 @@ extension HelloWorldViewController: HelloWorldViewInput {
 
     func setView(with viewModel: HelloWorldViewModel) {
         setNavigationBarTitle(with: viewModel.navigationTitle)
-        configureView(with: viewModel)
         configureNavigationBarButtons(with: viewModel.buttonTitle)
+        viewStore.update(with: viewModel)
     }
 }
 
@@ -72,6 +61,7 @@ extension HelloWorldViewController: ViewConfigurable {
         view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
+        viewStore.delegate = self
     }
 
     public func configureConstraints() {
@@ -79,13 +69,17 @@ extension HelloWorldViewController: ViewConfigurable {
     }
 }
 
+// MARK: - HelloWorldViewActionProtocol
+
+extension HelloWorldViewController: HelloWorldViewActionProtocol {
+    func viewMoreInfoTapped() {
+        presenter.viewMoreInfoTapped()
+    }
+}
+
 // MARK: - Private Methods
 
 fileprivate extension HelloWorldViewController {
-    private func configureView(with viewModel: HelloWorldViewModel) {
-        self.helloWorldView.model = viewModel
-    }
-
     private func configureNavigationBarButtons(with title: String) {
         let rightButton = UIBarButtonItem(
             title: title,
@@ -102,12 +96,4 @@ fileprivate extension HelloWorldViewController {
     func didTapMoreInfoButton() {
         presenter.viewMoreInfoTapped()
     }
-}
-
-// MARK: - Constants
-
-fileprivate extension HelloWorldViewController {
-
-    // delete if not needed
-    // enum Constants {}
 }
