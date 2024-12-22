@@ -27,8 +27,8 @@ final class MoreInfoViewController: UIViewController, MVPModuleProtocol, BaseVie
     lazy var moreInfo: MoreInfoView = {
         MoreInfoView(
             model: self.presenter.getEmptyModel(),
-            buttonTapped: {
-                self.presenter.viewButtonTapped()
+            buttonTapped: { [weak self] in
+                self?.presenter.viewButtonTapped()
             }
         )
     }()

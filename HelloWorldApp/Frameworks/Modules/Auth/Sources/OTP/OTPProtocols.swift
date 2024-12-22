@@ -23,27 +23,25 @@ protocol OTPViewInput: AnyObject {
     func setView(with viewModel: OTPViewModel)
 }
 
-protocol OTPViewStoreProtocol: ObservableObject {
-    var delegate: OTPViewStoreDelegate? { get set }
+// sourcery: AutoMockable
+protocol OTPViewStoreInput: ObservableObject, OTPViewActionProtocol {
+    var delegate: OTPViewActionProtocol? { get set }
     func update(with viewModel: OTPViewModel)
 }
 
-protocol OTPViewStoreDelegate {
-    func didChangeOTPTextField(with index: Int, text: String)
-    func didTapOTPTextField(with index: Int)
-    func didTapVerifyButton()
-    func didTapResendButton()
+// sourcery: AutoMockable
+protocol OTPViewActionProtocol: AnyObject {
+    func viewDidChangeOTPTextField(with index: Int, text: String)
+    func viewDidTapOTPTextField(with index: Int)
+    func viewDidTapVerifyButton()
+    func viewDidTapResendButton()
 }
 
 // MARK: - Presenter Protocols
 
 // sourcery: AutoMockable
-protocol OTPPresenterInput: NativeAlertProtocol {
+protocol OTPPresenterInput: NativeAlertProtocol, OTPViewActionProtocol {
     func viewIsReady()
-    func viewDidChangeOTPTextField(with index: Int, text: String)
-    func viewDidTapVerifyButton()
-    func viewDidTapResendButton()
-    func viewDidTapOTPTextField(with index: Int)
 }
 
 // MARK: - Router Protocols

@@ -23,23 +23,24 @@ protocol AuthViewInput: AnyObject {
     func setView(with viewModel: AuthViewModel)
 }
 
-// MARK: - Presenter Protocols
-
 // sourcery: AutoMockable
-protocol AuthPresenterInput: NativeAlertProtocol {
-    func viewIsReady()
-    func viewWillAppear()
-    func viewWillDissapear()
-
-    func viewButtonTapped()
-
-    func getEmptyModel() -> AuthViewModel
+protocol AuthViewStoreInput: ObservableObject, AuthViewActionProtocol {
+    var delegate: AuthViewActionProtocol? { get set }
+    func update(with viewModel: AuthViewModel)
 }
 
 // sourcery: AutoMockable
-protocol AuthViewModelDelegate {
-    func textFieldDidChange()
-    func authModeDidChange()
+protocol AuthViewActionProtocol: AnyObject {
+    func viewDidChangeTextField(type: AuthTextFieldType, text: String)
+    func viewDidChangeAuthMode(mode: AuthMode)
+    func viewDidTapSubmitButton()
+}
+
+// MARK: - Presenter Protocols
+
+// sourcery: AutoMockable
+protocol AuthPresenterInput: NativeAlertProtocol, AuthViewActionProtocol {
+    func viewIsReady()
 }
 
 // MARK: - Router Protocols

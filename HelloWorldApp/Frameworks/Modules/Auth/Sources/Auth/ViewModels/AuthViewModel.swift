@@ -7,9 +7,27 @@
 //
 
 import Foundation
-import SwiftUI
 import MasterComponents
+import SwiftUI
 
+// MARK: - AuthViewModel
+
+struct AuthViewModel {
+
+    // MARK: Public Properties
+
+    var navigationTitle: String
+
+    var authMode: AuthMode
+    var loginPlaceholder: String
+    var registerPlaceholder: String
+
+    var textFields: [TextFieldViewModel]
+
+    var buttonText: String
+    var isButtonEnabled: Bool
+    var isButtonLoading: Bool
+}
 
 // MARK: - AuthMode
 
@@ -18,50 +36,22 @@ enum AuthMode {
     case register
 }
 
-// MARK: - AuthViewModel
-
-class AuthViewModel: ObservableObject {
-
-    // MARK: Public Properties
-
-    var delegate: AuthViewModelDelegate?
-
-    var navigationTitle: String = .empty
-
-    @Published var authMode: AuthMode = .login {
-        didSet {
-            delegate?.authModeDidChange()
-        }
-    }
-    @Published var loginPlaceholder: String = .empty
-    @Published var registerPlaceholder: String = .empty
-
-    @Published var emailTextField: TextFieldViewModel = .init() {
-        didSet {
-            delegate?.textFieldDidChange()
-        }
-    }
-    @Published var passwordTextField: TextFieldViewModel = .init() {
-        didSet {
-            delegate?.textFieldDidChange()
-        }
-    }
-    @Published var confirmPasswordTextField: TextFieldViewModel = .init() {
-        didSet {
-            delegate?.textFieldDidChange()
-        }
-    }
-
-    @Published var buttonText: String = .empty
-    @Published var isButtonEnabled: Bool = false
-    @Published var isButtonLoading: Bool = false
-}
-
 // MARK: - TextFieldViewModel
 
 struct TextFieldViewModel: Equatable {
-    var text: String = .empty
-    var placeholder: String = .empty
-    var subtitle: String = .empty
+    var type: AuthTextFieldType
+    var text: String
+    var placeholder: String
+    var subtitle: String
     var subtitleColor: Color = .textSecondaryColor
+    var isSecure: Bool
+    var nextFieldType: AuthTextFieldType?
+}
+
+// MARK: - AuthTextFieldType
+
+enum AuthTextFieldType: Hashable {
+    case email
+    case password
+    case confirmPassword
 }

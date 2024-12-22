@@ -22,15 +22,13 @@ final class AuthViewController: UIViewController, MVPModuleProtocol, BaseViewCon
     var moduleInput: MVPModuleInputProtocol?
 
     @DelayedImmutable var presenter: AuthPresenterInput
+    @ObservedObject var viewStore = AuthViewStore()
 
     // MARK: UI Properties
 
-    lazy var testView: AuthView = {
+    lazy var authView: AuthView = {
         AuthView(
-            model: self.presenter.getEmptyModel(),
-            buttonTapped: {
-                self.presenter.viewButtonTapped()
-            }
+            store: viewStore
         )
     }()
 
@@ -42,21 +40,6 @@ final class AuthViewController: UIViewController, MVPModuleProtocol, BaseViewCon
         configure()
         presenter.viewIsReady()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    // MARK: Selectors
-    // ...
 }
 
 // MARK: - AuthViewInput
@@ -65,7 +48,7 @@ extension AuthViewController: AuthViewInput {
 
     func setView(with viewModel: AuthViewModel) {
         setNavigationBarTitle(with: viewModel.navigationTitle)
-//        configureView(with: viewModel)
+        viewStore.update(with: viewModel)
     }
 }
 
@@ -77,25 +60,26 @@ extension AuthViewController: ViewConfigurable {
         view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
+        viewStore.delegate = self
     }
 
     public func configureConstraints() {
-        addMainViewToViewController(testView)
+        addMainViewToViewController(authView)
     }
 }
 
-// MARK: - Private Methods
+// MARK: - AuthViewActionProtocol
 
-fileprivate extension AuthViewController {
-    func configureView(with viewModel: AuthViewModel) {
-        self.testView.model = viewModel
+extension AuthViewController: AuthViewActionProtocol {
+    func viewDidChangeTextField(type: AuthTextFieldType, text: String) {
+        presenter.viewDidChangeTextField(type: type, text: text)
     }
-}
-
-// MARK: - Constants
-
-fileprivate extension AuthViewController {
-
-    // delete if not needed
-    // enum Constants {}
+    
+    func viewDidChangeAuthMode(mode: AuthMode) {
+        presenter.viewDidChangeAuthMode(mode: mode)
+    }
+    
+    func viewDidTapSubmitButton() {
+        presenter.viewDidTapSubmitButton()
+    }
 }

@@ -31,12 +31,11 @@ class AuthPresenter {
 
     private var router: AuthRouterInput
     private var dataStorage: AuthDataStorage?
-
-    @DelayedImmutable var authNetworkService: AuthNetworkServiceProtocol?
-
-    @ObservedObject var viewModel = AuthViewModel()
+    private var viewModel: AuthViewModel?
 
     // MARK: Services
+
+    @DelayedImmutable var authNetworkService: AuthNetworkServiceProtocol?
 
     // MARK: Init
 
@@ -44,7 +43,6 @@ class AuthPresenter {
         router: AuthRouterInput
     ) {
         self.router = router
-        viewModel.delegate = self
     }
 }
 
@@ -52,16 +50,35 @@ class AuthPresenter {
 
 extension AuthPresenter: AuthPresenterInput {
     func viewIsReady() {
-        viewModel.authMode = .login
-        updateViewModel()
-        view?.setView(with: viewModel)
+        viewModel = getDefaultViewModel(.login)
+
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
     }
 
-    func viewWillAppear() {}
+    func viewDidChangeTextField(type: AuthTextFieldType, text: String) {
+        updateTextFieldText(type, text: text)
+        updateIsEnabled()
 
-    func viewWillDissapear() {}
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
+    }
 
-    func viewButtonTapped() {
+    func viewDidChangeAuthMode(mode: AuthMode) {
+        viewModel = getDefaultViewModel(mode)
+
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
+    }
+
+    func viewDidTapSubmitButton() {
+        guard let viewModel else {
+            return
+        }
+
         switch viewModel.authMode {
         case .login:
             handleSingInFlow()
@@ -69,10 +86,6 @@ extension AuthPresenter: AuthPresenterInput {
         case .register:
             handleSingUpFlow()
         }
-    }
-
-    func getEmptyModel() -> AuthViewModel {
-        viewModel
     }
 }
 
@@ -89,17 +102,6 @@ extension AuthPresenter: AuthModuleInput {
     }
 }
 
-extension AuthPresenter: AuthViewModelDelegate {
-    func authModeDidChange() {
-        updateViewModel()
-    }
-    
-    func textFieldDidChange() {
-        viewModel.isButtonEnabled = isRequestEnabled()
-    }
-}
-
-
 // MARK: - AuthModuleOutput
 
 extension AuthPresenter: AuthModuleOutput {}
@@ -108,38 +110,41 @@ extension AuthPresenter: AuthModuleOutput {}
 
 fileprivate extension AuthPresenter {
     func handleSingInFlow() {
-        let email = viewModel.emailTextField.text
-        let password = viewModel.passwordTextField.text
-
-        guard email.isNotEmpty,
+        guard let email = getTextField(.email)?.text,
+              let password = getTextField(.password)?.text,
+              email.isNotEmpty,
               password.isNotEmpty else {
             return
         }
 
         let request = AuthRequestMo(email: email, password: password)
-        viewModel.isButtonLoading = true
+        viewModel?.isButtonLoading = true
 
         Task {
             do {
                 let response = try await authNetworkService?.singInData(request: request, forceRequest: false)
-                viewModel.isButtonLoading = false
-                handleSingInSuccess(response: response)
+                viewModel?.isButtonLoading = false
+                await handleSingInSuccess(response: response)
             } catch {
-                viewModel.isButtonLoading = false
-                handleSingInFailure(error: error.getTopLayerErrorResponse())
+                viewModel?.isButtonLoading = false
+                await handleSingInFailure(error: error.getTopLayerErrorResponse())
             }
         }
     }
 
     func handleSingUpFlow() {
-        let email = viewModel.emailTextField.text
-        let password = viewModel.passwordTextField.text
+        guard let email = getTextField(.email)?.text,
+              let password = getTextField(.password)?.text,
+              email.isNotEmpty,
+              password.isNotEmpty else {
+            return
+        }
 
         if arePasswordsNotEqual() {
-            viewModel.confirmPasswordTextField.subtitle = "Пароли не совпадают"
+            updateTextFieldSubtitle(.confirmPassword, subtitle: "Пароли не совпадают", color: .textSecondaryColor)
             return
         } else {
-            viewModel.confirmPasswordTextField.subtitle = .empty
+            updateTextFieldSubtitle(.confirmPassword, subtitle: .empty, color: .textSecondaryColor)
         }
 
         guard email.isNotEmpty,
@@ -148,16 +153,16 @@ fileprivate extension AuthPresenter {
         }
 
         let request = AuthRequestMo(email: email, password: password)
-        viewModel.isButtonLoading = true
+        viewModel?.isButtonLoading = true
 
         Task {
             do {
                 let response = try await authNetworkService?.singUpData(request: request, forceRequest: false)
-                viewModel.isButtonLoading = false
-                handleSingUpSuccess(response: response)
+                viewModel?.isButtonLoading = false
+                await handleSingUpSuccess(response: response)
             } catch {
-                viewModel.isButtonLoading = false
-                handleSingUpFailure(error: error.getTopLayerErrorResponse())
+                viewModel?.isButtonLoading = false
+                await handleSingUpFailure(error: error.getTopLayerErrorResponse())
             }
         }
     }
@@ -190,11 +195,8 @@ fileprivate extension AuthPresenter {
         }
 
         if let status = StatusType(rawValue: response?.status ?? .empty),
-            status  == .success {
-            router.goToOTPModule(dataStorage: OTPDataStorage(
-                email: viewModel.emailTextField.text,
-                password: viewModel.passwordTextField.text
-            ))
+           status  == .success {
+            handleGoToOTPModule()
         } else {
             handleAlert(
                 title: "Cant show OTP",
@@ -217,11 +219,8 @@ fileprivate extension AuthPresenter {
             handleAlert(
                 title: "Нужно пройти верификацию",
                 message: "Мы уже выслали на вашу почту номер для подтреждения аккаунта, пожалуйста введите его далее",
-                firstAction: {
-                    self.router.goToOTPModule(dataStorage: OTPDataStorage(
-                        email: self.viewModel.emailTextField.text,
-                        password: self.viewModel.passwordTextField.text
-                    ))
+                firstAction: { [weak self] in
+                    self?.handleGoToOTPModule()
                 }
             )
 
@@ -253,18 +252,18 @@ fileprivate extension AuthPresenter {
 // MARK: - Private Methods
 
 fileprivate extension AuthPresenter {
-    func updateFields(error: ErrorResponseMo) {
-        if let errorMsg = authNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .email) {
-            viewModel.emailTextField.subtitle = errorMsg
-            viewModel.emailTextField.subtitleColor = .red
+    func handleGoToOTPModule() {
+        guard let email = getTextField(.email)?.text,
+              let password = getTextField(.password)?.text,
+              email.isNotEmpty,
+              password.isNotEmpty else {
             return
         }
 
-        if let errorMsg = authNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .password) {
-            viewModel.passwordTextField.subtitle = errorMsg
-            viewModel.passwordTextField.subtitleColor = .red
-            return
-        }
+        router.goToOTPModule(dataStorage: OTPDataStorage(
+            email: email,
+            password: password
+        ))
     }
 
     func handleAlert(
@@ -290,60 +289,108 @@ fileprivate extension AuthPresenter {
         showNativeAlert(viewModel: viewModel)
     }
 
-    func isRequestEnabled() -> Bool {
-        switch viewModel.authMode {
-        case .login:
-            viewModel.emailTextField.text.isNotEmpty
-            && viewModel.passwordTextField.text.isNotEmpty
+    func updateFields(error: ErrorResponseMo) {
+        if let errorMsg = authNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .email) {
+            updateTextFieldSubtitle(.email, subtitle: errorMsg, color: .red)
+            return
+        }
 
-        case .register:
-            viewModel.emailTextField.text.isNotEmpty
-            && viewModel.passwordTextField.text.isNotEmpty
-            && viewModel.confirmPasswordTextField.text.isNotEmpty
-            && !arePasswordsNotEqual()
+        if let errorMsg = authNetworkService?.doesErrorFieldsContainsText(errorFields: error.errorFields, field: .password) {
+            updateTextFieldSubtitle(.password, subtitle: errorMsg, color: .red)
+            return
         }
     }
 
-    func arePasswordsNotEqual() -> Bool {
-        viewModel.passwordTextField.text != viewModel.confirmPasswordTextField.text
+    func updateTextFieldText(_ type: AuthTextFieldType, text: String) {
+        if let index = viewModel?.textFields.firstIndex(where: { $0.type == type }) {
+            viewModel?.textFields[index].text = text
+        }
     }
 
-    func updateViewModel() {
-        let model = AuthModel(
-            title: "Auth",
+    func updateTextFieldSubtitle(_ type: AuthTextFieldType, subtitle: String, color: Color) {
+        if let index = viewModel?.textFields.firstIndex(where: { $0.type == type }) {
+            viewModel?.textFields[index].subtitle = subtitle
+            viewModel?.textFields[index].subtitleColor = color
+        }
+    }
+
+    func updateIsEnabled() {
+        guard let viewModel = viewModel else {
+            return
+        }
+        let isEnabled: Bool
+
+        let emailText = viewModel.textFields.first(where: { $0.type == .email })?.text
+        let passwordText = viewModel.textFields.first(where: { $0.type == .password })?.text
+        let confirmPasswordText = viewModel.textFields.first(where: { $0.type == .confirmPassword })?.text
+
+        switch viewModel.authMode {
+        case .login:
+            isEnabled = emailText.isNotEmpty
+            && passwordText.isNotEmpty
+
+        case .register:
+            isEnabled = emailText.isNotEmpty
+            && passwordText.isNotEmpty
+            && confirmPasswordText.isNotEmpty
+            && emailText == passwordText
+        }
+
+        self.viewModel?.isButtonEnabled = isEnabled
+    }
+
+    func arePasswordsNotEqual() -> Bool {
+        getTextField(.password)?.text != getTextField(.confirmPassword)?.text
+    }
+
+    func getTextField(_ type: AuthTextFieldType) -> TextFieldViewModel? {
+        viewModel?.textFields.first(where: { $0.type == type })
+    }
+
+    func getDefaultViewModel(_ authMode: AuthMode) -> AuthViewModel {
+        var textFields: [TextFieldViewModel] = []
+
+        let emailTextField = TextFieldViewModel(
+            type: .email,
+            text: .empty,
+            placeholder: "Email",
+            subtitle: .empty,
+            isSecure: false,
+            nextFieldType: .password
+        )
+        textFields.append(emailTextField)
+
+        let passwordTextField = TextFieldViewModel(
+            type: .password,
+            text: .empty,
+            placeholder: "Password",
+            subtitle: .empty,
+            isSecure: true,
+            nextFieldType: authMode == .login ? nil : .confirmPassword
+        )
+        textFields.append(passwordTextField)
+
+        if authMode == .register {
+            let confirmPassword = TextFieldViewModel(
+                type: .confirmPassword,
+                text: .empty,
+                placeholder: "Confirm Password",
+                subtitle: .empty,
+                isSecure: true,
+                nextFieldType: nil
+            )
+            textFields.append(confirmPassword)
+        }
+
+        return AuthViewModel(
+            navigationTitle: "Auth",
+            authMode: authMode,
             loginPlaceholder: "Login",
             registerPlaceholder: "Register",
-            emailPlaceholder: "Email",
-            passwordPlaceholder: "Password",
-            confirmPasswordPlaceholder: "Confirm Password",
-            buttonText: "Submit"
+            textFields: textFields,
+            buttonText: "Submit",
+            isButtonEnabled: false,
+            isButtonLoading: false
         )
-
-        viewModel.navigationTitle = model.title ?? .empty
-
-        viewModel.loginPlaceholder = model.loginPlaceholder ?? .empty
-        viewModel.registerPlaceholder = model.registerPlaceholder ?? .empty
-
-        viewModel.emailTextField.text = .empty
-        viewModel.emailTextField.placeholder = model.emailPlaceholder ?? .empty
-        viewModel.emailTextField.subtitle = .empty
-
-        viewModel.passwordTextField.text = .empty
-        viewModel.passwordTextField.placeholder = model.passwordPlaceholder ?? .empty
-        viewModel.passwordTextField.subtitle = .empty
-
-        viewModel.confirmPasswordTextField.text = .empty
-        viewModel.confirmPasswordTextField.placeholder = model.confirmPasswordPlaceholder ?? .empty
-        viewModel.confirmPasswordTextField.subtitle = .empty
-
-        viewModel.buttonText = model.buttonText ?? .empty
     }
-}
-
-// MARK: - Constants
-
-fileprivate extension AuthPresenter {
-
-    // delete if not needed
-    // enum Constants {}
 }

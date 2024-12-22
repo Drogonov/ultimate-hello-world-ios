@@ -28,8 +28,8 @@ final class MagicViewController: UIViewController, MVPModuleProtocol, BaseViewCo
     lazy var testView: MagicView = {
         MagicView(
             model: self.presenter.getEmptyModel(),
-            buttonTapped: {
-                self.presenter.viewButtonTapped()
+            buttonTapped: { [weak self] in
+                self?.presenter.viewButtonTapped()
             }
         )
     }()
@@ -39,9 +39,9 @@ final class MagicViewController: UIViewController, MVPModuleProtocol, BaseViewCo
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.backAction = UIAction { _ in
-            self.presenter.viewNavigationItemBackAction {
-                self.navigationController?.popViewController(animated: true)
+        navigationItem.backAction = UIAction { [weak self] _ in
+            self?.presenter.viewNavigationItemBackAction {
+                self?.navigationController?.popViewController(animated: true)
             }
         }
 

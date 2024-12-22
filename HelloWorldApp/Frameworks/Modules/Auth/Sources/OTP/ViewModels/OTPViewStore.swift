@@ -11,40 +11,40 @@ import Foundation
 
 // MARK: - OTPViewStore
 
-class OTPViewStore: OTPViewStoreProtocol {
+class OTPViewStore {
 
     // MARK: Public Properties
 
-    var delegate: OTPViewStoreDelegate?
+    var delegate: OTPViewActionProtocol?
 
-    var navigationTitle: String = "OTP Verification"
+    var navigationTitle: String = .empty
     @Published var otpTextFields: [Int: String] = [:]
     @Published var otpFocusedTextFieldIndex: Int?
     @Published var verifyButtonText: String = .empty
     @Published var isVerifyButtonLoading: Bool = false
     @Published var isVerifyButtonEnabled: Bool = false
     @Published var resendButtonText: String = .empty
+}
 
-    // MARK: - Methods
+// MARK: - OTPViewStoreInput
 
-    func didChangeOTPTextField(with index: Int, text: String) {
-        delegate?.didChangeOTPTextField(with: index, text: text)
+extension OTPViewStore: OTPViewStoreInput {
+    func viewDidChangeOTPTextField(with index: Int, text: String) {
+        delegate?.viewDidChangeOTPTextField(with: index, text: text)
     }
-
-    func didTapOTPTextField(with index: Int) {
-        delegate?.didTapOTPTextField(with: index)
+    
+    func viewDidTapOTPTextField(with index: Int) {
+        delegate?.viewDidTapOTPTextField(with: index)
     }
-
-    func didTapVerifyButton() {
-        delegate?.didTapVerifyButton()
+    
+    func viewDidTapVerifyButton() {
+        delegate?.viewDidTapVerifyButton()
     }
-
-    func didTapResendButton() {
-        delegate?.didTapVerifyButton()
+    
+    func viewDidTapResendButton() {
+        delegate?.viewDidTapVerifyButton()
     }
-
-    // MARK: OTPViewStoreProtocol
-
+    
     func update(with viewModel: OTPViewModel) {
         navigationTitle = viewModel.navigationTitle
         otpTextFields = viewModel.otpTextFieldData

@@ -64,20 +64,22 @@ extension OTPViewController: ViewConfigurable {
     }
 }
 
-extension OTPViewController: OTPViewStoreDelegate {
-    func didChangeOTPTextField(with index: Int, text: String) {
+// MARK: - OTPViewActionProtocol
+
+extension OTPViewController: OTPViewActionProtocol {
+    func viewDidChangeOTPTextField(with index: Int, text: String) {
         presenter.viewDidChangeOTPTextField(with: index, text: text)
     }
     
-    func didTapOTPTextField(with index: Int) {
+    func viewDidTapOTPTextField(with index: Int) {
         presenter.viewDidTapOTPTextField(with: index)
     }
     
-    func didTapVerifyButton() {
+    func viewDidTapVerifyButton() {
         presenter.viewDidTapVerifyButton()
     }
     
-    func didTapResendButton() {
+    func viewDidTapResendButton() {
         presenter.viewDidTapResendButton()
     }
 }

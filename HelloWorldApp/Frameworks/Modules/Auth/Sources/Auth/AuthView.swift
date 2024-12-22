@@ -16,98 +16,39 @@ struct AuthView: View {
 
     // MARK: Properties
 
-    @ObservedObject var model: AuthViewModel
-    var buttonTapped: () -> Void
+    @ObservedObject var store: AuthViewStore
 
-    @FocusState private var focusedField: FocusableField?
+    // MARK: - Private Properties
+
+    @FocusState private var focusedField: AuthTextFieldType?
 
     // MARK: Construction
 
     var body: some View {
         ScrollView {
             VStack {
-                Picker(Constants.pickerName, selection: $model.authMode) {
-                    Text(model.loginPlaceholder).tag(AuthMode.login)
-                    Text(model.registerPlaceholder).tag(AuthMode.register)
+                Picker(Constants.pickerName, selection: $store.authMode) {
+                    Text(store.loginPlaceholder).tag(AuthMode.login)
+                    Text(store.registerPlaceholder).tag(AuthMode.register)
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
-
-                LabeledContent {
-                    TextField(
-                        model.emailTextField.placeholder,
-                        text: $model.emailTextField.text
-                    )
-                    .textFieldStyle(.roundedBorder)
-                    .focused($focusedField, equals: .email)
-                    .padding()
-                    .onSubmit {
-                        focusedField = .password
-                    }
-                    .disabled(model.isButtonLoading)
-                    .textCase(.lowercase)
-                    .textInputAutocapitalization(.never)
-                    .keyboardType(.emailAddress)
-                } label: {
-                    Text(model.emailTextField.subtitle)
-                        .padding(.horizontal, MCSpacing.spacing2XL)
-                        .foregroundStyle(model.emailTextField.subtitleColor)
+                .onChange(of: store.authMode) { oldValue, newValue in
+                    store.viewDidChangeAuthMode(mode: newValue)
                 }
-                .labeledContentStyle(BottomLabeledTextFieldStyleConfig())
 
-                LabeledContent {
-                    SecureField(
-                        model.passwordTextField.placeholder,
-                        text: $model.passwordTextField.text
-                    )
-                    .textFieldStyle(.roundedBorder)
-                    .focused($focusedField, equals: .password)
-                    .padding()
-                    .onSubmit {
-                        if model.authMode == .register {
-                            focusedField = .confirmPassword
-                        } else {
-                            focusedField = nil
-                        }
-                    }
-                    .textInputAutocapitalization(.never)
-                    .disabled(model.isButtonLoading)
-                } label: {
-                    Text(model.passwordTextField.subtitle)
-                        .padding(.horizontal, MCSpacing.spacing2XL)
-                        .foregroundStyle(model.passwordTextField.subtitleColor)
-                }
-                .labeledContentStyle(BottomLabeledTextFieldStyleConfig())
-
-                if model.authMode == .register {
-                    LabeledContent {
-                        SecureField(
-                            model.confirmPasswordTextField.placeholder,
-                            text: $model.confirmPasswordTextField.text
-                        )
-                        .textFieldStyle(.roundedBorder)
-                        .focused($focusedField, equals: .confirmPassword)
-                        .padding()
-                        .onSubmit {
-                            focusedField = nil
-                        }
-                        .disabled(model.isButtonLoading)
-                        .textInputAutocapitalization(.never)
-                    } label: {
-                        Text(model.confirmPasswordTextField.subtitle)
-                            .padding(.horizontal, MCSpacing.spacing2XL)
-                            .foregroundStyle(model.confirmPasswordTextField.subtitleColor)
-                    }
-                    .labeledContentStyle(BottomLabeledTextFieldStyleConfig())
+                ForEach(0..<store.textFields.count, id: \.self) { index in
+                    textField(for: index)
                 }
 
                 Spacer()
+                Spacer()
 
-                Button(model.buttonText) {
-                    buttonTapped()
+                Button(store.buttonText) {
+                    store.viewDidTapSubmitButton()
                 }
-                .loading(model.isButtonLoading)
-                .disabled(!model.isButtonEnabled)
+                .loading(store.isButtonLoading)
+                .disabled(!store.isButtonEnabled)
                 .buttonStyle(.main)
                 .padding(.horizontal, MCSpacing.spacingL)
 
@@ -117,13 +58,48 @@ struct AuthView: View {
     }
 }
 
-// MARK: - Inner Types
-
 fileprivate extension AuthView {
-    enum FocusableField: Hashable {
-        case email
-        case password
-        case confirmPassword
+    private func textField(for index: Int) -> some View {
+        LabeledContent {
+            if store.textFields[index].isSecure {
+                TextField(
+                    store.textFields[index].placeholder,
+                    text: $store.textFields[index].text
+                )
+                .textFieldStyle(.roundedBorder)
+                .focused($focusedField, equals: store.textFields[index].type)
+                .padding()
+                .onSubmit {
+                    focusedField = store.textFields[index].nextFieldType
+                }
+                .disabled(store.isButtonLoading)
+                .textCase(.lowercase)
+                .textInputAutocapitalization(.never)
+                .keyboardType(store.textFields[index].type == .email ? .emailAddress : .default)
+            } else {
+                SecureField(
+                    store.textFields[index].placeholder,
+                    text: $store.textFields[index].text
+                )
+                .textFieldStyle(.roundedBorder)
+                .focused($focusedField, equals: store.textFields[index].type)
+                .padding()
+                .onSubmit {
+                    focusedField = store.textFields[index].nextFieldType
+                }
+                .disabled(store.isButtonLoading)
+                .textCase(.lowercase)
+                .textInputAutocapitalization(.never)
+            }
+        } label: {
+            Text(store.textFields[index].subtitle)
+                .padding(.horizontal, MCSpacing.spacing2XL)
+                .foregroundStyle(store.textFields[index].subtitleColor)
+        }
+        .labeledContentStyle(BottomLabeledTextFieldStyleConfig())
+        .onChange(of: store.textFields[index].text) { oldValue, newValue in
+            store.viewDidChangeTextField(type: store.textFields[index].type, text: newValue)
+        }
     }
 }
 
@@ -139,33 +115,23 @@ fileprivate extension AuthView {
 
 struct AuthView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = AuthViewModel()
-        let model = AuthModel(
-            title: "Auth",
-            loginPlaceholder: "Login",
-            registerPlaceholder: "Register",
-            emailPlaceholder: "Email",
-            passwordPlaceholder: "Password",
-            confirmPasswordPlaceholder: "Confirm Password",
-            buttonText: "Login"
-        )
+        let store = AuthViewStore()
 
-        viewModel.navigationTitle = model.title ?? .empty
-        viewModel.authMode = .login
-        viewModel.loginPlaceholder = model.loginPlaceholder ?? .empty
-        viewModel.registerPlaceholder = model.registerPlaceholder ?? .empty
-        viewModel.emailTextField.placeholder = model.emailPlaceholder ?? .empty
-        viewModel.emailTextField.subtitle = "Error"
-        viewModel.emailTextField.subtitleColor = .red
-        viewModel.passwordTextField.placeholder = model.passwordPlaceholder ?? .empty
-        viewModel.confirmPasswordTextField.placeholder = model.confirmPasswordPlaceholder ?? .empty
-        viewModel.buttonText = model.buttonText ?? .empty
-        viewModel.isButtonEnabled = true
-        viewModel.isButtonLoading = false
+        store.navigationTitle = "Auth"
+        store.authMode = .login
+        store.loginPlaceholder = "Login"
+        store.registerPlaceholder = "Register"
 
-        return AuthView(
-            model: viewModel,
-            buttonTapped: { }
-        )
+        store.textFields = [
+            TextFieldViewModel(type: .email, text: .empty, placeholder: "Email", subtitle: .empty, isSecure: false),
+            TextFieldViewModel(type: .password, text: .empty, placeholder: "Password", subtitle: .empty, isSecure: true),
+            TextFieldViewModel(type: .confirmPassword, text: .empty, placeholder: "Confirm Password", subtitle: "Passwords Must Be Equal", isSecure: true)
+        ]
+
+        store.buttonText = "Submit"
+        store.isButtonEnabled = true
+        store.isButtonLoading = false
+
+        return AuthView(store: store)
     }
 }

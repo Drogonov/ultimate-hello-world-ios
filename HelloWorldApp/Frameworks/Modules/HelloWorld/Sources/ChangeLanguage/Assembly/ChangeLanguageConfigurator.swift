@@ -57,6 +57,10 @@ fileprivate extension ChangeLanguageConfigurator {
             )
         }
         .initCompleted { resolver, instance in
+            let errorHandler = NetworkServiceErrorHandler(
+                router: resolver.resolveSafe(ChangeLanguageRouterInput.self)
+            )
+
             instance.view = resolver.resolveSafe(ChangeLanguageViewInput.self)
             instance.languageService = resolver.resolve(LanguageChangeServiceProtocol.self)
             instance.appNetworkService = AppNetworkService(
@@ -65,9 +69,7 @@ fileprivate extension ChangeLanguageConfigurator {
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main
                     ),
-                    errorHandler: NetworkServiceErrorHandler(
-                        router: resolver.resolveSafe(ChangeLanguageRouterInput.self)
-                    )
+                    errorHandler: errorHandler
                 ),
                 shortCacher: nil
             )
@@ -77,9 +79,7 @@ fileprivate extension ChangeLanguageConfigurator {
                         NetworkManagerProtocol.self,
                         name: NetworkManagerType.main
                     ),
-                    errorHandler: NetworkServiceErrorHandler(
-                        router: resolver.resolveSafe(ChangeLanguageRouterInput.self)
-                    )
+                    errorHandler: errorHandler
                 ),
                 shortCacher: nil
             )

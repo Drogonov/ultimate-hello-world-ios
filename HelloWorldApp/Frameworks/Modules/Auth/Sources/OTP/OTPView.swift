@@ -41,10 +41,10 @@ struct OTPView: View {
                             )
                             .focused($otpFocusedTextFieldIndex, equals: index)
                             .simultaneousGesture(TapGesture().onEnded {
-                                store.didTapOTPTextField(with: index)
+                                store.viewDidTapOTPTextField(with: index)
                             })
                             .onChange(of: store.otpTextFields[index] ?? .empty, { oldValue, newValue in
-                                store.didChangeOTPTextField(with: index, text: newValue)
+                                store.viewDidChangeOTPTextField(with: index, text: newValue)
                             })
                             .onChange(of: store.otpFocusedTextFieldIndex) { oldValue, newValue in
                                 otpFocusedTextFieldIndex = newValue
@@ -56,7 +56,7 @@ struct OTPView: View {
                 Spacer()
 
                 Button(store.verifyButtonText) {
-                    store.didTapVerifyButton()
+                    store.viewDidTapVerifyButton()
                 }
                 .loading(store.isVerifyButtonLoading)
                 .disabled(!store.isVerifyButtonEnabled)
@@ -64,7 +64,7 @@ struct OTPView: View {
                 .padding(MCSpacing.spacingL)
 
                 Button(action: {
-                    store.didTapResendButton()
+                    store.viewDidTapResendButton()
                 }) {
                     Text(store.resendButtonText)
                         .foregroundStyle(.red)

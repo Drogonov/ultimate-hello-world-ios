@@ -15,6 +15,9 @@ import Magic
 import Resources
 
 class MainTabBarProvider: MainTabBarProviderProtocol {
+
+    // MARK: Methods
+
     func provideMainTabBar() -> UITabBarController {
         let tabBarController = UITabBarController()
         tabBarController.tabBar.tintColor = .accentColor
@@ -37,7 +40,9 @@ class MainTabBarProvider: MainTabBarProviderProtocol {
     }
 }
 
-extension MainTabBarProvider {
+// MARK: - Private Methods
+
+fileprivate extension MainTabBarProvider {
     func createHelloWorldModule() -> UINavigationController {
         let configurator = MVPModuleConfigurator(HelloWorldFlowModuleFactory.helloWorldModule())
         let viewController = configurator.getViewController()
