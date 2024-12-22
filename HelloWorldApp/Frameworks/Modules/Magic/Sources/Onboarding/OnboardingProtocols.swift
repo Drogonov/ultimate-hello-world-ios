@@ -27,17 +27,22 @@ protocol OnboardingViewInput: AnyObject {
     func setView(with viewModel: OnboardingViewModel)
 }
 
+// sourcery: AutoMockable
+protocol OnboardingViewStoreInput: ObservableObject, OnboardingViewActionProtocol {
+    var delegate: OnboardingViewActionProtocol? { get set }
+    func update(with viewModel: OnboardingViewModel)
+}
+
+// sourcery: AutoMockable
+protocol OnboardingViewActionProtocol: AnyObject {
+    func viewButtonTapped()
+}
+
 // MARK: - Presenter Protocols
 
 // sourcery: AutoMockable
-protocol OnboardingPresenterInput: AnyObject {
+protocol OnboardingPresenterInput: OnboardingViewActionProtocol {
     func viewIsReady()
-    func viewWillAppear()
-    func viewWillDissapear()
-
-    func viewButtonTapped()
-
-    func getEmptyModel() -> OnboardingViewModel
 }
 
 // MARK: - Router Protocols

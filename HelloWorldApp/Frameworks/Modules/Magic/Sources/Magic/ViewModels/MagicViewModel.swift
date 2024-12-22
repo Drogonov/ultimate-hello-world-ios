@@ -10,12 +10,9 @@ import Common
 
 // MARK: - MagicViewModel
 
-class MagicViewModel: ObservableObject {
-
-    // MARK: Public Properties
-
-    var navigationTitle: String = .empty
-    @Published var mainText: String = .empty
-    @Published var jokeText: String = .empty
-    @Published var infoText: String = .empty
+struct MagicViewModel {
+    var navigationTitle: String
+    var mainText: String
+    var jokeText: String
+    var infoText: String
 }

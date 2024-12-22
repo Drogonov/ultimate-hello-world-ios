@@ -8,6 +8,7 @@
 
 import DI
 import UIKit
+import SwiftUI
 import SnapKit
 import Common
 import Resources
@@ -22,16 +23,12 @@ final class OnboardingViewController: UIViewController, MVPModuleProtocol, BaseV
     var moduleInput: MVPModuleInputProtocol?
 
     @DelayedImmutable var presenter: OnboardingPresenterInput
+    @ObservedObject var viewStore = OnboardingViewStore()
 
     // MARK: UI Properties
 
-    lazy var testView: OnboardingView = {
-        OnboardingView(
-            model: self.presenter.getEmptyModel(),
-            buttonTapped: {
-                self.presenter.viewButtonTapped()
-            }
-        )
+    lazy var onboardingView: OnboardingView = {
+        OnboardingView(store: viewStore)
     }()
 
     // MARK: Inheritance
@@ -42,29 +39,13 @@ final class OnboardingViewController: UIViewController, MVPModuleProtocol, BaseV
         configure()
         presenter.viewIsReady()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    // MARK: Selectors
-    // ...
 }
 
 // MARK: - OnboardingViewInput
 
 extension OnboardingViewController: OnboardingViewInput {
-
     func setView(with viewModel: OnboardingViewModel) {
-        configureView(with: viewModel)
+        viewStore.update(with: viewModel)
     }
 }
 
@@ -76,25 +57,18 @@ extension OnboardingViewController: ViewConfigurable {
         view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
+        viewStore.delegate = self
     }
 
     public func configureConstraints() {
-        addMainViewToViewController(testView)
+        addMainViewToViewController(onboardingView)
     }
 }
 
-// MARK: - Private Methods
+// MARK: - OnboardingViewActionProtocol
 
-fileprivate extension OnboardingViewController {
-    private func configureView(with viewModel: OnboardingViewModel) {
-        self.testView.model = viewModel
+extension OnboardingViewController: OnboardingViewActionProtocol {
+    func viewButtonTapped() {
+        presenter.viewButtonTapped()
     }
-}
-
-// MARK: - Constants
-
-fileprivate extension OnboardingViewController {
-
-    // delete if not needed
-    // enum Constants {}
 }

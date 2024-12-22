@@ -26,7 +26,7 @@ class OnboardingPresenter {
     private var router: OnboardingRouterInput
     private var dataStorage: OnboardingDataStorage?
 
-    @ObservedObject var viewModel = OnboardingViewModel()
+    private var viewModel: OnboardingViewModel?
 
     // MARK: Services
 
@@ -46,28 +46,18 @@ extension OnboardingPresenter: OnboardingPresenterInput {
         guard let dataStorage = dataStorage else {
             return
         }
-        
-        let model = OnboardingModel(
-            text: dataStorage.onboardingText,
-            buttonText: dataStorage.onboardingButtonText
-        )
 
-        viewModel.text = model.text ?? .empty
-        viewModel.buttonText = model.buttonText ?? .empty
+        viewModel = getDefaultViewModel()
+        viewModel?.text = dataStorage.onboardingText
+        viewModel?.buttonText = dataStorage.onboardingButtonText
 
-        self.view?.setView(with: viewModel)
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
     }
-
-    func viewWillAppear() {}
-
-    func viewWillDissapear() {}
 
     func viewButtonTapped() {
         router.goToMainTabBar()
-    }
-
-    func getEmptyModel() -> OnboardingViewModel {
-        viewModel
     }
 }
 
@@ -89,4 +79,8 @@ extension OnboardingPresenter: OnboardingModuleOutput {}
 
 // MARK: - Private Methods
 
-fileprivate extension OnboardingPresenter {}
+fileprivate extension OnboardingPresenter {
+    func getDefaultViewModel() -> OnboardingViewModel {
+        OnboardingViewModel(text: .empty, buttonText: .empty)
+    }
+}

@@ -6,6 +6,7 @@
 //  Copyright (c) 2024 Smart Lads Software. All rights reserved.
 
 import UIKit
+import SwiftUI
 import SnapKit
 import DI
 import Common
@@ -22,16 +23,12 @@ final class MagicViewController: UIViewController, MVPModuleProtocol, BaseViewCo
     var moduleInput: MVPModuleInputProtocol?
 
     @DelayedImmutable var presenter: MagicPresenterInput
+    @ObservedObject var viewStore = MagicViewStore()
 
     // MARK: UI Properties
 
-    lazy var testView: MagicView = {
-        MagicView(
-            model: self.presenter.getEmptyModel(),
-            buttonTapped: { [weak self] in
-                self?.presenter.viewButtonTapped()
-            }
-        )
+    lazy var magicView: MagicView = {
+        MagicView(store: viewStore)
     }()
 
     // MARK: Inheritance
@@ -48,21 +45,6 @@ final class MagicViewController: UIViewController, MVPModuleProtocol, BaseViewCo
         configure()
         presenter.viewIsReady()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    // MARK: Selectors
-    // ...
 }
 
 // MARK: - MagicViewInput
@@ -71,7 +53,7 @@ extension MagicViewController: MagicViewInput {
 
     func setView(with viewModel: MagicViewModel) {
         setNavigationBarTitle(with: viewModel.navigationTitle)
-        configureView(with: viewModel)
+        viewStore.update(with: viewModel)
     }
 }
 
@@ -83,25 +65,22 @@ extension MagicViewController: ViewConfigurable {
         view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
+        viewStore.delegate = self
     }
 
     public func configureConstraints() {
-        addMainViewToViewController(testView)
+        addMainViewToViewController(magicView)
     }
 }
 
-// MARK: - Private Methods
+// MARK: - MagicViewActionProtocol
 
-fileprivate extension MagicViewController {
-    private func configureView(with viewModel: MagicViewModel) {
-        self.testView.model = viewModel
+extension MagicViewController: MagicViewActionProtocol {
+    func viewNavigationItemBackAction(_ completion: Common.VoidBlock?) {
+        presenter.viewNavigationItemBackAction(completion)
     }
-}
 
-// MARK: - Constants
-
-fileprivate extension MagicViewController {
-
-    // delete if not needed
-    // enum Constants {}
+    func viewButtonTapped() {
+        presenter.viewButtonTapped()
+    }
 }

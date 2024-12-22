@@ -30,15 +30,12 @@ class MagicPresenter {
 
     private var dataStorage: MagicDataStorage?
     private weak var moduleOutput: MagicModuleOutput?
+    private var viewModel: MagicViewModel?
 
-    private var getMagicResponse: GetMagicResponseMo?
+    // MARK: Services
 
     @DelayedImmutable var appNetworkService: AppNetworkServiceProtocol?
     @DelayedImmutable var languageService: LanguageChangeServiceProtocol?
-
-    @ObservedObject var viewModel = MagicViewModel()
-
-    // MARK: Services
 
     // MARK: Init
 
@@ -53,22 +50,23 @@ class MagicPresenter {
 
 extension MagicPresenter: MagicPresenterInput {
     func viewIsReady() {
+        viewModel = getDefaultViewModel()
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
+
         let code = languageService?.getCurrentLanguage() ?? Language.english
         let request = GetMagicRequestMo(languageCode: code.rawValue)
 
         Task {
             do {
                 let response = try await appNetworkService?.getMagicData(request: request, forceRequest: false)
-                handleSuccess(response: response)
+                await handleSuccess(response: response)
             } catch {
-                handleFailure(error: error.getTopLayerErrorResponse())
+                await handleFailure(error: error.getTopLayerErrorResponse())
             }
         }
     }
-
-    func viewWillAppear() {}
-
-    func viewWillDissapear() {}
 
     func viewNavigationItemBackAction(_ completion: VoidBlock?) {
         moduleOutput?.magicNavigationItemBackAction(completion)
@@ -81,24 +79,11 @@ extension MagicPresenter: MagicPresenterInput {
         Task {
             do {
                 let response = try await appNetworkService?.getMagicData(request: request, forceRequest: false)
-                handleSuccess(response: response)
+                await handleSuccess(response: response)
             } catch {
-                handleFailure(error: error.getTopLayerErrorResponse())
+                await handleFailure(error: error.getTopLayerErrorResponse())
             }
         }
-    }
-
-    func getEmptyModel() -> MagicViewModel {
-        getMagicResponse = dataStorage?.response
-
-        guard let response = getMagicResponse else {
-            return viewModel
-        }
-
-        let model = getModel(from: response)
-        setViewModel(with: model)
-
-        return viewModel
     }
 }
 
@@ -124,12 +109,14 @@ fileprivate extension MagicPresenter {
             return
         }
 
-        getMagicResponse = response
+        viewModel?.navigationTitle = response.title ?? .empty
+        viewModel?.infoText = response.infoText ?? .empty
+        viewModel?.jokeText = response.jokeText ?? .empty
+        viewModel?.mainText = response.mainText ?? .empty
 
-        let model = getModel(from: response)
-        setViewModel(with: model)
-
-        self.view?.setView(with: viewModel)
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
     }
 
     @MainActor
@@ -167,18 +154,12 @@ fileprivate extension MagicPresenter {
         return model
     }
 
-    func setViewModel(with model: MagicModel) {
-        viewModel.navigationTitle = model.title ?? .empty
-        viewModel.mainText = model.mainText ?? .empty
-        viewModel.jokeText = model.jokeText ?? .empty
-        viewModel.infoText = model.infoText ?? .empty
+    func getDefaultViewModel() -> MagicViewModel {
+        MagicViewModel(
+            navigationTitle: .empty,
+            mainText: .empty,
+            jokeText: .empty,
+            infoText: .empty
+        )
     }
-}
-
-// MARK: - Constants
-
-fileprivate extension MagicPresenter {
-
-    // delete if not needed
-    // enum Constants {}
 }

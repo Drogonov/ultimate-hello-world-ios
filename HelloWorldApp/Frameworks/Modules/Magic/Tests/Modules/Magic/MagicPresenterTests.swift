@@ -20,7 +20,6 @@ class MagicPresenterTests: XCTestCase {
     var view: MagicViewInputMock!
     var appNetworkService: AppNetworkServiceProtocolMock!
     var languageService: LanguageChangeServiceProtocolMock!
-    var viewModel: MagicViewModel!
     // sourcery:end
 
     override func setUp() {
@@ -30,7 +29,6 @@ class MagicPresenterTests: XCTestCase {
         view = .init()
         appNetworkService = .init()
         languageService = .init()
-        viewModel = .init()
 
         presenter = MagicPresenter(
             router: router
@@ -38,7 +36,6 @@ class MagicPresenterTests: XCTestCase {
         presenter.view = view
         presenter.appNetworkService = appNetworkService
         presenter.languageService = languageService
-        presenter.viewModel = viewModel
         // sourcery:end
     }
 
@@ -49,7 +46,6 @@ class MagicPresenterTests: XCTestCase {
         view = nil
         appNetworkService = nil
         languageService = nil
-        viewModel = nil
         super.tearDown()
     }
 // sourcery:end
@@ -95,17 +91,6 @@ extension MagicPresenterTests {
         XCTAssertTrue(true)
     }
 
-    func testGetEmptyModel() {
-        // given
-        // ...
-
-        // when
-        let result = presenter.getEmptyModel()
-
-        // then
-        XCTAssertNotNil(result)
-    }
-
     func testViewNavigationItemBackAction() {
         // given
         // ...
@@ -119,8 +104,8 @@ extension MagicPresenterTests {
 
     func testViewButtonTapped() {
         // given
-        // ...
-        
+//        appNetworkService.getMagicDataRequestGetMagicRequestMoForceRequestBoolGetMagicResponseMoReturnValue =
+
         // when
 //        presenter.viewButtonTapped()
 

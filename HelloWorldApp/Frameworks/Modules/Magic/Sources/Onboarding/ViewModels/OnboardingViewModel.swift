@@ -10,10 +10,7 @@ import Foundation
 
 // MARK: - OnboardingViewModel
 
-class OnboardingViewModel: ObservableObject {
-
-    // MARK: Public Properties
-
-    @Published var text: String = .empty
-    @Published var buttonText: String = .empty
+struct OnboardingViewModel {
+    var text: String = .empty
+    var buttonText: String = .empty
 }

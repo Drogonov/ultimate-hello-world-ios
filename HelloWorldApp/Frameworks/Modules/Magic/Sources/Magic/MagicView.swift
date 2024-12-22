@@ -15,23 +15,22 @@ struct MagicView: View {
 
     // MARK: Properties
 
-    @ObservedObject var model: MagicViewModel
-    var buttonTapped: () -> Void
+    @ObservedObject var store: MagicViewStore
 
     // MARK: Construction
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                Text(model.mainText)
+                Text(store.mainText)
                     .font(TextStyle.body.font)
                     .padding(.vertical, 8)
 
-                Text(model.jokeText)
+                Text(store.jokeText)
                     .font(TextStyle.title.font)
                     .padding(.vertical, 8)
 
-                Text(model.infoText)
+                Text(store.infoText)
                     .font(TextStyle.body.font)
                     .padding(.vertical, 8)
 
@@ -41,7 +40,7 @@ struct MagicView: View {
                     Spacer()
 
                     Button {
-                        buttonTapped()
+                        store.viewButtonTapped()
                     } label: {
                         Text(ResourcesStrings.magicButtonText())
                             .font(TextStyle.body.font)
@@ -76,14 +75,11 @@ fileprivate extension MagicView {
 
 struct MagicView_Previews: PreviewProvider {
     static var previews: some View {
-        let model = MagicViewModel()
-        model.mainText = "Hello World"
-        model.jokeText = "Hello World"
-        model.infoText = "Hello World"
+        let store = MagicViewStore()
+        store.mainText = "Hello World"
+        store.jokeText = "Hello World"
+        store.infoText = "Hello World"
 
-        return MagicView(
-            model: model,
-            buttonTapped: {}
-        )
+        return MagicView(store: store)
     }
 }

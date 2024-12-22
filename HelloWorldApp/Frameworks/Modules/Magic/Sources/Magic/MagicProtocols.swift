@@ -25,18 +25,23 @@ protocol MagicViewInput: AnyObject {
     func setView(with viewModel: MagicViewModel)
 }
 
+// sourcery: AutoMockable
+protocol MagicViewStoreInput: ObservableObject, MagicViewActionProtocol {
+    var delegate: MagicViewActionProtocol? { get set }
+    func update(with viewModel: MagicViewModel)
+}
+
+// sourcery: AutoMockable
+protocol MagicViewActionProtocol: AnyObject {
+    func viewNavigationItemBackAction(_ completion: VoidBlock?)
+    func viewButtonTapped()
+}
+
 // MARK: - Presenter Protocols
 
 // sourcery: AutoMockable
-protocol MagicPresenterInput: NativeAlertProtocol {
+protocol MagicPresenterInput: NativeAlertProtocol, MagicViewActionProtocol {
     func viewIsReady()
-    func viewWillAppear()
-    func viewWillDissapear()
-    func viewNavigationItemBackAction(_ completion: VoidBlock?)
-
-    func viewButtonTapped()
-
-    func getEmptyModel() -> MagicViewModel
 }
 
 // MARK: - Router Protocols

@@ -184,7 +184,7 @@ fileprivate extension OTPPresenter {
 
     @MainActor
     func handleResendOTPSuccess(response: TokensResponseMo?) {
-        guard let response = response else {
+        guard response != nil else {
             return
         }
 
