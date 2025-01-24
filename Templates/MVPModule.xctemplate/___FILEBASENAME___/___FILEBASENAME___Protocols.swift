@@ -18,7 +18,9 @@ public protocol ___VARIABLE_productName___ModuleInput: MVPModuleInputProtocol {
 }
 
 // sourcery: AutoMockable
-public protocol ___VARIABLE_productName___ModuleOutput: MVPModuleOutputProtocol {}
+public protocol ___VARIABLE_productName___ModuleOutput: MVPModuleOutputProtocol {
+    // ...
+}
 
 // MARK: - View Protocols
 
@@ -27,20 +29,28 @@ protocol ___VARIABLE_productName___ViewInput: AnyObject {
     func setView(with viewModel: ___VARIABLE_productName___ViewModel)
 }
 
+// sourcery: AutoMockable
+protocol ___VARIABLE_productName___ViewStoreInput: ObservableObject, ___VARIABLE_productName___ViewActionProtocol {
+    var delegate: ___VARIABLE_productName___ViewActionProtocol? { get set }
+    func update(with viewModel: ___VARIABLE_productName___ViewModel)
+}
+
+// sourcery: AutoMockable
+protocol ___VARIABLE_productName___ViewActionProtocol: AnyObject {
+    func viewButtonTapped()
+}
+
 // MARK: - Presenter Protocols
 
 // sourcery: AutoMockable
-protocol ___VARIABLE_productName___PresenterInput: AnyObject {
+protocol ___VARIABLE_productName___PresenterInput: ___VARIABLE_productName___ViewActionProtocol, NativeAlertProtocol {
     func viewIsReady()
-    func viewWillAppear()
-    func viewWillDissapear()
-
     func viewButtonTapped()
-
-    func getEmptyModel() -> ___VARIABLE_productName___ViewModel
 }
 
 // MARK: - Router Protocols
 
 // sourcery: AutoMockable
-protocol ___VARIABLE_productName___RouterInput: BaseRouterInput {}
+protocol ___VARIABLE_productName___RouterInput: BaseRouterInput {
+    // ...
+}

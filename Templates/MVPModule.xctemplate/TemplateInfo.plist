@@ -6,6 +6,20 @@
 	<array>
 		<dict>
 			<key>Default</key>
+			<string>___VARIABLE_productName:identifier___ViewStore</string>
+			<key>Description</key>
+			<string>The viewStore name</string>
+			<key>Identifier</key>
+			<string>viewStoreName</string>
+			<key>Name</key>
+			<string>ViewStore:</string>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+		<dict>
+			<key>Default</key>
 			<string>MVP Module</string>
 			<key>Description</key>
 			<string>The name of the MVP Module</string>

@@ -14,20 +14,19 @@ struct ___VARIABLE_productName___View: View {
 
     // MARK: Properties
 
-    @ObservedObject var model: ___VARIABLE_productName___ViewModel
-    var buttonTapped: () -> Void
+    @ObservedObject var store: ___VARIABLE_productName___ViewStore
 
     // MARK: Construction
 
     var body: some View {
         VStack {
             Button {
-                buttonTapped()
+                store.viewButtonTapped()
             } label: {
                 Image(systemName: "globe")
                     .imageScale(.large)
                     .foregroundStyle(.tint)
-                Text(model.text)
+                Text(store.buttonText)
             }
         }
         .padding()
@@ -37,7 +36,6 @@ struct ___VARIABLE_productName___View: View {
 // MARK: - Constants
 
 fileprivate extension ___VARIABLE_productName___View {
-
     // delete if not needed
     // enum Constants {}
 }
@@ -46,12 +44,9 @@ fileprivate extension ___VARIABLE_productName___View {
 
 struct ___VARIABLE_productName___View_Previews: PreviewProvider {
     static var previews: some View {
-        let model = ___VARIABLE_productName___ViewModel()
-        model.text = "Hello World"
+        let store = ___VARIABLE_productName___ViewStore()
+        store.buttonText = "Hello World"
 
-        return ___VARIABLE_productName___View(
-            model: model,
-            buttonTapped: {}
-        )
+        return ___VARIABLE_productName___View(store: store)
     }
 }

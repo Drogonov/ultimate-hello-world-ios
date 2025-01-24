@@ -10,10 +10,10 @@ import Foundation
 
 // MARK: - ___VARIABLE_productName___ViewModel
 
-class ___VARIABLE_productName___ViewModel: ObservableObject {
+struct ___VARIABLE_productName___ViewModel {
 
     // MARK: Public Properties
 
     var navigationTitle: String = .empty
-    @Published var text: String = .empty
+    @Published var buttonText: String = .empty
 }

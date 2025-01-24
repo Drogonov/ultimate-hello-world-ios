@@ -9,6 +9,7 @@
 import DI
 import UIKit
 import SnapKit
+import SwiftUI
 import Common
 import MasterComponents
 
@@ -21,16 +22,12 @@ final class ___VARIABLE_productName___ViewController: UIViewController, MVPModul
     var moduleInput: MVPModuleInputProtocol?
 
     @DelayedImmutable var presenter: ___VARIABLE_productName___PresenterInput
+    @ObservedObject var viewStore = ___VARIABLE_productName___ViewStore()
 
     // MARK: UI Properties
 
-    lazy var testView: ___VARIABLE_productName___View = {
-        ___VARIABLE_productName___View(
-            model: self.presenter.getEmptyModel(),
-            buttonTapped: {
-                self.presenter.viewButtonTapped()
-            }
-        )
+    lazy var swiftUIView: ___VARIABLE_productName___View = {
+        ___VARIABLE_productName___View(store: viewStore)
     }()
 
     // MARK: Inheritance
@@ -41,21 +38,6 @@ final class ___VARIABLE_productName___ViewController: UIViewController, MVPModul
         configure()
         presenter.viewIsReady()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        presenter.viewWillAppear()
-    }
-
-    // MARK: Selectors
-    // ...
 }
 
 // MARK: - ___VARIABLE_productName___ViewInput
@@ -63,7 +45,7 @@ final class ___VARIABLE_productName___ViewController: UIViewController, MVPModul
 extension ___VARIABLE_productName___ViewController: ___VARIABLE_productName___ViewInput {
 
     func setView(with viewModel: ___VARIABLE_productName___ViewModel) {
-        setNavigationBarTitle(with: viewModel.navigationTitle)
+        viewStore.update(with: viewModel)
         configureView(with: viewModel)
     }
 }
@@ -76,25 +58,31 @@ extension ___VARIABLE_productName___ViewController: ViewConfigurable {
         view.backgroundColor = .surfaceColor
 
         configureNavigationBar()
+        viewStore.delegate = self
     }
 
     public func configureConstraints() {
-        addMainViewToViewController(testView)
+        addMainViewToViewController(swiftUIView)
+    }
+}
+
+// MARK: - ___VARIABLE_productName___ViewActionProtocol
+
+extension ___VARIABLE_productName___ViewController:  ___VARIABLE_productName___ViewActionProtocol {
+    func viewButtonTapped() {
+        presenter.viewButtonTapped()
     }
 }
 
 // MARK: - Private Methods
 
 fileprivate extension ___VARIABLE_productName___ViewController {
-    private func configureView(with viewModel: ___VARIABLE_productName___ViewModel) {
-        self.testView.model = viewModel
-    }
+    // delete if not needed
 }
 
 // MARK: - Constants
 
 fileprivate extension ___VARIABLE_productName___ViewController {
-
     // delete if not needed
     // enum Constants {}
 }

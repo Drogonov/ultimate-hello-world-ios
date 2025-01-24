@@ -25,9 +25,10 @@ class ___VARIABLE_productName___Presenter {
     private var router: ___VARIABLE_productName___RouterInput
     private var dataStorage: ___VARIABLE_productName___DataStorage?
 
-    @ObservedObject var viewModel = ___VARIABLE_productName___ViewModel()
+    var viewModel: ___VARIABLE_productName___ViewModel?
 
     // MARK: Services
+    // ...
 
     // MARK: Init
 
@@ -42,22 +43,13 @@ class ___VARIABLE_productName___Presenter {
 
 extension ___VARIABLE_productName___Presenter: ___VARIABLE_productName___PresenterInput {
     func viewIsReady() {
-        let model = ___VARIABLE_productName___Model(title: dataStorage?.response)
-
-        viewModel.navigationTitle = model.title ?? .empty
-        viewModel.text = model.title ?? .empty
-
-        self.view?.setView(with: viewModel)
+        viewModel.navigationTitle = "Hello, World!"
+        viewModel.buttonText = "Hello, World!"
+        updateViewWithVM()
     }
 
-    func viewWillAppear() {}
-
-    func viewWillDissapear() {}
-
-    func viewButtonTapped() {}
-
-    func getEmptyModel() -> ___VARIABLE_productName___ViewModel {
-        viewModel
+    func viewButtonTapped() {
+        // ...
     }
 }
 
@@ -75,16 +67,29 @@ extension ___VARIABLE_productName___Presenter: ___VARIABLE_productName___ModuleI
 
 // MARK: - ___VARIABLE_productName___ModuleOutput
 
-extension ___VARIABLE_productName___Presenter: ___VARIABLE_productName___ModuleOutput {}
+extension ___VARIABLE_productName___Presenter: ___VARIABLE_productName___ModuleOutput {
+    // ...
+}
+
+// MARK: - @MainActor Handle
+
+fileprivate extension ___VARIABLE_productName___Presenter {
+    // ...
+}
 
 // MARK: - Private Methods
 
-fileprivate extension ___VARIABLE_productName___Presenter {}
+fileprivate extension ___VARIABLE_productName___Presenter {
+    func updateViewWithVM() {
+        if let viewModel {
+            view?.setView(with: viewModel)
+        }
+    }
+}
 
 // MARK: - Constants
 
 fileprivate extension ___VARIABLE_productName___Presenter {
-
     // delete if not needed
     // enum Constants {}
 }
