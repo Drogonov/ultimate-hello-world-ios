@@ -43,8 +43,7 @@ class ___VARIABLE_productName___Presenter {
 
 extension ___VARIABLE_productName___Presenter: ___VARIABLE_productName___PresenterInput {
     func viewIsReady() {
-        viewModel.navigationTitle = "Hello, World!"
-        viewModel.buttonText = "Hello, World!"
+        viewModel = getDefaultViewModel()        
         updateViewWithVM()
     }
 
@@ -80,6 +79,13 @@ fileprivate extension ___VARIABLE_productName___Presenter {
 // MARK: - Private Methods
 
 fileprivate extension ___VARIABLE_productName___Presenter {
+    func getDefaultViewModel() -> ___VARIABLE_productName___ViewModel {
+        ___VARIABLE_productName___ViewModel(
+            navigationTitle: "___VARIABLE_productName___",
+            buttonText: "Hello, World!"
+        )
+    }
+
     func updateViewWithVM() {
         if let viewModel {
             view?.setView(with: viewModel)

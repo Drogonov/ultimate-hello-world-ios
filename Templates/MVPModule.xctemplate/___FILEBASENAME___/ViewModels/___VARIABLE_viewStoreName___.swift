@@ -14,7 +14,7 @@ class ___VARIABLE_productName___ViewStore {
 
     // MARK: Public Properties
 
-    var delegate: ___VARIABLE_productName___ViewActionProtocol?
+    weak var delegate: ___VARIABLE_productName___ViewActionProtocol?
 
     @Published var buttonText: String = .empty
 }
@@ -25,6 +25,6 @@ extension ___VARIABLE_productName___ViewStore: ___VARIABLE_productName___ViewSto
     }
 
     func update(with viewModel: ___VARIABLE_productName___ViewModel) {
-        buttonText = viewModel.pages.first?.buttonText ?? .empty
+        buttonText = viewModel.buttonText
     }
 }

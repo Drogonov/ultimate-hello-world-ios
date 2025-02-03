@@ -46,7 +46,7 @@ extension ___VARIABLE_productName___ViewController: ___VARIABLE_productName___Vi
 
     func setView(with viewModel: ___VARIABLE_productName___ViewModel) {
         viewStore.update(with: viewModel)
-        configureView(with: viewModel)
+        setNavigationBarTitle(with: viewModel.navigationTitle)
     }
 }
 

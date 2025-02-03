@@ -8,6 +8,7 @@
 
 import Foundation
 import CommonApplication
+import DI
 
 // MARK: - ___VARIABLE_productName___Router
 

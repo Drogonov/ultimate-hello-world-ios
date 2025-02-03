@@ -15,5 +15,5 @@ struct ___VARIABLE_productName___ViewModel {
     // MARK: Public Properties
 
     var navigationTitle: String = .empty
-    @Published var buttonText: String = .empty
+    var buttonText: String = .empty
 }
